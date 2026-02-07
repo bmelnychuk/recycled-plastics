@@ -1,4 +1,4 @@
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/nextjs";
 import { apiFetch } from "@/backend/api/core";
 
 export function useApiClient() {

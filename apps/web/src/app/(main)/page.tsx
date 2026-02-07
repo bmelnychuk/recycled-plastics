@@ -5,7 +5,22 @@ import { DemandHeroCompact } from "@/features/demand/DemandHeroCompact";
 import { SupplyHeroCompact } from "@/features/supply/SupplyHeroCompact";
 import { hello } from "@rp/core";
 
+import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
+
+const client = new DynamoDBClient({}); // OIDC credentials auto-picked
+
+
+
+
 export default async function Page() {
+  await client.send(new PutItemCommand({
+    TableName: process.env.TABLE_NAME!,
+    Item: {
+      id: { S: crypto.randomUUID() }
+    }
+  }));
+
+
   const [user, supply, demand] = await Promise.all([
     getCurrentUser(),
     getSupplyMaterials(),

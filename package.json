@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "pnpm --filter web dev",
-    "cdk-deploy": "pnpm --filter cdk exec cdk deploy --profile private"
+    "cdk-deploy": "pnpm --filter cdk exec cdk deploy --profile private",
+    "tsc": "pnpm -r exec tsc --noEmit"
   },
   "keywords": [],
   "author": "",

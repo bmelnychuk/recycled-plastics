@@ -2,5 +2,15 @@
   "name": "@rp/core",
   "version": "1.0.0",
   "main": "src/index.ts",
-  "types": "src/index.ts"
+  "types": "src/index.ts",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.985.0",
+    "@aws-sdk/client-s3": "^3.985.0",
+    "@aws-sdk/lib-dynamodb": "^3.985.0",
+    "@aws-sdk/s3-request-presigner": "^3.985.0",
+    "@clerk/backend": "^2.30.1",
+    "date-fns": "^4.1.0",
+    "uuid": "^13.0.0",
+    "zod": "^4.3.6"
+  }
 }
