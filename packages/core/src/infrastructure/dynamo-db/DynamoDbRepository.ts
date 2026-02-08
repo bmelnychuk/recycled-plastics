@@ -1,4 +1,5 @@
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, DynamoDBClientConfig } from '@aws-sdk/client-dynamodb';
+
 import {
   BatchGetCommand,
   BatchWriteCommand,
@@ -18,32 +19,18 @@ function chunk<T>(array: T[], size: number): T[][] {
   return result;
 }
 
-// import { awsCredentialsProvider } from '@vercel/oidc-aws-credentials-provider';
-
-// import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
-// import { auth } from "@clerk/nextjs/server";
-
-// const client = new DynamoDBClient({
-//   region: process.env.AWS_REGION!,
-//   credentials: awsCredentialsProvider({
-//     roleArn: process.env.AWS_ROLE_ARN!,
-//   }),
-// });
-
-// const client = new DynamoDBClient({
-
-// });
-
-const client = new DynamoDBClient({});
-const dynamoDbClient = DynamoDBDocumentClient.from(client, {
-  marshallOptions: {
-    removeUndefinedValues: true,
-    convertEmptyValues: true,
-  },
-});
-
 export class DynamoDbRepository {
-  protected dynamo: DynamoDBDocumentClient = dynamoDbClient;
+  protected dynamo: DynamoDBDocumentClient;
+
+  constructor(config: DynamoDBClientConfig) {
+    const client = new DynamoDBClient(config);
+    this.dynamo = DynamoDBDocumentClient.from(client, {
+      marshallOptions: {
+        removeUndefinedValues: true,
+        convertEmptyValues: true,
+      },
+    });
+  }
 
   public async scanAll<T extends Record<string, any>>(
     table: string,

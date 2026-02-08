@@ -5,13 +5,17 @@ import { subMonths } from 'date-fns';
 import { MaterialDemandRepository } from '../../domain/demand/MaterialDemandRepository';
 import { MaterialDemand } from '../../domain/demand/Demand';
 import { getEarliestDate } from '../../lib/dates';
+import { DynamoDBClientConfig } from '@aws-sdk/client-dynamodb';
 
 export class DynamoDbMaterialDemandRepository
   extends DynamoDbRepository
   implements MaterialDemandRepository
 {
-  constructor(private readonly mainTable: string) {
-    super();
+  constructor(
+    private readonly mainTable: string,
+    config: DynamoDBClientConfig,
+  ) {
+    super(config);
   }
 
   public async getUnverifiedDemand(): Promise<MaterialDemand[]> {

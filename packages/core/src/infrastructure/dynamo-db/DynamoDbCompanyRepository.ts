@@ -6,13 +6,17 @@ import {
   CompanyDetailsSchema,
 } from '../../domain/company/Company';
 import { GetCommand, PutCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBClientConfig } from '@aws-sdk/client-dynamodb';
 
 export class DynamoDbCompanyRepository
   extends DynamoDbRepository
   implements CompanyRepository
 {
-  constructor(private readonly mainTable: string) {
-    super();
+  constructor(
+    private readonly mainTable: string,
+    config: DynamoDBClientConfig,
+  ) {
+    super(config);
   }
 
   public async getVerifiedCompanies(): Promise<Company[]> {

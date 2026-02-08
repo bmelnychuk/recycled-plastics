@@ -56,6 +56,7 @@ import { GetCompanyDemand } from './application/use-case/company/GetCompanyDeman
 import { GetCompanySupply } from './application/use-case/company/GetCompanySupply';
 import { GetUnverifiedDemand } from './application/use-case/demand/GetUnverifiedDemand';
 import { GetUnverifiedSupply } from './application/use-case/supply/GetUnverifiedSupply';
+import { DynamoDBClientConfig } from '@aws-sdk/client-dynamodb';
 
 export const { MAIN_TABLE, CLERK_SECRET_KEY } = process.env as Record<
   string,
@@ -92,11 +93,12 @@ export class Application {
 
   constructor(
     mainTable: string,
+    config: DynamoDBClientConfig,
     public readonly getCurrentUser: GetCurrentUser,
   ) {
-    this.demand = new DynamoDbMaterialDemandRepository(mainTable);
-    this.supply = new DynamoDbMaterialSupplyRepository(mainTable);
-    this.companies = new DynamoDbCompanyRepository(mainTable);
+    this.demand = new DynamoDbMaterialDemandRepository(mainTable, config);
+    this.supply = new DynamoDbMaterialSupplyRepository(mainTable, config);
+    this.companies = new DynamoDbCompanyRepository(mainTable, config);
 
     this.getActiveDemandUseCase = new GetActiveDemand(
       this.demand,

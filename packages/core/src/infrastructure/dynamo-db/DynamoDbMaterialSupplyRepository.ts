@@ -4,13 +4,17 @@ import { MaterialSupply } from '../../domain/supply/Supply';
 import { GetCommand, PutCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { subMonths } from 'date-fns';
 import { getEarliestDate } from '../../lib/dates';
+import { DynamoDBClientConfig } from '@aws-sdk/client-dynamodb';
 
 export class DynamoDbMaterialSupplyRepository
   extends DynamoDbRepository
   implements MaterialSupplyRepository
 {
-  constructor(private readonly mainTable: string) {
-    super();
+  constructor(
+    private readonly mainTable: string,
+    config: DynamoDBClientConfig,
+  ) {
+    super(config);
   }
 
   public async getUnverifiedSupply(): Promise<MaterialSupply[]> {
