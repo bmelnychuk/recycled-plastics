@@ -1,14 +1,14 @@
 import { Footer } from '@/features/common/Footer';
 import { NavigationBar } from '@/features/common/NavigationBar';
 import { ScrollArea } from '@/design-system/components/ui/scroll-area';
-import { application } from '@/core';
+import { getCurrentUser } from '@/core';
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const signedInUser = await application.getCurrentUser();
+  const signedInUser = await getCurrentUser();
 
   return (
     <ScrollArea className="h-screen">

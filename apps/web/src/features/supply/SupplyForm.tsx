@@ -45,7 +45,7 @@ import { PriceInput } from '../common/form/input/PriceInput';
 import { CountryDropdown } from '../common/CountryDropdown';
 import { Switch } from '@/design-system/components/ui/switch';
 import { Card, CardContent } from '@/design-system/components/ui/card';
-import { application } from '@/core';
+import { createSupply, updateSupply } from '@/core';
 
 const FormStateSchema = MaterialSupplySchema.omit({
   createdDate: true,
@@ -87,7 +87,7 @@ export const EditSupplyForm: FC<{
     pictures: File[],
   ): Promise<void> => {
     try {
-      await application.updateSupply(
+      await updateSupply(
         SupplyUpdateSchema.parse({ ...data, id: supply.id }),
       );
       toast.success('Material supply updated successfully');
@@ -119,7 +119,7 @@ export const NewSupplyForm: FC<{
   ): Promise<void> => {
     try {
       const validatedData = NewMaterialSupplySchema.parse(data);
-      await application.createSupply(validatedData);
+      await createSupply(validatedData);
       toast.success('Material supply created successfully');
       router.push('/supply');
     } catch (error) {

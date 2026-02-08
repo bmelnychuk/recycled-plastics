@@ -1,13 +1,13 @@
 import { RecentMaterials } from '@/composite/dashboard/RecentMaterials';
-import { application } from '@/core';
+import { getActiveDemand, getActiveSupply, getCurrentUser } from '@/core';
 import { DemandHeroCompact } from '@/features/demand/DemandHeroCompact';
 import { SupplyHeroCompact } from '@/features/supply/SupplyHeroCompact';
 
 export default async function Page() {
   const [demand, supply, user] = await Promise.all([
-    application.getActiveDemand(),
-    application.getActiveSupply(),
-    application.getCurrentUser(),
+    getActiveDemand(),
+    getActiveSupply(),
+    getCurrentUser(),
   ]);
 
   const suppliers = new Set(supply.map((material) => material.companyId));

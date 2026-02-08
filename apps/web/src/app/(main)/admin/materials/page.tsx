@@ -1,10 +1,10 @@
-import { application } from '@/core';
+import { getUnverifiedDemand, getUnverifiedSupply } from '@/core';
 import { MaterialsTable } from '@/features/admin/MaterialsTable';
 
 export default async function Page() {
   const [demand, supply] = await Promise.all([
-    application.getUnverifiedDemand(),
-    application.getUnverifiedSupply(),
+    getUnverifiedDemand(),
+    getUnverifiedSupply(),
   ]);
 
   return (

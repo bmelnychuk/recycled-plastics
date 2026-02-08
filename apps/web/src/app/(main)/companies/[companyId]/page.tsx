@@ -1,4 +1,4 @@
-import { application } from '@/core';
+import { getCurrentUser, getCompanyById, getCompanyDemand, getCompanySupply } from '@/core';
 import { CompanyBrandedHeader } from '@/composite/company/CompanyBrandedHeader';
 import { CompanyMaterials } from '@/composite/company/CompanyMaterials';
 import { auth } from '@clerk/nextjs/server';
@@ -13,12 +13,12 @@ export default async function Page({
   const isAdmin = sessionClaims?.role === 'admin';
 
   const { companyId } = await params;
-  const user = await application.getCurrentUser();
+  const user = await getCurrentUser();
 
   const [company, demand, supply] = await Promise.all([
-    application.getCompanyById(companyId),
-    application.getCompanyDemand(companyId),
-    application.getCompanySupply(companyId),
+    getCompanyById(companyId),
+    getCompanyDemand(companyId),
+    getCompanySupply(companyId),
   ]);
 
   if (!company || !user) notFound();

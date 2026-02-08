@@ -1,4 +1,4 @@
-import { application } from '@/core';
+import { getCurrentUser, getCompanyById } from '@/core';
 import { NewSupplyForm } from '@/features/supply/SupplyForm';
 import { notFound } from 'next/navigation';
 
@@ -7,9 +7,9 @@ export default async function Page({
 }: {
   params: Promise<{ companyId: string }>;
 }) {
-  const user = await application.getCurrentUser();
+  const user = await getCurrentUser();
   const { companyId } = await params;
-  const company = await application.getCompanyById(companyId);
+  const company = await getCompanyById(companyId);
   if (!company || user?.companyId !== companyId) {
     notFound();
   } else {

@@ -9,7 +9,8 @@
     "cdk-deploy": "pnpm --filter cdk exec cdk deploy --profile private",
     "tsc": "pnpm -r exec tsc --noEmit",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "build": "pnpm --filter web build"
   },
   "keywords": [],
   "author": "",

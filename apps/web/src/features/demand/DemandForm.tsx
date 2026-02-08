@@ -38,7 +38,7 @@ import { Card, CardContent } from '@/design-system/components/ui/card';
 import { Switch } from '@/design-system/components/ui/switch';
 import { Company, MaterialDemand, MaterialDemandSchema } from '@rp/core';
 
-import { application } from '@/core';
+import { updateDemand, createDemand } from '@/core';
 import { NewMaterialDemandSchema } from '@rp/core/src/application/use-case/demand/CreateDemand';
 import { MaterialDemandUpdateSchema } from '@rp/core/src/application/use-case/demand/UpdateDemand';
 
@@ -79,7 +79,7 @@ export const EditDemandForm: FC<{
 
   const onSubmit = async (data: FormState, files: File[]): Promise<void> => {
     try {
-      await application.updateDemand(
+      await updateDemand(
         MaterialDemandUpdateSchema.parse({ ...data, id: demand.id }),
       );
       toast.success('Material demand updated successfully');
@@ -106,7 +106,7 @@ export const NewDemandForm: FC<{
 
   const onSubmit = async (data: FormState, files: File[]): Promise<void> => {
     try {
-      await application.createDemand(NewMaterialDemandSchema.parse(data));
+      await createDemand(NewMaterialDemandSchema.parse(data));
       toast.success('Material demand created successfully');
       router.push('/demand');
     } catch (error) {

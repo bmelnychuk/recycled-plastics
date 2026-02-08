@@ -1,4 +1,4 @@
-import { application } from '@/core';
+import { getCurrentUser, getCompanyById, getDemandById } from '@/core';
 import { EditDemandForm } from '@/features/demand/DemandForm';
 import { notFound } from 'next/navigation';
 
@@ -10,9 +10,9 @@ interface PageProps {
 export default async function Page({ params }: { params: Promise<PageProps> }) {
   const { companyId, id } = await params;
   const [user, company, demand] = await Promise.all([
-    application.getCurrentUser(),
-    application.getCompanyById(companyId),
-    application.getDemandById(companyId, id),
+    getCurrentUser(),
+    getCompanyById(companyId),
+    getDemandById(companyId, id),
   ]);
 
   if (!company || user?.companyId !== companyId) {

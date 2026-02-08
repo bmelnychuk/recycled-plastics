@@ -1,4 +1,4 @@
-import { application } from '@/core';
+import { getCurrentUser, getActiveDemand } from '@/core';
 import { DemandHero } from '@/features/demand/DemandHero';
 import { ActiveDemandTable } from '@/features/demand/DemandTable';
 import { isAfter, subDays } from 'date-fns';
@@ -11,8 +11,8 @@ export const generateMetadata = () => ({
 
 export default async function Page() {
   const [user, demandMaterials] = await Promise.all([
-    application.getCurrentUser(),
-    application.getActiveDemand(),
+    getCurrentUser(),
+    getActiveDemand(),
   ]);
 
   const startDate = subDays(new Date(), 7);

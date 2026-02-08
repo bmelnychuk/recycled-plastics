@@ -2,7 +2,7 @@ import { CompanyBusinessCard } from '@/features/company/CompanyBusinessCard';
 import { CompanyTeaserCard } from '@/features/company/CompanyTeaserCard';
 import { ContactBusinessCard } from '@/composite/company/ContactBusinessCard';
 import { MaterialDemandDetailsCard } from '@/features/demand/MaterialDemandDetailsCard';
-import { application } from '@/core';
+import { getDemandById, getCompanyById, getCurrentUser } from '@/core';
 
 export default async function Page({
   params,
@@ -11,9 +11,9 @@ export default async function Page({
 }) {
   const { companyId, id } = await params;
   const [demand, company, user] = await Promise.all([
-    application.getDemandById(companyId, id),
-    application.getCompanyById(companyId),
-    application.getCurrentUser(),
+    getDemandById(companyId, id),
+    getCompanyById(companyId),
+    getCurrentUser(),
   ]);
 
   return (

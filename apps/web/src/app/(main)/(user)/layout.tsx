@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { application } from '@/core';
+import { getCurrentUser } from '@/core';
 import { redirect } from 'next/navigation';
 
 export default async function AuthenticatedLayout({
@@ -7,7 +7,7 @@ export default async function AuthenticatedLayout({
 }: {
   children: ReactNode;
 }) {
-  const user = await application.getCurrentUser();
+  const user = await getCurrentUser();
   if (!user) redirect('/');
 
   return children;

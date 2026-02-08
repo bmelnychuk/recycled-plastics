@@ -1,9 +1,9 @@
 import { BillingInfo } from '@/features/settings/billing/BillingInfo';
-import { application } from '@/core';
+import { getCurrentUser } from '@/core';
 import { redirect } from 'next/navigation';
 
 export default async function Page() {
-  const user = await application.getCurrentUser();
+  const user = await getCurrentUser();
 
   if (user) {
     return (

@@ -31,7 +31,7 @@ import { Trash, Upload, ImagePlus, AlertTriangleIcon } from 'lucide-react';
 import { FormSection } from '../common/FormSection';
 import { Card, CardContent } from '@/design-system/components/ui/card';
 import { Switch } from '@/design-system/components/ui/switch';
-import { application } from '@/core';
+import { updateCompany, updateCurrentCompany, createCompany } from '@/core';
 
 const FormStateSchema = CompanySchema.omit({
   id: true,
@@ -75,7 +75,7 @@ export const EditCompanyForm: FC<{
 
   const onSubmit = async (data: FormState, logoFile?: File): Promise<void> => {
     try {
-      await application.updateCompany(
+      await updateCompany(
         CompanyUpdateSchema.parse({ ...data, id }),
       );
       toast.success('Company updated successfully');
@@ -97,7 +97,7 @@ export const EditCurrentCompanyForm: FC<{
 
   const onSubmit = async (data: FormState, logoFile?: File): Promise<void> => {
     try {
-      await application.updateCurrentCompany(
+      await updateCurrentCompany(
         CurrentCompanyUpdateSchema.parse({ ...data, id }),
       );
       toast.success('Company updated successfully');
@@ -123,7 +123,7 @@ export const NewCompanyForm = () => {
 
   const onSubmit = async (data: FormState, logoFile?: File): Promise<void> => {
     try {
-      await application.createCompany(NewCompanySchema.parse(data));
+      await createCompany(NewCompanySchema.parse(data));
       toast.success('Company created successfully');
       router.push('/companies');
     } catch (error) {

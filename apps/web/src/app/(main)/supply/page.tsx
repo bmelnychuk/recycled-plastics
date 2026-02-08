@@ -1,7 +1,7 @@
 import { SupplyHero } from '@/features/supply/SupplyHero';
 import { ActiveSupplyTable } from '@/features/supply/SupplyTable';
 import { isAfter, subDays } from 'date-fns';
-import { application } from '@/core';
+import { getCurrentUser, getActiveSupply } from '@/core';
 
 export const generateMetadata = () => ({
   title: 'Materials | Recycled Plastics',
@@ -11,8 +11,8 @@ export const generateMetadata = () => ({
 
 export default async function Page() {
   const [user, supplyMaterials] = await Promise.all([
-    application.getCurrentUser(),
-    application.getActiveSupply(),
+    getCurrentUser(),
+    getActiveSupply(),
   ]);
 
   const startDate = subDays(new Date(), 7);

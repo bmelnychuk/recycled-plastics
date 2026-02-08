@@ -1,9 +1,11 @@
+'use server';
+
 import { auth } from '@clerk/nextjs/server';
 import { Application, SignedInUser, SignedInUserSchema } from '@rp/core';
 
 import { awsCredentialsProvider } from '@vercel/oidc-aws-credentials-provider';
 
-export const { MAIN_TABLE, IS_LOCAL } = process.env as Record<string, string>;
+const { MAIN_TABLE, IS_LOCAL } = process.env as Record<string, string>;
 
 const verlceDbConfig = {
   region: process.env.AWS_REGION!,
@@ -12,11 +14,11 @@ const verlceDbConfig = {
   }),
 };
 
-const getCurrentUser = async (): Promise<SignedInUser | undefined> => {
+export const getCurrentUser = async (): Promise<SignedInUser | undefined> => {
   const clerkAuth = await auth();
   if (!clerkAuth.isAuthenticated) return undefined;
   const { sessionClaims } = clerkAuth;
-  
+
   return SignedInUserSchema.safeParse({
     authId: clerkAuth.userId,
     id: sessionClaims?.externalId,
@@ -24,8 +26,32 @@ const getCurrentUser = async (): Promise<SignedInUser | undefined> => {
   }).data;
 };
 
-export const application = new Application(
+const application = new Application(
   MAIN_TABLE,
   IS_LOCAL === 'true' ? {} : verlceDbConfig,
   getCurrentUser,
 );
+
+// export all functions from the application
+export const {
+  getActiveDemand,
+  getDemandById,
+  updateDemand,
+  createDemand,
+  getCompanyDemand,
+  getUnverifiedDemand,
+  getActiveSupply,
+  getSupplyById,
+  updateSupply,
+  createSupply,
+  getCompanySupply,
+  getUnverifiedSupply,
+  getCompanyById,
+  updateCompany,
+  createCompany,
+  updateCurrentCompany,
+  getVerifiedCompanies,
+  getUnverifiedCompanies,
+  getCurrentCompany,
+  getAllCompanies,
+} = application;

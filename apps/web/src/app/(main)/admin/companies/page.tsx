@@ -1,9 +1,9 @@
-import { application } from '@/core';
+import { getAllCompanies } from '@/core';
 
 import { CompaniesTable } from '@/features/company/CompaniesTable';
 
 export default async function Page() {
-  const companies = await application.getAllCompanies();
+  const companies = await getAllCompanies();
 
   return (
     <div className="p-4">

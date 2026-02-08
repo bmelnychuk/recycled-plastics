@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { NewDemandForm } from '@/features/demand/DemandForm';
-import { application } from '@/core';
+import { getCurrentUser, getCompanyById } from '@/core';
+
 
 export default async function Page({
   params,
@@ -9,8 +10,8 @@ export default async function Page({
 }) {
   const { companyId } = await params;
   const [user, company] = await Promise.all([
-    application.getCurrentUser(),
-    application.getCompanyById(companyId),
+    getCurrentUser(),
+    getCompanyById(companyId),
   ]);
 
   if (!company || user?.companyId !== companyId) {

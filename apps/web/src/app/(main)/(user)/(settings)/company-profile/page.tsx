@@ -1,4 +1,4 @@
-import { application } from '@/core';
+import { getCurrentCompany } from '@/core';
 import {
   EditCurrentCompanyForm,
   NewCompanyForm,
@@ -14,7 +14,7 @@ import { InfoIcon } from 'lucide-react';
 import { Button } from '@/design-system/components/ui/button';
 
 export default async function Page() {
-  const company = await application.getCurrentCompany();
+  const company = await getCurrentCompany();
 
   return (
     <div className="p-10 flex flex-col gap-6">

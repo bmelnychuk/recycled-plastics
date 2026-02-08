@@ -1,19 +1,19 @@
-import { application } from '@/core';
+import { getCompanyById, getCompanyDemand, getCompanySupply, getCurrentUser } from '@/core';
 import { CompanyBrandedHeader } from '@/composite/company/CompanyBrandedHeader';
 import { CompanyMaterials } from '@/composite/company/CompanyMaterials';
 import { notFound } from 'next/navigation';
 
 export default async function Page() {
-  const user = await application.getCurrentUser();
+  const user = await getCurrentUser();
   const companyId = user?.companyId;
 
   if (!companyId || !user.isCompanyVerified) notFound();
 
   if (user.isAdmin) {
     const [company, demand, supply] = await Promise.all([
-      application.getCompanyById(companyId),
-      application.getCompanyDemand(companyId),
-      application.getCompanySupply(companyId),
+      getCompanyById(companyId),
+      getCompanyDemand(companyId),
+      getCompanySupply(companyId),
     ]);
 
     if (!company) notFound();
@@ -31,9 +31,9 @@ export default async function Page() {
     );
   } else {
     const [company, demand, supply] = await Promise.all([
-      application.getCompanyById(companyId),
-      application.getCompanyDemand(companyId),
-      application.getCompanySupply(companyId),
+      getCompanyById(companyId),
+      getCompanyDemand(companyId),
+      getCompanySupply(companyId),
     ]);
 
     if (!company) notFound();

@@ -1,4 +1,4 @@
-import { application } from '@/core';
+import { getCompanyById } from '@/core';
 import { EditCompanyForm } from '@/features/company/CompanyForm';
 import { notFound } from 'next/navigation';
 
@@ -8,7 +8,7 @@ export default async function EditCompanyPage({
   params: Promise<{ companyId: string }>;
 }) {
   const { companyId } = await params;
-  const companyData = await application.getCompanyById(companyId);
+  const companyData = await getCompanyById(companyId);
 
   if (!companyData) notFound();
 
