@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   NavigationMenu,
@@ -8,36 +8,51 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/design-system/components/ui/navigation-menu";
-import Link from "next/link";
-import Image from "next/image";
-import { CurrentUserNavigationItem } from "@/features/common/CurrentUserNavigationItem";
-import { Button } from "@/design-system/components/ui/button";
-import { Sparkles } from "lucide-react";
-import { FC } from "react";
-import { SignedIn, SignedOut } from "@clerk/nextjs";
-import { SignInButton } from "@/features/auth/SignInButton";
-import { Badge } from "@/design-system/components/ui/badge";
-import { SignedInUser } from "@/backend";
-import { usePathname } from "next/navigation";
-import { cn } from "@/design-system/lib/utils";
+} from '@/design-system/components/ui/navigation-menu';
+import Link from 'next/link';
+import Image from 'next/image';
+import {
+  CurrentUserNavigationItem,
+  UserProfile,
+} from '@/features/common/CurrentUserNavigationItem';
+import { Button } from '@/design-system/components/ui/button';
+import { Sparkles } from 'lucide-react';
+import { FC } from 'react';
+import { SignedIn, SignedOut, useClerk } from '@clerk/nextjs';
+import { SignInButton } from '@/features/auth/SignInButton';
+import { Badge } from '@/design-system/components/ui/badge';
+import { SignedInUser } from '@rp/core';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/design-system/lib/utils';
 
 interface Props {
   user?: SignedInUser;
 }
 
 export const NavigationBar: FC<Props> = ({ user }) => {
+  const clerk = useClerk();
+
+  const primaryEmailAddress = clerk.user?.primaryEmailAddress;
+  const userProfile: UserProfile | undefined = clerk.user
+    ? {
+        firstName: clerk.user?.firstName ?? '',
+        lastName: clerk.user?.lastName ?? '',
+        email:
+          clerk.user.emailAddresses.find(
+            (email) => email.id === primaryEmailAddress?.id,
+          )?.emailAddress ?? '',
+      }
+    : undefined;
+
   const pathname = usePathname();
   const isAdmin = user?.isAdmin;
-  const isPro = user?.plan === "pro";
-  // const showAnalytics = isAdmin || isPro;
-  // const offerUpgrade = !isPro && !isAdmin;
-  const showAnalytics = false;  
+
+  const showAnalytics = false;
   const offerUpgrade = false;
 
   const isActive = (path: string) => {
-    if (path === "/") {
-      return pathname === "/";
+    if (path === '/') {
+      return pathname === '/';
     }
     return pathname?.startsWith(path);
   };
@@ -63,7 +78,7 @@ export const NavigationBar: FC<Props> = ({ user }) => {
                 asChild
                 className={cn(
                   navigationMenuTriggerStyle(),
-                  isActive("/supply") && "bg-accent"
+                  isActive('/supply') && 'bg-accent',
                 )}
               >
                 <Link href="/supply">Supply</Link>
@@ -74,7 +89,7 @@ export const NavigationBar: FC<Props> = ({ user }) => {
                 asChild
                 className={cn(
                   navigationMenuTriggerStyle(),
-                  isActive("/demand") && "bg-accent"
+                  isActive('/demand') && 'bg-accent',
                 )}
               >
                 <Link href="/demand">Demand</Link>
@@ -87,7 +102,7 @@ export const NavigationBar: FC<Props> = ({ user }) => {
                   asChild
                   className={cn(
                     navigationMenuTriggerStyle(),
-                    isActive("/analytics") && "bg-accent"
+                    isActive('/analytics') && 'bg-accent',
                   )}
                 >
                   <Link href="/analytics">Analytics</Link>
@@ -97,7 +112,7 @@ export const NavigationBar: FC<Props> = ({ user }) => {
             {isAdmin && (
               <NavigationMenuItem>
                 <NavigationMenuTrigger
-                  className={cn(isActive("/admin") && "bg-accent")}
+                  className={cn(isActive('/admin') && 'bg-accent')}
                 >
                   Admin
                 </NavigationMenuTrigger>
@@ -163,7 +178,7 @@ export const NavigationBar: FC<Props> = ({ user }) => {
               Admin
             </Badge>
           )}
-          {user && <CurrentUserNavigationItem user={user} />}
+          {userProfile && <CurrentUserNavigationItem user={userProfile} />}
         </SignedIn>
       </div>
     </div>

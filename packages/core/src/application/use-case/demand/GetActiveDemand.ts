@@ -1,7 +1,7 @@
-import { MaterialDemand } from '../../../domain/material/demand/Demand';
+import { MaterialDemand } from '../../../domain/demand/Demand';
 import { CompanyRepository } from '../../../domain/company/CompanyRepository';
-import { User } from '../../auth/User';
-import { MaterialDemandRepository } from '../../../domain/material/demand/MaterialDemandRepository';
+import { SignedInUser } from '../../auth/AuthService';
+import { MaterialDemandRepository } from '../../../domain/demand/MaterialDemandRepository';
 
 export class GetActiveDemand {
   constructor(
@@ -10,7 +10,7 @@ export class GetActiveDemand {
   ) {}
 
   async invoke(input: {
-    user?: User;
+    user?: SignedInUser;
     startDate?: Date;
   }): Promise<MaterialDemand[]> {
     const { user, startDate } = input;

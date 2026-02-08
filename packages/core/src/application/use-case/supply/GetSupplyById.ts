@@ -1,16 +1,16 @@
 import { CompanyRepository } from '../../../domain/company/CompanyRepository';
-import { User } from '../../auth/User';
-import { SupplyViewModel } from '../../view-model/ViewModels';
-import { MaterialSupplyRepository } from '../../../domain/material/supply/MaterialSupplyRepository';
+import { SignedInUser } from '../../auth/AuthService';
+import { SupplyViewModel } from '../../view-models';
+import { MaterialSupplyRepository } from '../../../domain/supply/MaterialSupplyRepository';
 
 export class GetSupplyById {
   constructor(
     private readonly supplyRepository: MaterialSupplyRepository,
     private readonly companyRepository: CompanyRepository,
-  ) { }
+  ) {}
 
   async invoke(input: {
-    user?: User;
+    user?: SignedInUser;
     id: { companyId: string; supplyId: string };
   }): Promise<SupplyViewModel> {
     const { user, id } = input;

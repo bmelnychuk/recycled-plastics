@@ -1,25 +1,28 @@
-"use client";
+'use client';
 
-import { MaterialDemand, SignedInUser, CompanyViewModel, MaterialSupply, UserViewModel } from "@/backend";
+import {
+  MaterialDemand,
+  SignedInUser,
+  Company,
+  MaterialSupply,
+} from '@rp/core';
 import {
   Tabs,
   TabsList,
   TabsTrigger,
   TabsContent,
-} from "@/design-system/components/ui/tabs";
-import { Button } from "@/design-system/components/ui/button";
-import { CompanyDemandTable } from "../../features/demand/DemandTable";
+} from '@/design-system/components/ui/tabs';
+import { Button } from '@/design-system/components/ui/button';
+import { CompanyDemandTable } from '../../features/demand/DemandTable';
 
-import Link from "next/link";
-import { CompanyUserTable } from "../../features/admin/UserTable";
-import { PencilIcon } from "lucide-react";
-import { CompanySupplyTable } from "../../features/supply/SupplyTable";
+import Link from 'next/link';
+import { PencilIcon } from 'lucide-react';
+import { CompanySupplyTable } from '../../features/supply/SupplyTable';
 
 interface CompanyMaterialsProps {
-  company: CompanyViewModel;
+  company: Company;
   supply: MaterialSupply[];
   demand: MaterialDemand[];
-  users: UserViewModel[];
   user: SignedInUser;
 }
 
@@ -28,7 +31,6 @@ export const CompanyMaterials = ({
   supply,
   demand,
   user,
-  users,
 }: CompanyMaterialsProps) => {
   const canEdit = user?.isAdmin;
 
@@ -55,7 +57,7 @@ export const CompanyMaterials = ({
                 Demand Materials
               </span>
             </TabsTrigger>
-            {users.length > 0 && (
+            {/* {users.length > 0 && (
               <TabsTrigger
                 value="users"
                 className="text-sm px-6 py-2.5 data-[state=active]:bg-white rounded-md transition-all"
@@ -63,7 +65,7 @@ export const CompanyMaterials = ({
                 <span className="font-bold text-base">{users.length}</span>
                 <span className="ml-2 font-medium text-slate-600">Users</span>
               </TabsTrigger>
-            )}
+            )} */}
           </TabsList>
           {canEdit && (
             <Button asChild variant="secondary">
@@ -91,11 +93,11 @@ export const CompanyMaterials = ({
           />
         </TabsContent>
 
-        {users.length > 0 && user && (
+        {/* {users.length > 0 && user && (
           <TabsContent value="users" className="mt-0">
             <CompanyUserTable user={user} users={users} companyId={company.id} />
           </TabsContent>
-        )}
+        )} */}
       </Tabs>
     </div>
   );

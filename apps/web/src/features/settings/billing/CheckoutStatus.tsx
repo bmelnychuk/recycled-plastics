@@ -1,23 +1,21 @@
-"use client";
+'use client';
 
-import { UserViewModel } from "@/backend";
-import { useApiClient } from "@/backend/api/client";
-import { Button } from "@/design-system/components/ui/button";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Button } from '@/design-system/components/ui/button';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export const CheckoutStatus = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const sessionId = searchParams.get("session_id");
+  const sessionId = searchParams.get('session_id');
   const [isSettingUp, setIsSettingUp] = useState(true);
-  const [user, setUser] = useState<UserViewModel | null>(null);
+  const [user, setUser] = useState<any | null>(null);
   const [loadingMessage, setLoadingMessage] = useState(
-    "Setting up your account..."
+    'Setting up your account...',
   );
   const [hasError, setHasError] = useState(false);
-  const apiFetch = useApiClient();
+  // const apiFetch = useApiClient();
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -25,29 +23,29 @@ export const CheckoutStatus = () => {
     let attemptCount = 0;
     const maxAttempts = 20;
     const messages = [
-      "Setting up your account...",
-      "Activating Pro features...",
-      "Almost ready...",
+      'Setting up your account...',
+      'Activating Pro features...',
+      'Almost ready...',
     ];
     let messageIndex = 0;
 
     const pollUserStatus = async () => {
       try {
         attemptCount++;
-        const currentUser = await apiFetch<UserViewModel>("/me");
-        if (currentUser?.plan === "pro") {
-          setUser(currentUser);
-          setIsSettingUp(false);
-          clearInterval(intervalId);
-          clearInterval(messageIntervalId);
-        } else if (attemptCount >= maxAttempts) {
-          setIsSettingUp(false);
-          setHasError(true);
-          clearInterval(intervalId);
-          clearInterval(messageIntervalId);
-        }
+        // const currentUser = await application.getCurrentUser();
+        // if (currentUser?.plan === "pro") {
+        //   setUser(currentUser);
+        //   setIsSettingUp(false);
+        //   clearInterval(intervalId);
+        //   clearInterval(messageIntervalId);
+        // } else if (attemptCount >= maxAttempts) {
+        //   setIsSettingUp(false);
+        //   setHasError(true);
+        //   clearInterval(intervalId);
+        //   clearInterval(messageIntervalId);
+        // }
       } catch (error) {
-        console.error("Error fetching user:", error);
+        console.error('Error fetching user:', error);
         if (attemptCount >= maxAttempts) {
           setIsSettingUp(false);
           setHasError(true);
@@ -74,7 +72,7 @@ export const CheckoutStatus = () => {
       clearInterval(intervalId);
       clearInterval(messageIntervalId);
     };
-  }, [apiFetch]);
+  }, []);
 
   if (isSettingUp) {
     return (
@@ -114,17 +112,27 @@ export const CheckoutStatus = () => {
             </div>
           </div>
 
-          <h1 className="text-3xl font-bold">Setup Taking Longer Than Expected</h1>
+          <h1 className="text-3xl font-bold">
+            Setup Taking Longer Than Expected
+          </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            Your payment was successful, but your account setup is still in progress.
-            This can take a few minutes.
+            Your payment was successful, but your account setup is still in
+            progress. This can take a few minutes.
           </p>
 
           <div className="mt-8 space-y-3">
-            <Button onClick={() => window.location.reload()} size="lg" variant="default">
+            <Button
+              onClick={() => window.location.reload()}
+              size="lg"
+              variant="default"
+            >
               Refresh Page
             </Button>
-            <Button onClick={() => router.push("/")} size="lg" variant="outline">
+            <Button
+              onClick={() => router.push('/')}
+              size="lg"
+              variant="outline"
+            >
               Go to Dashboard
             </Button>
           </div>
@@ -166,7 +174,7 @@ export const CheckoutStatus = () => {
         </p>
 
         <div className="mt-8">
-          <Button onClick={() => router.push("/")} size="lg">
+          <Button onClick={() => router.push('/')} size="lg">
             Go to Dashboard
           </Button>
         </div>

@@ -3,10 +3,10 @@ import {
   SelectGroup,
   SelectItem,
   SelectLabel,
-} from "@/design-system/components/ui/select";
-import { FC } from "react";
-import { MaterialCondition, MaterialConditionSchema } from "@/backend";
-import { ClearableSelect } from "@/features/common/form/input/ClearableSelect";
+} from '@/design-system/components/ui/select';
+import { FC } from 'react';
+import { MaterialCondition, MaterialConditionSchema } from '@rp/core';
+import { ClearableSelect } from '@/features/common/form/input/ClearableSelect';
 
 export const MaterialConditionSelect: FC<{
   name?: string;
@@ -16,7 +16,11 @@ export const MaterialConditionSelect: FC<{
   const options = MaterialConditionSchema.options;
 
   return (
-    <ClearableSelect<MaterialCondition> name={name} value={value} onChange={onChange}>
+    <ClearableSelect<MaterialCondition>
+      name={name}
+      value={value}
+      onChange={onChange}
+    >
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Material conditions</SelectLabel>

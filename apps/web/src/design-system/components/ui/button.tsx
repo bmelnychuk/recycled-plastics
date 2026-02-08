@@ -35,7 +35,7 @@ const buttonVariants = cva(
       variant: 'default',
       size: 'default',
     },
-  }
+  },
 );
 
 function Button({
@@ -57,7 +57,10 @@ function Button({
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className, loading }), loading && 'relative')}
+      className={cn(
+        buttonVariants({ variant, size, className, loading }),
+        loading && 'relative',
+      )}
       disabled={disabled || loading}
       {...props}
     >
@@ -66,7 +69,7 @@ function Button({
           className={cn(
             'text-muted absolute animate-spin',
             // Used for conditional styling when button is loading
-            'loading'
+            'loading',
           )}
         />
       )}

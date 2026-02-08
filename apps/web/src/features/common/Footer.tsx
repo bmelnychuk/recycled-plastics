@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import Image from "next/image";
-import { Separator } from "@/design-system/components/ui/separator";
+import Link from 'next/link';
+import Image from 'next/image';
+import { Separator } from '@/design-system/components/ui/separator';
 import {
   Linkedin,
   Twitter,
@@ -11,7 +11,7 @@ import {
   FileText,
   HelpCircle,
   Shield,
-} from "lucide-react";
+} from 'lucide-react';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -165,10 +165,9 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
             © {currentYear} Recycled Plastics. All rights reserved.
-          </p>          
+          </p>
         </div>
       </div>
     </footer>
   );
 };
-

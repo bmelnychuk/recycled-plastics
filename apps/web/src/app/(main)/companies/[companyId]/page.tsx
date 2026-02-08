@@ -1,14 +1,8 @@
-import {
-  getCompanyDetails,
-  getCompanyDemand,
-  getCompanySupply,
-  getCompanyUsers,
-} from "@/backend/api";
-import { getSignedInUser } from "@/backend/api/session";
-import { CompanyBrandedHeader } from "@/composite/company/CompanyBrandedHeader";
-import { CompanyMaterials } from "@/composite/company/CompanyMaterials";
-import { auth } from "@clerk/nextjs/server";
-import { notFound } from "next/navigation";
+import { application } from '@/core';
+import { CompanyBrandedHeader } from '@/composite/company/CompanyBrandedHeader';
+import { CompanyMaterials } from '@/composite/company/CompanyMaterials';
+import { auth } from '@clerk/nextjs/server';
+import { notFound } from 'next/navigation';
 
 export default async function Page({
   params,
@@ -16,26 +10,23 @@ export default async function Page({
   params: Promise<{ companyId: string }>;
 }) {
   const { sessionClaims } = await auth();
-  const isAdmin = sessionClaims?.role === "admin";
+  const isAdmin = sessionClaims?.role === 'admin';
 
   const { companyId } = await params;
-  const user = await getSignedInUser();
-  const fetchUsers = isAdmin || user.companyId === companyId;
+  const user = await application.getCurrentUser();
 
-  const [company, demand, supply, users] = await Promise.all([
-    getCompanyDetails(companyId),
-    getCompanyDemand(companyId),
-    getCompanySupply(companyId),
-    fetchUsers ? getCompanyUsers(companyId) : Promise.resolve([]),
+  const [company, demand, supply] = await Promise.all([
+    application.getCompanyById(companyId),
+    application.getCompanyDemand(companyId),
+    application.getCompanySupply(companyId),
   ]);
 
-  if (!company) notFound();
+  if (!company || !user) notFound();
 
   return (
     <div className="min-h-screen">
       <CompanyBrandedHeader company={company} />
       <CompanyMaterials
-        users={users}
         company={company}
         supply={supply}
         demand={demand}

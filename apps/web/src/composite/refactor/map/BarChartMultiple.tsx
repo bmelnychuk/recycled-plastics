@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 
 import {
   Card,
@@ -9,48 +9,48 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/design-system/components/ui/card";
+} from '@/design-system/components/ui/card';
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/design-system/components/ui/chart";
-import { FC } from "react";
-import { DefaultCardAction } from "../DefaultCardAction";
+} from '@/design-system/components/ui/chart';
+import { FC } from 'react';
+import { DefaultCardAction } from '../DefaultCardAction';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/design-system/components/ui/select";
+} from '@/design-system/components/ui/select';
 
-export const description = "A multiple bar chart";
+export const description = 'A multiple bar chart';
 
 const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "January", desktop: 156, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "February", desktop: 335, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "March", desktop: 227, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "April", desktop: 79, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "May", desktop: 309, mobile: 130 },
-  { month: "June", desktop: 254, mobile: 140 },
-  { month: "June", desktop: 264, mobile: 140 },
+  { month: 'January', desktop: 186, mobile: 80 },
+  { month: 'January', desktop: 156, mobile: 80 },
+  { month: 'February', desktop: 305, mobile: 200 },
+  { month: 'February', desktop: 335, mobile: 200 },
+  { month: 'March', desktop: 237, mobile: 120 },
+  { month: 'March', desktop: 227, mobile: 120 },
+  { month: 'April', desktop: 73, mobile: 190 },
+  { month: 'April', desktop: 79, mobile: 190 },
+  { month: 'May', desktop: 209, mobile: 130 },
+  { month: 'May', desktop: 309, mobile: 130 },
+  { month: 'June', desktop: 254, mobile: 140 },
+  { month: 'June', desktop: 264, mobile: 140 },
 ];
 
 const chartConfig = {
   desktop: {
-    label: "Supply",
-    color: "var(--chart-1)",
+    label: 'Supply',
+    color: 'var(--chart-1)',
   },
   mobile: {
-    label: "Demand",
-    color: "var(--chart-2)",
+    label: 'Demand',
+    color: 'var(--chart-2)',
   },
 } satisfies ChartConfig;
 

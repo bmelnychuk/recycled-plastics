@@ -4,14 +4,12 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/design-system/components/ui/card";
-import { DateValueAreaChart } from "../chart/DateValueAreaChart";
+} from '@/design-system/components/ui/card';
+import { DateValueAreaChart } from '../chart/DateValueAreaChart';
 
-import { FC } from "react";
+import { FC } from 'react';
 
-export const MaterialDemandViewsCard: FC<{ data?: any }> = ({
-  data,
-}) => {
+export const MaterialDemandViewsCard: FC<{ data?: any }> = ({ data }) => {
   const hasData = (data?.data?.length ?? 0) > 1;
   return (
     <Card className="h-[300px]">
@@ -31,7 +29,9 @@ export const MaterialDemandViewsCard: FC<{ data?: any }> = ({
           />
         ) : (
           <div className="flex items-center justify-center h-full">
-            <p className="text-sm text-muted-foreground">Not enough data available</p>
+            <p className="text-sm text-muted-foreground">
+              Not enough data available
+            </p>
           </div>
         )}
       </CardContent>

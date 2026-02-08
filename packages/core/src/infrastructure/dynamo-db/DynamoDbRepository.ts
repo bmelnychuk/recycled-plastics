@@ -18,7 +18,23 @@ function chunk<T>(array: T[], size: number): T[][] {
   return result;
 }
 
-const client = new DynamoDBClient();
+// import { awsCredentialsProvider } from '@vercel/oidc-aws-credentials-provider';
+
+// import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
+// import { auth } from "@clerk/nextjs/server";
+
+// const client = new DynamoDBClient({
+//   region: process.env.AWS_REGION!,
+//   credentials: awsCredentialsProvider({
+//     roleArn: process.env.AWS_ROLE_ARN!,
+//   }),
+// });
+
+// const client = new DynamoDBClient({
+
+// });
+
+const client = new DynamoDBClient({});
 const dynamoDbClient = DynamoDBDocumentClient.from(client, {
   marshallOptions: {
     removeUndefinedValues: true,

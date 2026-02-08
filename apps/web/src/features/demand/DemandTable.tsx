@@ -1,39 +1,45 @@
-"use client";
+'use client';
 
-import { format } from "date-fns";
-import { ColumnDef } from "@tanstack/react-table";
-import { MaterialTypeSelect } from "../material/MaterialTypeSelect";
-import { MaterialType, MaterialColor } from "@/backend";
-import { DemandViewModel } from "@/backend";
-import { DataTable, SortableHeader } from "../../design-system/custom/data-table";
-import { FC, ReactNode } from "react";
-import { ColorLabel, ColorPreview } from "../material/MaterialColor";
-import { formatPrice } from "../../composite/common/price-utils";
-import Link from "next/link";
-import { CircleFlag } from "react-circle-flags";
-import { CountryDropdown } from "../common/CountryDropdown";
-import { Button } from "@/design-system/components/ui/button";
-import { Plus, Search, X } from "lucide-react";
-import { Table as TanStackTable } from "@tanstack/react-table";
-import { ColorSelect } from "../material/ColorSelect";
+import { format } from 'date-fns';
+import { ColumnDef } from '@tanstack/react-table';
+import { MaterialTypeSelect } from '../material/MaterialTypeSelect';
+import {
+  MaterialType,
+  MaterialColor,
+  DemandViewModel,
+  SignedInUser,
+} from '@rp/core';
+import {
+  DataTable,
+  SortableHeader,
+} from '../../design-system/custom/data-table';
+import { FC, ReactNode } from 'react';
+import { ColorLabel, ColorPreview } from '../material/MaterialColor';
+import { formatPrice } from '../../composite/common/price-utils';
+import Link from 'next/link';
+import { CircleFlag } from 'react-circle-flags';
+import { CountryDropdown } from '../common/CountryDropdown';
+import { Button } from '@/design-system/components/ui/button';
+import { Plus, Search, X } from 'lucide-react';
+import { Table as TanStackTable } from '@tanstack/react-table';
+import { ColorSelect } from '../material/ColorSelect';
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@/design-system/components/ui/input-group";
+} from '@/design-system/components/ui/input-group';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/design-system/components/ui/tooltip";
-import { generateBlurredName } from "@/lib/random";
-import { SignedInUser } from "@/backend";
-import { CompanySheetButton } from "../company/CompanySheetButton";
-import { DemandSheetButton } from "./DemandSheetButton";
+} from '@/design-system/components/ui/tooltip';
+import { generateBlurredName } from '@/lib/random';
+import { CompanySheetButton } from '../company/CompanySheetButton';
+import { DemandSheetButton } from './DemandSheetButton';
 
 const allColumns: ColumnDef<DemandViewModel>[] = [
   {
-    id: "materialType",
+    id: 'materialType',
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -42,7 +48,7 @@ const allColumns: ColumnDef<DemandViewModel>[] = [
       />
     ),
     accessorFn: ({ material }) => material.type.toUpperCase(),
-    filterFn: "equalsString",
+    filterFn: 'equalsString',
     size: 80,
     cell: ({ row }) => (
       <div onClick={(e) => e.stopPropagation()}>
@@ -51,7 +57,7 @@ const allColumns: ColumnDef<DemandViewModel>[] = [
     ),
   },
   {
-    accessorKey: "updatedDate",
+    accessorKey: 'updatedDate',
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -59,13 +65,13 @@ const allColumns: ColumnDef<DemandViewModel>[] = [
         isSorted={column.getIsSorted()}
       />
     ),
-    accessorFn: ({ updatedDate }) => format(updatedDate, "dd/MM/yyyy"),
+    accessorFn: ({ updatedDate }) => format(updatedDate, 'dd/MM/yyyy'),
     size: 80,
   },
 
   {
-    id: "color",
-    accessorKey: "material.color",
+    id: 'color',
+    accessorKey: 'material.color',
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -82,8 +88,8 @@ const allColumns: ColumnDef<DemandViewModel>[] = [
     ),
   },
   {
-    accessorKey: "description",
-    header: "Description",
+    accessorKey: 'description',
+    header: 'Description',
     enableSorting: false,
     size: 300,
     cell: ({ row }) => (
@@ -95,7 +101,7 @@ const allColumns: ColumnDef<DemandViewModel>[] = [
     ),
   },
   {
-    accessorKey: "amount",
+    accessorKey: 'amount',
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -107,7 +113,7 @@ const allColumns: ColumnDef<DemandViewModel>[] = [
     cell: ({ row }) => `${row.original.amount} kg`,
   },
   {
-    accessorKey: "price.amount",
+    accessorKey: 'price.amount',
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -119,8 +125,8 @@ const allColumns: ColumnDef<DemandViewModel>[] = [
     cell: ({ row }) => formatPrice(row.original.price),
   },
   {
-    id: "company",
-    accessorKey: "company.name",
+    id: 'company',
+    accessorKey: 'company.name',
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -151,8 +157,8 @@ const allColumns: ColumnDef<DemandViewModel>[] = [
     },
   },
   {
-    id: "country",
-    accessorKey: "location.country",
+    id: 'country',
+    accessorKey: 'location.country',
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -160,7 +166,7 @@ const allColumns: ColumnDef<DemandViewModel>[] = [
         isSorted={column.getIsSorted()}
       />
     ),
-    filterFn: "equalsString",
+    filterFn: 'equalsString',
     size: 70,
     cell: ({ row }) => (
       <div className="h-12 flex align-middle">
@@ -176,11 +182,11 @@ const allColumns: ColumnDef<DemandViewModel>[] = [
   },
 ];
 
-const companyColumns = allColumns.filter(({ id }) => id !== "company");
+const companyColumns = allColumns.filter(({ id }) => id !== 'company');
 
 const getFilterValue = <T,>(
   table: TanStackTable<DemandViewModel>,
-  columnId: string
+  columnId: string,
 ): T | undefined => {
   return table.getColumn(columnId)?.getFilterValue() as T | undefined;
 };
@@ -188,7 +194,7 @@ const getFilterValue = <T,>(
 const setFilterValue = <T,>(
   table: TanStackTable<DemandViewModel>,
   columnId: string,
-  value: T
+  value: T,
 ): void => {
   table.getColumn(columnId)?.setFilterValue(value);
 };
@@ -198,29 +204,37 @@ export const CompanyDemandTable: FC<{
   user?: SignedInUser;
   companyId?: string;
 }> = ({ demand, user, companyId }) => {
-  const callToAction = user?.isAdmin || user?.company?.verified && companyId === user?.companyId ? (
-    <Button asChild>
-      <Link
-        href={
-          companyId
-            ? `/companies/${companyId}/demand/new`
-            : "/admin/demand/new"
-        }
-      >
-        <Plus />
-        New demand
-      </Link>
-    </Button>
-  ) : null;
+  const callToAction =
+    user?.isAdmin ||
+    (user?.isCompanyVerified && companyId === user?.companyId) ? (
+      <Button asChild>
+        <Link
+          href={
+            companyId
+              ? `/companies/${companyId}/demand/new`
+              : '/admin/demand/new'
+          }
+        >
+          <Plus />
+          New demand
+        </Link>
+      </Button>
+    ) : null;
 
-  return <DemandTable demand={demand} columns={companyColumns} callToAction={callToAction} />;
+  return (
+    <DemandTable
+      demand={demand}
+      columns={companyColumns}
+      callToAction={callToAction}
+    />
+  );
 };
 
 export const ActiveDemandTable: FC<{
   demand: DemandViewModel[];
   user?: SignedInUser;
 }> = ({ demand, user }) => {
-  const hasCompany = user?.companyId && user?.company?.verified;
+  const hasCompany = user?.companyId && user?.isCompanyVerified;
   const isAdmin = user?.isAdmin;
   const canAdd = isAdmin || hasCompany;
 
@@ -229,7 +243,7 @@ export const ActiveDemandTable: FC<{
       <Link
         href={
           isAdmin
-            ? "/admin/demand/new"
+            ? '/admin/demand/new'
             : `/companies/${user.companyId}/demand/new`
         }
       >
@@ -237,26 +251,33 @@ export const ActiveDemandTable: FC<{
         New demand
       </Link>
     </Button>
-  ) : <Tooltip>
-    <TooltipTrigger asChild>
-      <span tabIndex={0}>
-        <Button disabled>
-          <Plus />
-          New demand
-        </Button>
-      </span>
-    </TooltipTrigger>
-    <TooltipContent>
-      <p>Sign up and verify your company to add a new material</p>
-    </TooltipContent>
-  </Tooltip>;
+  ) : (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span tabIndex={0}>
+          <Button disabled>
+            <Plus />
+            New demand
+          </Button>
+        </span>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Sign up and verify your company to add a new material</p>
+      </TooltipContent>
+    </Tooltip>
+  );
 
-
-  return <DemandTable demand={demand} columns={allColumns} callToAction={callToAction} />;
+  return (
+    <DemandTable
+      demand={demand}
+      columns={allColumns}
+      callToAction={callToAction}
+    />
+  );
 };
 
 const DemandTable: FC<{
-  demand: DemandViewModel[];  
+  demand: DemandViewModel[];
   columns: ColumnDef<DemandViewModel>[];
   callToAction: ReactNode | null;
 }> = ({ demand, columns, callToAction }) => {
@@ -271,7 +292,7 @@ const DemandTable: FC<{
       typeOptions: new Set<MaterialType>(),
       colorOptions: new Set<MaterialColor>(),
       countryOptions: new Set<string>(),
-    }
+    },
   );
 
   return (
@@ -285,31 +306,31 @@ const DemandTable: FC<{
             <div className="w-50">
               <MaterialTypeSelect
                 options={Array.from(typeOptions)}
-                value={getFilterValue(table, "materialType")}
-                onChange={(v) => setFilterValue(table, "materialType", v)}
+                value={getFilterValue(table, 'materialType')}
+                onChange={(v) => setFilterValue(table, 'materialType', v)}
               />
             </div>
             <div className="w-50">
               <ColorSelect
                 options={Array.from(colorOptions)}
-                value={getFilterValue(table, "color")}
-                onChange={(v) => setFilterValue(table, "color", v)}
+                value={getFilterValue(table, 'color')}
+                onChange={(v) => setFilterValue(table, 'color', v)}
               />
             </div>
             <div className="w-70">
               <CountryDropdown
                 options={Array.from(countryOptions)}
-                value={getFilterValue(table, "country")}
-                onChange={(v) => setFilterValue(table, "country", v)}
+                value={getFilterValue(table, 'country')}
+                onChange={(v) => setFilterValue(table, 'country', v)}
               />
             </div>
             <div className="w-100">
               <InputGroup className="bg-background hover:bg-accent hover:text-accent-foreground transition-colors">
                 <InputGroupInput
                   placeholder="Search"
-                  value={getFilterValue(table, "description") || ""}
+                  value={getFilterValue(table, 'description') || ''}
                   onChange={(e) =>
-                    setFilterValue(table, "description", e.target.value)
+                    setFilterValue(table, 'description', e.target.value)
                   }
                 />
                 <InputGroupAddon className="text-muted-foreground">

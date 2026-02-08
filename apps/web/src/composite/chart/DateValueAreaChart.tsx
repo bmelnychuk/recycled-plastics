@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/design-system/components/ui/chart";
-import { FC } from "react";
-import { format } from "date-fns";
+} from '@/design-system/components/ui/chart';
+import { FC } from 'react';
+import { format } from 'date-fns';
 
-export const description = "An area chart with a legend";
+export const description = 'An area chart with a legend';
 
 interface ChartDataEntry {
   date: string;
@@ -34,7 +34,7 @@ export const DateValueAreaChart: FC<{ data: ChartDataEntry[] }> = ({
             tickLine={false}
             axisLine={false}
             tickMargin={8}
-            tickFormatter={(value) => format(value, "MMM")}
+            tickFormatter={(value) => format(value, 'MMM')}
           />
           <ChartTooltip
             cursor={false}

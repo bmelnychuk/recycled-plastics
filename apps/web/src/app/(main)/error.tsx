@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Button } from "@/design-system/components/ui/button";
-import { AlertTriangle, Home, RotateCcw } from "lucide-react";
-import Link from "next/link";
+import { Button } from '@/design-system/components/ui/button';
+import { AlertTriangle, Home, RotateCcw } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Error({
   reset,

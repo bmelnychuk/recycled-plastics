@@ -1,15 +1,14 @@
-import { FC } from "react";
+import { FC } from 'react';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/design-system/components/ui/card";
-import { Button } from "@/design-system/components/ui/button";
-import { Building2 } from "lucide-react";
-import Link from "next/link";
-import { SignInButton } from "@/features/auth/SignInButton";
-
+} from '@/design-system/components/ui/card';
+import { Button } from '@/design-system/components/ui/button';
+import { Building2 } from 'lucide-react';
+import Link from 'next/link';
+import { SignInButton } from '@/features/auth/SignInButton';
 
 export const CompanyTeaserCard: FC = () => {
   return (
@@ -54,7 +53,7 @@ export const CompanyTeaserCard: FC = () => {
           </ul>
 
           <div className="flex justify-end gap-3">
-            <SignInButton variant="outline" />           
+            <SignInButton variant="outline" />
           </div>
         </div>
       </CardContent>

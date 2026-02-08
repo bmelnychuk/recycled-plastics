@@ -1,11 +1,8 @@
-import { getCompanyDetails, getDemandMaterial } from "@/backend/api";
-import { getCurrentUser } from "@/backend/api/session";
-import { CompanyBusinessCard } from "@/features/company/CompanyBusinessCard";
-import { CompanyTeaserCard } from "@/features/company/CompanyTeaserCard";
-import { ContactBusinessCard } from "@/composite/company/ContactBusinessCard";
-import { MaterialDemandDetailsCard } from "@/features/demand/MaterialDemandDetailsCard";
-
-
+import { CompanyBusinessCard } from '@/features/company/CompanyBusinessCard';
+import { CompanyTeaserCard } from '@/features/company/CompanyTeaserCard';
+import { ContactBusinessCard } from '@/composite/company/ContactBusinessCard';
+import { MaterialDemandDetailsCard } from '@/features/demand/MaterialDemandDetailsCard';
+import { application } from '@/core';
 
 export default async function Page({
   params,
@@ -13,16 +10,16 @@ export default async function Page({
   params: Promise<{ companyId: string; id: string }>;
 }) {
   const { companyId, id } = await params;
-  const [supplyMaterial, company, user] = await Promise.all([
-    getDemandMaterial(companyId, id),
-    getCompanyDetails(companyId),
-    getCurrentUser(),
+  const [demand, company, user] = await Promise.all([
+    application.getDemandById(companyId, id),
+    application.getCompanyById(companyId),
+    application.getCurrentUser(),
   ]);
 
   return (
     <div className="grid grid-cols-12 gap-4 p-4">
       <div className="col-span-12 lg:col-span-8">
-        <MaterialDemandDetailsCard material={supplyMaterial} user={user} />
+        <MaterialDemandDetailsCard material={demand} user={user} />
       </div>
       <div className="col-span-12 flex flex-col gap-4 lg:col-span-4">
         {company && (

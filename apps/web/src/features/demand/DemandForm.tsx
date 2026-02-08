@@ -1,42 +1,46 @@
-"use client";
+'use client';
 
-import { Button } from "@/design-system/components/ui/button";
-import { Input } from "@/design-system/components/ui/input";
-import { Separator } from "@/design-system/components/ui/separator";
-import { Textarea } from "@/design-system/components/ui/textarea";
+import { Button } from '@/design-system/components/ui/button';
+import { Input } from '@/design-system/components/ui/input';
+import { Separator } from '@/design-system/components/ui/separator';
+import { Textarea } from '@/design-system/components/ui/textarea';
 
-import { MaterialTypeSelect } from "../material/MaterialTypeSelect";
+import { MaterialTypeSelect } from '../material/MaterialTypeSelect';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
-import { Field, FieldDescription, FieldLabel } from "@/design-system/components/ui/field";
-import { toast } from "sonner";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Controller, useForm } from 'react-hook-form';
 import {
-  createMaterialDemand,
-  updateMaterialDemand,
-  VerifiedCompany,
-} from "@/backend/api";
-import { MaterialDemand, MaterialDemandSchema } from "@/backend";
-import { useRouter } from "next/navigation";
-import { FC, useState } from "react";
+  Field,
+  FieldDescription,
+  FieldLabel,
+} from '@/design-system/components/ui/field';
+import { toast } from 'sonner';
+
+import { useRouter } from 'next/navigation';
+import { FC, useState } from 'react';
 import {
   Dropzone,
   DropzoneEmptyState,
-} from "@/design-system/components/ui/shadcn-io/dropzone";
-import z from "zod";
-import { AlertTriangleIcon, CloudCheck, Trash, Upload } from "lucide-react";
+} from '@/design-system/components/ui/shadcn-io/dropzone';
+import z from 'zod';
+import { AlertTriangleIcon, CloudCheck, Trash, Upload } from 'lucide-react';
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemMedia,
   ItemTitle,
-} from "@/design-system/components/ui/item";
-import { FormSection } from "../common/FormSection";
-import { MaterialDataForm } from "@/features/material/MaterialDataForm";
-import { CompanySelect } from "@/features/company/CompanySelect";
-import { Card, CardContent } from "@/design-system/components/ui/card";
-import { Switch } from "@/design-system/components/ui/switch";
+} from '@/design-system/components/ui/item';
+import { FormSection } from '../common/FormSection';
+import { MaterialDataForm } from '@/features/material/MaterialDataForm';
+import { CompanySelect } from '@/features/company/CompanySelect';
+import { Card, CardContent } from '@/design-system/components/ui/card';
+import { Switch } from '@/design-system/components/ui/switch';
+import { Company, MaterialDemand, MaterialDemandSchema } from '@rp/core';
+
+import { application } from '@/core';
+import { NewMaterialDemandSchema } from '@rp/core/src/application/use-case/demand/CreateDemand';
+import { MaterialDemandUpdateSchema } from '@rp/core/src/application/use-case/demand/UpdateDemand';
 
 const FormStateSchema = MaterialDemandSchema.omit({
   createdDate: true,
@@ -47,39 +51,41 @@ const FormStateSchema = MaterialDemandSchema.omit({
 export type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
-  companyId: "",
-  description: "",
+  companyId: '',
+  description: '',
   material: {
-    color: "transparent",
-    type: "abs",
-    condition: "granules",
-    certificateOfAnalysis: false
+    color: 'transparent',
+    type: 'abs',
+    condition: 'granules',
+    certificateOfAnalysis: false,
   },
   price: {
     amount: 0,
-    currency: "EUR",
+    currency: 'EUR',
   },
   amount: 0,
   location: {
-    country: "",
+    country: '',
   },
-  verified: false
+  verified: false,
 };
 
 export const EditDemandForm: FC<{
   demand: MaterialDemand;
-  companies: VerifiedCompany[];
+  companies: Company[];
 }> = ({ demand, companies }) => {
   const router = useRouter();
   const { id, companyId } = demand;
 
   const onSubmit = async (data: FormState, files: File[]): Promise<void> => {
     try {
-      await updateMaterialDemand({ ...data, id: demand.id }, files);
-      toast.success("Material demand updated successfully");
+      await application.updateDemand(
+        MaterialDemandUpdateSchema.parse({ ...data, id: demand.id }),
+      );
+      toast.success('Material demand updated successfully');
       router.replace(`/companies/${companyId}/demand/${id}`);
     } catch (error) {
-      toast.error("Failed to update material demand");
+      toast.error('Failed to update material demand');
     }
   };
 
@@ -93,24 +99,24 @@ export const EditDemandForm: FC<{
 };
 
 export const NewDemandForm: FC<{
-  companies: VerifiedCompany[];
+  companies: Company[];
   companyId?: string;
 }> = ({ companies, companyId }) => {
   const router = useRouter();
 
   const onSubmit = async (data: FormState, files: File[]): Promise<void> => {
     try {
-      await createMaterialDemand(data, files);
-      toast.success("Material demand created successfully");
-      router.push("/demand");
+      await application.createDemand(NewMaterialDemandSchema.parse(data));
+      toast.success('Material demand created successfully');
+      router.push('/demand');
     } catch (error) {
-      toast.error("Failed to create material demand");
+      toast.error('Failed to create material demand');
     }
   };
 
   return (
     <DemandForm
-      defaultValues={{ ...initialValues, companyId: companyId ?? "" }}
+      defaultValues={{ ...initialValues, companyId: companyId ?? '' }}
       companies={companies}
       onSubmit={onSubmit}
     />
@@ -119,7 +125,7 @@ export const NewDemandForm: FC<{
 
 const DemandForm: FC<{
   defaultValues?: FormState;
-  companies: VerifiedCompany[];
+  companies: Company[];
   onSubmit: (data: FormState, files: File[]) => Promise<void>;
 }> = ({ defaultValues, companies, onSubmit: onSubmitCallback }) => {
   const [files, setFiles] = useState<File[]>([]);
@@ -129,20 +135,20 @@ const DemandForm: FC<{
     defaultValues: defaultValues ?? initialValues,
   });
 
-  const documents = form.watch("documents") ?? [];
+  const documents = form.watch('documents') ?? [];
 
   const handleDrop = (newFiles: File[]) => {
     const pdfFiles = newFiles.filter(
       (file) =>
-        file.type === "application/pdf" ||
-        file.name.toLowerCase().endsWith(".pdf")
+        file.type === 'application/pdf' ||
+        file.name.toLowerCase().endsWith('.pdf'),
     );
     setFiles([...files, ...pdfFiles]);
   };
 
   const handleRemoveDocument = (index: number) => {
     const nextDocuments = documents.filter((_, i) => i !== index);
-    form.setValue("documents", nextDocuments, {
+    form.setValue('documents', nextDocuments, {
       shouldDirty: true,
       shouldValidate: true,
     });
@@ -261,11 +267,11 @@ const DemandForm: FC<{
                     placeholder="Amount in kg"
                     onFocus={(e) =>
                       e.target.addEventListener(
-                        "wheel",
+                        'wheel',
                         function (e) {
                           e.preventDefault();
                         },
-                        { passive: false }
+                        { passive: false },
                       )
                     }
                   />
@@ -284,7 +290,7 @@ const DemandForm: FC<{
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-6">
           <div className="col-span-full">
             <Dropzone
-              accept={{ "application/pdf": [".pdf"] }}
+              accept={{ 'application/pdf': ['.pdf'] }}
               maxSize={1024 * 1024 * 10}
               minSize={1024}
               maxFiles={10}
@@ -340,10 +346,7 @@ const DemandForm: FC<{
 
       <Separator />
 
-      <FormSection
-        title="Verification status"
-        description=""
-      >
+      <FormSection title="Verification status" description="">
         <Controller
           name="verified"
           control={form.control}
@@ -357,7 +360,8 @@ const DemandForm: FC<{
                       Verified
                     </FieldLabel>
                     <FieldDescription>
-                      Once verified, the material supply will be displayed publicly
+                      Once verified, the material supply will be displayed
+                      publicly
                     </FieldDescription>
                   </div>
                 </div>
@@ -367,17 +371,16 @@ const DemandForm: FC<{
                   onCheckedChange={field.onChange}
                   className="w-12! h-7! data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 [&>span]:size-6! [&>span]:data-[state=checked]:translate-x-[calc(100%-2px)]"
                 />
-
               </CardContent>
             </Card>
           )}
         />
-      </FormSection>        
+      </FormSection>
 
-
-
-      <div className="flex items-center justify-end space-x-4">    
-        {hasErrors && <div className="text-red-500 text-sm">Form has invalid fields</div>}
+      <div className="flex items-center justify-end space-x-4">
+        {hasErrors && (
+          <div className="text-red-500 text-sm">Form has invalid fields</div>
+        )}
         <Button
           type="submit"
           className="whitespace-nowrap"

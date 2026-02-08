@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { TrendingUp } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { TrendingUp } from 'lucide-react';
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 
 import {
   Card,
@@ -11,42 +11,42 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/design-system/components/ui/card";
+} from '@/design-system/components/ui/card';
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/design-system/components/ui/chart";
-import { FC } from "react";
+} from '@/design-system/components/ui/chart';
+import { FC } from 'react';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/design-system/components/ui/select";
-import { DefaultCardAction } from "../refactor/DefaultCardAction";
+} from '@/design-system/components/ui/select';
+import { DefaultCardAction } from '../refactor/DefaultCardAction';
 
-export const description = "A multiple bar chart";
+export const description = 'A multiple bar chart';
 
 const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
+  { month: 'January', desktop: 186, mobile: 80 },
+  { month: 'February', desktop: 305, mobile: 200 },
+  { month: 'March', desktop: 237, mobile: 120 },
+  { month: 'April', desktop: 73, mobile: 190 },
+  { month: 'May', desktop: 209, mobile: 130 },
+  { month: 'June', desktop: 214, mobile: 140 },
 ];
 
 const chartConfig = {
   desktop: {
-    label: "Supply",
-    color: "var(--chart-1)",
+    label: 'Supply',
+    color: 'var(--chart-1)',
   },
   mobile: {
-    label: "Demand",
-    color: "var(--chart-2)",
+    label: 'Demand',
+    color: 'var(--chart-2)',
   },
 } satisfies ChartConfig;
 

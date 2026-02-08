@@ -35,5 +35,13 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
+@vercel/oidc-aws-credentials-provider
 
 pnpm --filter @rp/core add zod
+
+pnpm --filter @rp/core add @aws-sdk/lib-dynamodb
+pnpm --filter @rp/core add @aws-sdk/s3-request-presigner
+pnpm --filter @rp/core add @aws-sdk/client-dynamodb
+pnpm --filter @rp/core add @aws-sdk/client-s3
+
+pnpm --filter apps/web add @vercel/oidc-aws-credentials-provider

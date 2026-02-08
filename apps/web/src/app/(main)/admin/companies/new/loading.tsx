@@ -1,5 +1,5 @@
-import { Skeleton } from "@/design-system/components/ui/skeleton";
-import { Separator } from "@/design-system/components/ui/separator";
+import { Skeleton } from '@/design-system/components/ui/skeleton';
+import { Separator } from '@/design-system/components/ui/separator';
 
 export default function Loading() {
   return (

@@ -1,42 +1,47 @@
-"use client";
+'use client';
 
-import { format } from "date-fns";
-import { ColumnDef } from "@tanstack/react-table";
-import { MaterialTypeSelect } from "@/features/material/MaterialTypeSelect";
-import { SupplyViewModel, MaterialType, MaterialColor, SignedInUser } from "@/backend";
-import { DataTable, SortableHeader } from "@/design-system/custom/data-table";
-import { FC, ReactNode } from "react";
-import { ColorLabel, ColorPreview } from "@/features/material/MaterialColor";
+import { format } from 'date-fns';
+import { ColumnDef } from '@tanstack/react-table';
+import { MaterialTypeSelect } from '@/features/material/MaterialTypeSelect';
+import {
+  SupplyViewModel,
+  MaterialType,
+  MaterialColor,
+  SignedInUser,
+} from '@rp/core';
+import { DataTable, SortableHeader } from '@/design-system/custom/data-table';
+import { FC, ReactNode } from 'react';
+import { ColorLabel, ColorPreview } from '@/features/material/MaterialColor';
 
-import Link from "next/link";
-import { CircleFlag } from "react-circle-flags";
-import { CountryDropdown } from "@/features/common/CountryDropdown";
-import { Button } from "@/design-system/components/ui/button";
-import { Plus, Search, X } from "lucide-react";
-import { Table as TanStackTable } from "@tanstack/react-table";
-import { ColorSelect } from "@/features/material/ColorSelect";
-import Image from "next/image";
+import Link from 'next/link';
+import { CircleFlag } from 'react-circle-flags';
+import { CountryDropdown } from '@/features/common/CountryDropdown';
+import { Button } from '@/design-system/components/ui/button';
+import { Plus, Search, X } from 'lucide-react';
+import { Table as TanStackTable } from '@tanstack/react-table';
+import { ColorSelect } from '@/features/material/ColorSelect';
+import Image from 'next/image';
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@/design-system/components/ui/input-group";
-import { ImageZoom } from "@/design-system/components/ui/shadcn-io/image-zoom";
-import { cn } from "@/design-system/lib/utils";
+} from '@/design-system/components/ui/input-group';
+import { ImageZoom } from '@/design-system/components/ui/shadcn-io/image-zoom';
+import { cn } from '@/design-system/lib/utils';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/design-system/components/ui/tooltip";
-import { generateBlurredName } from "@/lib/random";
-import { CompanySheetButton } from "@/features/company/CompanySheetButton";
-import { SupplySheetButton } from "@/features/supply/SupplySheetButton";
-import { PriceValue } from "@/features/common/PriceValue";
+} from '@/design-system/components/ui/tooltip';
+import { generateBlurredName } from '@/lib/random';
+import { CompanySheetButton } from '@/features/company/CompanySheetButton';
+import { SupplySheetButton } from '@/features/supply/SupplySheetButton';
+import { PriceValue } from '@/features/common/PriceValue';
 
 const allColumns: ColumnDef<SupplyViewModel>[] = [
   {
-    id: "preview",
-    header: "Preview",
+    id: 'preview',
+    header: 'Preview',
     enableSorting: false,
     size: 80,
     cell: ({ row }) => {
@@ -47,7 +52,7 @@ const allColumns: ColumnDef<SupplyViewModel>[] = [
         <div onClick={(e) => e.stopPropagation()}>
           <ImageZoom
             backdropClassName={cn(
-              '[&_[data-rmiz-modal-overlay="visible"]]:bg-black/80'
+              '[&_[data-rmiz-modal-overlay="visible"]]:bg-black/80',
             )}
           >
             <Image
@@ -64,7 +69,7 @@ const allColumns: ColumnDef<SupplyViewModel>[] = [
     },
   },
   {
-    id: "materialType",
+    id: 'materialType',
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -73,7 +78,7 @@ const allColumns: ColumnDef<SupplyViewModel>[] = [
       />
     ),
     accessorFn: ({ material }) => material.type.toUpperCase(),
-    filterFn: "equalsString",
+    filterFn: 'equalsString',
     size: 80,
     cell: ({ row }) => (
       <div onClick={(e) => e.stopPropagation()}>
@@ -82,7 +87,7 @@ const allColumns: ColumnDef<SupplyViewModel>[] = [
     ),
   },
   {
-    accessorKey: "updatedDate",
+    accessorKey: 'updatedDate',
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -90,12 +95,12 @@ const allColumns: ColumnDef<SupplyViewModel>[] = [
         isSorted={column.getIsSorted()}
       />
     ),
-    accessorFn: ({ updatedDate }) => format(updatedDate, "dd/MM/yyyy"),
+    accessorFn: ({ updatedDate }) => format(updatedDate, 'dd/MM/yyyy'),
     size: 80,
   },
   {
-    id: "color",
-    accessorKey: "material.color",
+    id: 'color',
+    accessorKey: 'material.color',
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -112,8 +117,8 @@ const allColumns: ColumnDef<SupplyViewModel>[] = [
     ),
   },
   {
-    accessorKey: "description",
-    header: "Description",
+    accessorKey: 'description',
+    header: 'Description',
     enableSorting: false,
     size: 300,
     cell: ({ row }) => (
@@ -125,7 +130,7 @@ const allColumns: ColumnDef<SupplyViewModel>[] = [
     ),
   },
   {
-    accessorKey: "amount",
+    accessorKey: 'amount',
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -137,7 +142,7 @@ const allColumns: ColumnDef<SupplyViewModel>[] = [
     cell: ({ row }) => `${row.original.amount} kg`,
   },
   {
-    accessorKey: "price.amount",
+    accessorKey: 'price.amount',
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -149,8 +154,8 @@ const allColumns: ColumnDef<SupplyViewModel>[] = [
     cell: ({ row }) => <PriceValue price={row.original.price} />,
   },
   {
-    id: "company",
-    accessorKey: "company.name",
+    id: 'company',
+    accessorKey: 'company.name',
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -181,8 +186,8 @@ const allColumns: ColumnDef<SupplyViewModel>[] = [
     },
   },
   {
-    id: "country",
-    accessorKey: "location.country",
+    id: 'country',
+    accessorKey: 'location.country',
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -190,7 +195,7 @@ const allColumns: ColumnDef<SupplyViewModel>[] = [
         isSorted={column.getIsSorted()}
       />
     ),
-    filterFn: "equalsString",
+    filterFn: 'equalsString',
     size: 70,
     cell: ({ row }) => (
       <div className="h-12 flex align-middle">
@@ -206,11 +211,11 @@ const allColumns: ColumnDef<SupplyViewModel>[] = [
   },
 ];
 
-const companyColumns = allColumns.filter(({ id }) => id !== "company");
+const companyColumns = allColumns.filter(({ id }) => id !== 'company');
 
 const getFilterValue = <T,>(
   table: TanStackTable<SupplyViewModel>,
-  columnId: string
+  columnId: string,
 ): T | undefined => {
   return table.getColumn(columnId)?.getFilterValue() as T | undefined;
 };
@@ -218,7 +223,7 @@ const getFilterValue = <T,>(
 const setFilterValue = <T,>(
   table: TanStackTable<SupplyViewModel>,
   columnId: string,
-  value: T
+  value: T,
 ): void => {
   table.getColumn(columnId)?.setFilterValue(value);
 };
@@ -228,21 +233,22 @@ export const CompanySupplyTable: FC<{
   user: SignedInUser;
   companyId: string;
 }> = ({ supply, user, companyId }) => {
-
-  const callToAction = user?.isAdmin || user?.company?.verified && companyId === user?.companyId ? (
-    <Button asChild>
-      <Link
-        href={
-          companyId
-            ? `/companies/${companyId}/supply/new`
-            : "/admin/supply/new"
-        }
-      >
-        <Plus />
-        New supply
-      </Link>
-    </Button>
-  ) : null;
+  const callToAction =
+    user?.isAdmin ||
+    (user?.isCompanyVerified && companyId === user?.companyId) ? (
+      <Button asChild>
+        <Link
+          href={
+            companyId
+              ? `/companies/${companyId}/supply/new`
+              : '/admin/supply/new'
+          }
+        >
+          <Plus />
+          New supply
+        </Link>
+      </Button>
+    ) : null;
 
   return (
     <SupplyTable
@@ -257,7 +263,7 @@ export const ActiveSupplyTable: FC<{
   supply: SupplyViewModel[];
   user?: SignedInUser;
 }> = ({ supply, user }) => {
-  const hasCompany = user?.companyId && user?.company?.verified;
+  const hasCompany = user?.companyId && user?.isCompanyVerified;
   const isAdmin = user?.isAdmin;
   const canAdd = isAdmin || hasCompany;
 
@@ -266,7 +272,7 @@ export const ActiveSupplyTable: FC<{
       <Link
         href={
           isAdmin
-            ? "/admin/supply/new"
+            ? '/admin/supply/new'
             : `/companies/${user.companyId}/supply/new`
         }
       >
@@ -274,21 +280,21 @@ export const ActiveSupplyTable: FC<{
         New supply
       </Link>
     </Button>
-  ) : <Tooltip>
-    <TooltipTrigger asChild>
-      <span tabIndex={0}>
-        <Button disabled>
-          <Plus />
-          New supply
-        </Button>
-      </span>
-    </TooltipTrigger>
-    <TooltipContent>
-      <p>Sign up and verify your company to add a new material</p>
-    </TooltipContent>
-  </Tooltip>;
-
-
+  ) : (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span tabIndex={0}>
+          <Button disabled>
+            <Plus />
+            New supply
+          </Button>
+        </span>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Sign up and verify your company to add a new material</p>
+      </TooltipContent>
+    </Tooltip>
+  );
 
   return (
     <SupplyTable
@@ -315,7 +321,7 @@ const SupplyTable: FC<{
       typeOptions: new Set<MaterialType>(),
       colorOptions: new Set<MaterialColor>(),
       countryOptions: new Set<string>(),
-    }
+    },
   );
 
   return (
@@ -329,31 +335,31 @@ const SupplyTable: FC<{
             <div className="w-50">
               <MaterialTypeSelect
                 options={Array.from(typeOptions)}
-                value={getFilterValue(table, "materialType")}
-                onChange={(v) => setFilterValue(table, "materialType", v)}
+                value={getFilterValue(table, 'materialType')}
+                onChange={(v) => setFilterValue(table, 'materialType', v)}
               />
             </div>
             <div className="w-50">
               <ColorSelect
                 options={Array.from(colorOptions)}
-                value={getFilterValue(table, "color")}
-                onChange={(v) => setFilterValue(table, "color", v)}
+                value={getFilterValue(table, 'color')}
+                onChange={(v) => setFilterValue(table, 'color', v)}
               />
             </div>
             <div className="w-70">
               <CountryDropdown
                 options={Array.from(countryOptions)}
-                value={getFilterValue(table, "country")}
-                onChange={(v) => setFilterValue(table, "country", v)}
+                value={getFilterValue(table, 'country')}
+                onChange={(v) => setFilterValue(table, 'country', v)}
               />
             </div>
             <div className="w-100">
               <InputGroup className="bg-background hover:bg-accent hover:text-accent-foreground transition-colors">
                 <InputGroupInput
                   placeholder="Search"
-                  value={getFilterValue(table, "description") || ""}
+                  value={getFilterValue(table, 'description') || ''}
                   onChange={(e) =>
-                    setFilterValue(table, "description", e.target.value)
+                    setFilterValue(table, 'description', e.target.value)
                   }
                 />
                 <InputGroupAddon className="text-muted-foreground">

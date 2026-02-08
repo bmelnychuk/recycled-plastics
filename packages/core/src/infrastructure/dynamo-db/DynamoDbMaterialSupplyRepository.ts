@@ -1,6 +1,6 @@
 import { DynamoDbRepository } from './DynamoDbRepository';
-import { MaterialSupplyRepository } from '../../domain/material/supply/MaterialSupplyRepository';
-import { MaterialSupply } from '../../domain/material/supply/Supply';
+import { MaterialSupplyRepository } from '../../domain/supply/MaterialSupplyRepository';
+import { MaterialSupply } from '../../domain/supply/Supply';
 import { GetCommand, PutCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { subMonths } from 'date-fns';
 import { getEarliestDate } from '../../lib/dates';

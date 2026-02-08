@@ -1,4 +1,4 @@
-import { Spinner } from "@/design-system/components/ui/spinner";
+import { Spinner } from '@/design-system/components/ui/spinner';
 
 export default function Loading() {
   // Or a custom loading skeleton component

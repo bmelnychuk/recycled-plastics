@@ -1,36 +1,47 @@
-"use client";
+'use client';
 
-import { ColumnDef } from "@tanstack/react-table";
-import { SignedInUser, UserViewModel } from "@/backend";
-import { DataTable } from "../../design-system/custom/data-table";
-import { FC } from "react";
-import Link from "next/link";
-import { Button } from "@/design-system/components/ui/button";
-import { Plus, Search } from "lucide-react";
-import { Table as TanStackTable } from "@tanstack/react-table";
+import { ColumnDef } from '@tanstack/react-table';
+import { SignedInUser } from '@rp/core';
+import { DataTable } from '../../design-system/custom/data-table';
+import { FC } from 'react';
+import Link from 'next/link';
+import { Button } from '@/design-system/components/ui/button';
+import { Plus, Search } from 'lucide-react';
+import { Table as TanStackTable } from '@tanstack/react-table';
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@/design-system/components/ui/input-group";
-import { formatDate } from "../../composite/common/date-utils";
+} from '@/design-system/components/ui/input-group';
+import { formatDate } from '../../composite/common/date-utils';
+
+type UserViewModel = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  title: string;
+  plan: string;
+  createdDate: string;
+};
 
 const allColumns: ColumnDef<UserViewModel>[] = [
   {
-    id: "search",
+    id: 'search',
     header: () => null,
     cell: () => null,
     size: 0,
-    accessorFn: ({ firstName, lastName, email }) => `${firstName} ${lastName} ${email}`.toLowerCase(),
+    accessorFn: ({ firstName, lastName, email }) =>
+      `${firstName} ${lastName} ${email}`.toLowerCase(),
     filterFn: (row, columnId, filterValue) => {
-      const searchable = (row.getValue(columnId) as string) ?? "";
+      const searchable = (row.getValue(columnId) as string) ?? '';
       return searchable.includes((filterValue as string).toLowerCase());
     },
     enableSorting: false,
   },
   {
-    id: "name_link",
-    header: "Name",
+    id: 'name_link',
+    header: 'Name',
     accessorFn: ({ firstName, lastName }) => `${firstName} ${lastName}`,
     size: 180,
     cell: ({ row }) => (
@@ -45,8 +56,8 @@ const allColumns: ColumnDef<UserViewModel>[] = [
     ),
   },
   {
-    id: "name_text",
-    header: "Name",
+    id: 'name_text',
+    header: 'Name',
     accessorFn: ({ firstName, lastName }) => `${firstName} ${lastName}`,
     size: 180,
     cell: ({ row }) => (
@@ -56,37 +67,37 @@ const allColumns: ColumnDef<UserViewModel>[] = [
     ),
   },
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: 'email',
+    header: 'Email',
     size: 200,
     cell: ({ row }) => <div>{row.original.email}</div>,
   },
   {
-    accessorKey: "title",
-    header: "Title",
+    accessorKey: 'title',
+    header: 'Title',
     size: 150,
-    cell: ({ row }) => <div>{row.original.title || "-"}</div>,
+    cell: ({ row }) => <div>{row.original.title || '-'}</div>,
   },
   {
-    accessorKey: "plan",
-    header: "Plan",
+    accessorKey: 'plan',
+    header: 'Plan',
     size: 100,
     cell: ({ row }) => <div className="capitalize">{row.original.plan}</div>,
   },
   {
-    accessorKey: "createdDate",
-    header: "Created",
+    accessorKey: 'createdDate',
+    header: 'Created',
     accessorFn: ({ createdDate }) => formatDate(createdDate),
     size: 100,
   },
 ];
 
-const userColumns = allColumns.filter(({ id }) => id !== "name_link");
-const adminColumns = allColumns.filter(({ id }) => id !== "name_text");
+const userColumns = allColumns.filter(({ id }) => id !== 'name_link');
+const adminColumns = allColumns.filter(({ id }) => id !== 'name_text');
 
 const getFilterValue = (
   table: TanStackTable<UserViewModel>,
-  columnId: string
+  columnId: string,
 ): string | undefined => {
   return table.getColumn(columnId)?.getFilterValue() as string | undefined;
 };
@@ -94,7 +105,7 @@ const getFilterValue = (
 const setFilterValue = (
   table: TanStackTable<UserViewModel>,
   columnId: string,
-  value: string
+  value: string,
 ): void => {
   table.getColumn(columnId)?.setFilterValue(value);
 };
@@ -105,7 +116,12 @@ export const CompanyUserTable: FC<{
   companyId: string;
 }> = ({ user, users, companyId }) => {
   return (
-    <UserTable users={users} columns={user.isAdmin ? adminColumns : userColumns} companyId={companyId} user={user} />
+    <UserTable
+      users={users}
+      columns={user.isAdmin ? adminColumns : userColumns}
+      companyId={companyId}
+      user={user}
+    />
   );
 };
 
@@ -127,9 +143,9 @@ const UserTable: FC<{
               <InputGroup className="bg-background hover:bg-accent hover:text-accent-foreground transition-colors">
                 <InputGroupInput
                   placeholder="Search"
-                  value={getFilterValue(table, "search") || ""}
+                  value={getFilterValue(table, 'search') || ''}
                   onChange={(e) =>
-                    setFilterValue(table, "search", e.target.value)
+                    setFilterValue(table, 'search', e.target.value)
                   }
                 />
                 <InputGroupAddon className="text-muted-foreground">
@@ -144,7 +160,8 @@ const UserTable: FC<{
                 <Plus />
                 New user
               </Link>
-            </Button>)}
+            </Button>
+          )}
         </div>
       )}
     />

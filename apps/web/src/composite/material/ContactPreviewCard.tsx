@@ -4,12 +4,12 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/design-system/components/ui/card";
+} from '@/design-system/components/ui/card';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@/design-system/components/ui/avatar";
+} from '@/design-system/components/ui/avatar';
 
 export const ContactPreviewCard = () => {
   return (

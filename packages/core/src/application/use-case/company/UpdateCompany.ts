@@ -1,27 +1,22 @@
 import { Company, CompanySchema } from '../../../domain/company/Company';
 import { CompanyRepository } from '../../../domain/company/CompanyRepository';
-import { assertCanAccessCompany, User } from '../../auth/User';
+import { assertCanAccessCompany, SignedInUser } from '../../auth/AuthService';
 import { z } from 'zod';
 
-export const AdminCompanyUpdateSchema = CompanySchema.omit({
+export const CompanyUpdateSchema = CompanySchema.omit({
   createdDate: true,
   updatedDate: true,
 });
 
-export const UserCompanyUpdateSchema = AdminCompanyUpdateSchema.omit({
-  verified: true,
-});
-
-export const CompanyUpdateSchema = AdminCompanyUpdateSchema;
 export type CompanyUpdate = z.infer<typeof CompanyUpdateSchema>;
 
 export class UpdateCompany {
   constructor(private readonly companyRepository: CompanyRepository) {}
 
-  public async invoke(user: User, input: CompanyUpdate): Promise<Company> {
-    const companyUpdate = user.isAdmin
-      ? AdminCompanyUpdateSchema.parse(input)
-      : UserCompanyUpdateSchema.parse(input);
+  public async invoke(
+    user: SignedInUser,
+    companyUpdate: CompanyUpdate,
+  ): Promise<Company> {
     const companyId = companyUpdate.id ?? user.companyId;
     assertCanAccessCompany(user, companyId);
 

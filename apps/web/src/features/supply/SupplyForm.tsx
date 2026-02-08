@@ -1,44 +1,51 @@
-"use client";
+'use client';
 
-import { Button } from "@/design-system/components/ui/button";
-import { Input } from "@/design-system/components/ui/input";
-import { Separator } from "@/design-system/components/ui/separator";
-import { Textarea } from "@/design-system/components/ui/textarea";
-import Image from "next/image";
-import { MaterialTypeSelect } from "@/features/material/MaterialTypeSelect";
-import { MaterialDataForm } from "@/features/material/MaterialDataForm";
+import { Button } from '@/design-system/components/ui/button';
+import { Input } from '@/design-system/components/ui/input';
+import { Separator } from '@/design-system/components/ui/separator';
+import { Textarea } from '@/design-system/components/ui/textarea';
+import Image from 'next/image';
+import { MaterialTypeSelect } from '@/features/material/MaterialTypeSelect';
+import { MaterialDataForm } from '@/features/material/MaterialDataForm';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Controller, useForm } from 'react-hook-form';
 import {
   Field,
   FieldDescription,
   FieldLabel,
-} from "@/design-system/components/ui/field";
-import { toast } from "sonner";
+} from '@/design-system/components/ui/field';
+import { toast } from 'sonner';
 
-import { useRouter } from "next/navigation";
-import { FC, useState } from "react";
+import { useRouter } from 'next/navigation';
+import { FC, useState } from 'react';
 import {
   Dropzone,
   DropzoneEmptyState,
-} from "@/design-system/components/ui/shadcn-io/dropzone";
-import z from "zod";
+} from '@/design-system/components/ui/shadcn-io/dropzone';
+import z from 'zod';
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemMedia,
   ItemTitle,
-} from "@/design-system/components/ui/item";
-import { AlertTriangleIcon, CloudCheck, Trash, Upload } from "lucide-react";
-import { FormSection } from "@/features/common/FormSection";
-import { CompanySelect } from "@/features/company/CompanySelect";
-import { createMaterialSupply, MaterialSupply, MaterialSupplySchema, NewMaterialSupplySchema, updateMaterialSupply, VerifiedCompany } from "@/backend";
-import { PriceInput } from "../common/form/input/PriceInput";
-import { CountryDropdown } from "../common/CountryDropdown";
-import { Switch } from "@/design-system/components/ui/switch";
-import { Card, CardContent } from "@/design-system/components/ui/card";
+} from '@/design-system/components/ui/item';
+import { AlertTriangleIcon, CloudCheck, Trash, Upload } from 'lucide-react';
+import { FormSection } from '@/features/common/FormSection';
+import { CompanySelect } from '@/features/company/CompanySelect';
+import {
+  MaterialSupply,
+  MaterialSupplySchema,
+  NewMaterialSupplySchema,
+  Company,
+  SupplyUpdateSchema,
+} from '@rp/core';
+import { PriceInput } from '../common/form/input/PriceInput';
+import { CountryDropdown } from '../common/CountryDropdown';
+import { Switch } from '@/design-system/components/ui/switch';
+import { Card, CardContent } from '@/design-system/components/ui/card';
+import { application } from '@/core';
 
 const FormStateSchema = MaterialSupplySchema.omit({
   createdDate: true,
@@ -50,41 +57,43 @@ export type FormState = z.infer<typeof FormStateSchema>;
 
 const defaultValues: FormState = {
   material: {
-    color: "transparent",
-    type: "abs",
-    condition: "granules",
+    color: 'transparent',
+    type: 'abs',
+    condition: 'granules',
     certificateOfAnalysis: false,
   },
   price: {
     amount: 0,
-    currency: "EUR",
+    currency: 'EUR',
   },
-  companyId: "",
-  name: "",
+  companyId: '',
+  name: '',
   amount: 0,
   location: {
-    country: "",
+    country: '',
   },
   verified: false,
 };
 
 export const EditSupplyForm: FC<{
   supply: MaterialSupply;
-  companies: VerifiedCompany[];
+  companies: Company[];
 }> = ({ supply, companies }) => {
   const router = useRouter();
 
   const onSubmit = async (
     data: FormState,
     files: File[],
-    pictures: File[]
+    pictures: File[],
   ): Promise<void> => {
     try {
-      await updateMaterialSupply({ ...data, id: supply.id }, files, pictures);
-      toast.success("Material supply updated successfully");
+      await application.updateSupply(
+        SupplyUpdateSchema.parse({ ...data, id: supply.id }),
+      );
+      toast.success('Material supply updated successfully');
       router.replace(`/companies/${supply.companyId}/supply/${supply.id}`);
     } catch (error) {
-      toast.error("Failed to update material demand");
+      toast.error('Failed to update material demand');
     }
   };
 
@@ -98,7 +107,7 @@ export const EditSupplyForm: FC<{
 };
 
 export const NewSupplyForm: FC<{
-  companies: VerifiedCompany[];
+  companies: Company[];
   companyId?: string;
 }> = ({ companies, companyId }) => {
   const router = useRouter();
@@ -106,22 +115,22 @@ export const NewSupplyForm: FC<{
   const onSubmit = async (
     data: FormState,
     documents: File[],
-    pictures: File[]
+    pictures: File[],
   ): Promise<void> => {
     try {
       const validatedData = NewMaterialSupplySchema.parse(data);
-      await createMaterialSupply(validatedData, documents, pictures);
-      toast.success("Material supply created successfully");
-      router.push("/supply");
+      await application.createSupply(validatedData);
+      toast.success('Material supply created successfully');
+      router.push('/supply');
     } catch (error) {
-      toast.error("Failed to create material supply");
+      toast.error('Failed to create material supply');
       console.error(error);
     }
   };
 
   return (
     <SupplyForm
-      defaultValues={{ ...defaultValues, companyId: companyId ?? "" }}
+      defaultValues={{ ...defaultValues, companyId: companyId ?? '' }}
       onSubmit={onSubmit}
       companies={companies}
     />
@@ -130,11 +139,11 @@ export const NewSupplyForm: FC<{
 
 const SupplyForm: FC<{
   defaultValues?: FormState;
-  companies: VerifiedCompany[];
+  companies: Company[];
   onSubmit: (
     data: FormState,
     docFiles: File[],
-    pictureFiles: File[]
+    pictureFiles: File[],
   ) => Promise<void>;
 }> = ({ defaultValues, onSubmit: onSubmitCallback, companies }) => {
   const [docFiles, setDocFiles] = useState<File[]>([]);
@@ -145,32 +154,35 @@ const SupplyForm: FC<{
     defaultValues,
   });
 
-  const documents = form.watch("documents") ?? [];
-  const pictures = form.watch("pictures") ?? [];
+  const documents = form.watch('documents') ?? [];
+  const pictures = form.watch('pictures') ?? [];
 
-  const handleDrop = (category: "doc" | "picture", files: File[]) => {
-    if (category === "doc") {
+  const handleDrop = (category: 'doc' | 'picture', files: File[]) => {
+    if (category === 'doc') {
       const pdfFiles = files.filter(
         (file) =>
-          file.type === "application/pdf" ||
-          file.name.toLowerCase().endsWith(".pdf")
+          file.type === 'application/pdf' ||
+          file.name.toLowerCase().endsWith('.pdf'),
       );
       setDocFiles([...docFiles, ...pdfFiles]);
     } else {
       const imageFiles = files.filter(
         (file) =>
-          file.type.startsWith("image/") ||
-          file.name.toLowerCase().endsWith(".jpg") ||
-          file.name.toLowerCase().endsWith(".jpeg") ||
-          file.name.toLowerCase().endsWith(".png")
+          file.type.startsWith('image/') ||
+          file.name.toLowerCase().endsWith('.jpg') ||
+          file.name.toLowerCase().endsWith('.jpeg') ||
+          file.name.toLowerCase().endsWith('.png'),
       );
       setPictureFiles([...pictureFiles, ...imageFiles]);
     }
   };
 
-  const handleRemoveUploadedFile = (category: "doc" | "picture", index: number) => {
-    const array = category === "doc" ? documents : pictures;
-    const valueKey = category === "doc" ? "documents" : "pictures";
+  const handleRemoveUploadedFile = (
+    category: 'doc' | 'picture',
+    index: number,
+  ) => {
+    const array = category === 'doc' ? documents : pictures;
+    const valueKey = category === 'doc' ? 'documents' : 'pictures';
 
     const nextDocuments = array.filter((_, i) => i !== index);
     form.setValue(valueKey, nextDocuments, {
@@ -179,20 +191,27 @@ const SupplyForm: FC<{
     });
   };
 
-  const handleRemoveLocalFile = (category: "doc" | "picture", index: number) => {
-    if (category === "doc") {
+  const handleRemoveLocalFile = (
+    category: 'doc' | 'picture',
+    index: number,
+  ) => {
+    if (category === 'doc') {
       setDocFiles((prev) => prev.filter((_, i) => i !== index));
     } else {
       setPictureFiles((prev) => prev.filter((_, i) => i !== index));
     }
-  }
+  };
 
-  const onSubmit = (d: FormState) => onSubmitCallback(d, docFiles, pictureFiles);
+  const onSubmit = (d: FormState) =>
+    onSubmitCallback(d, docFiles, pictureFiles);
 
   const hasErrors = Object.keys(form.formState.errors).length > 0;
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-8">
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="flex flex-col gap-8"
+    >
       <FormSection
         title="Company"
         description="Assign the material supply to a company"
@@ -263,10 +282,7 @@ const SupplyForm: FC<{
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="location.country">Location</FieldLabel>
-              <CountryDropdown
-                value={field.value}
-                onChange={field.onChange}
-              />
+              <CountryDropdown value={field.value} onChange={field.onChange} />
             </Field>
           )}
         />
@@ -288,14 +304,17 @@ const SupplyForm: FC<{
         title="Commercial information"
         description="Provide commercial information about the material"
       >
-
         <Controller
           name="price"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="price">Price</FieldLabel>
-              <PriceInput name="price" value={field.value} onChange={field.onChange} />
+              <PriceInput
+                name="price"
+                value={field.value}
+                onChange={field.onChange}
+              />
             </Field>
           )}
         />
@@ -311,11 +330,11 @@ const SupplyForm: FC<{
                 placeholder="Amount in kg"
                 onFocus={(e) =>
                   e.target.addEventListener(
-                    "wheel",
+                    'wheel',
                     function (e) {
                       e.preventDefault();
                     },
-                    { passive: false }
+                    { passive: false },
                   )
                 }
               />
@@ -330,14 +349,12 @@ const SupplyForm: FC<{
         title="Documents"
         description=" Provide documents about the material"
       >
-
-
         <Dropzone
-          accept={{ "application/pdf": [".pdf"] }}
+          accept={{ 'application/pdf': ['.pdf'] }}
           maxSize={1024 * 1024 * 10}
           minSize={1024}
           maxFiles={10}
-          onDrop={(e) => handleDrop("doc", e)}
+          onDrop={(e) => handleDrop('doc', e)}
           onError={console.error}
         >
           <DropzoneEmptyState />
@@ -355,7 +372,7 @@ const SupplyForm: FC<{
               <ItemActions>
                 <Button
                   variant="ghost"
-                  onClick={() => handleRemoveUploadedFile("doc", i)}
+                  onClick={() => handleRemoveUploadedFile('doc', i)}
                 >
                   <Trash />
                 </Button>
@@ -375,7 +392,7 @@ const SupplyForm: FC<{
                   variant="ghost"
                   onClick={() =>
                     setDocFiles(
-                      docFiles.slice(0, i).concat(docFiles.slice(i + 1))
+                      docFiles.slice(0, i).concat(docFiles.slice(i + 1)),
                     )
                   }
                 >
@@ -392,17 +409,16 @@ const SupplyForm: FC<{
         title="Images"
         description=" Provide pictures about the material"
       >
-
         <Dropzone
           maxSize={1024 * 1024 * 10}
           minSize={1024}
           maxFiles={10}
           accept={{
-            "image/png": [".png"],
-            "image/jpeg": [".jpg", ".jpeg"],
-            "image/jpg": [".jpg"],
+            'image/png': ['.png'],
+            'image/jpeg': ['.jpg', '.jpeg'],
+            'image/jpg': ['.jpg'],
           }}
-          onDrop={(files) => handleDrop("picture", files)}
+          onDrop={(files) => handleDrop('picture', files)}
           onError={console.error}
         >
           <DropzoneEmptyState />
@@ -425,7 +441,7 @@ const SupplyForm: FC<{
                       size="icon"
                       variant="secondary"
                       className="pointer-events-auto rounded-full border border-border bg-background/80 backdrop-blur"
-                      onClick={() => handleRemoveUploadedFile("picture", index)}
+                      onClick={() => handleRemoveUploadedFile('picture', index)}
                       aria-label="Remove image"
                     >
                       <Trash size={16} />
@@ -435,7 +451,7 @@ const SupplyForm: FC<{
                 <div className="flex items-center gap-2 text-base text-muted-foreground">
                   <CloudCheck size={16} className="shrink-0" />
                   <span className="truncate">
-                    {picture.name ?? picture.url.split("/").pop()}
+                    {picture.name ?? picture.url.split('/').pop()}
                   </span>
                 </div>
               </div>
@@ -456,7 +472,7 @@ const SupplyForm: FC<{
                       size="icon"
                       variant="secondary"
                       className="pointer-events-auto rounded-full border border-border bg-background/80 backdrop-blur"
-                      onClick={() => handleRemoveLocalFile("picture", index)}
+                      onClick={() => handleRemoveLocalFile('picture', index)}
                       aria-label="Remove image"
                     >
                       <Trash size={16} />
@@ -474,11 +490,8 @@ const SupplyForm: FC<{
       </FormSection>
 
       <Separator />
-      
-      <FormSection
-        title="Verification status"
-        description=""
-      >
+
+      <FormSection title="Verification status" description="">
         <Controller
           name="verified"
           control={form.control}
@@ -492,7 +505,8 @@ const SupplyForm: FC<{
                       Verified
                     </FieldLabel>
                     <FieldDescription>
-                      Once verified, the material supply will be displayed publicly
+                      Once verified, the material supply will be displayed
+                      publicly
                     </FieldDescription>
                   </div>
                 </div>
@@ -502,18 +516,16 @@ const SupplyForm: FC<{
                   onCheckedChange={field.onChange}
                   className="w-12! h-7! data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 [&>span]:size-6! [&>span]:data-[state=checked]:translate-x-[calc(100%-2px)]"
                 />
-
               </CardContent>
             </Card>
           )}
         />
       </FormSection>
       <div className="flex items-center justify-end space-x-4">
-        {hasErrors && <div className="text-red-500 text-sm">Form has invalid fields</div>}
-        <Button
-          loading={form.formState.isSubmitting}
-          type="submit"
-        >
+        {hasErrors && (
+          <div className="text-red-500 text-sm">Form has invalid fields</div>
+        )}
+        <Button loading={form.formState.isSubmitting} type="submit">
           Save supply
         </Button>
       </div>

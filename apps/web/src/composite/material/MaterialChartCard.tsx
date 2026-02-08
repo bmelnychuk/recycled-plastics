@@ -4,10 +4,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/design-system/components/ui/card";
-import { AreaChartInteractive } from "./AreaChartInteractive";
+} from '@/design-system/components/ui/card';
+import { AreaChartInteractive } from './AreaChartInteractive';
 
-import { FC } from "react";
+import { FC } from 'react';
 
 export const MaterialChartCard: FC<{ data?: any }> = ({ data }) => {
   return (

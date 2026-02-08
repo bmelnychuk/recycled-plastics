@@ -4,17 +4,17 @@
 //   getPlatformAnalytics,
 // } from "@/backend";
 
-import { AmountAnalyticsCard } from "@/composite/analytics/AmountAnalyticsCard";
-import { MapAnalyticsCard } from "@/composite/analytics/MapAnalyticsCard";
-import { PriceAnalyticsCard } from "@/composite/analytics/PriceAnalyticsCard";
-import { NumberCard } from "@/composite/dashboard/NumberCard";
+// import { AmountAnalyticsCard } from "@/composite/analytics/AmountAnalyticsCard";
+// import { MapAnalyticsCard } from "@/composite/analytics/MapAnalyticsCard";
+// import { PriceAnalyticsCard } from "@/composite/analytics/PriceAnalyticsCard";
+import { NumberCard } from '@/composite/dashboard/NumberCard';
 
 export const revalidate = 43200; // 12 hours in seconds
 
 export const generateMetadata = () => ({
-  title: "Materials | Recycled Plastics",
+  title: 'Materials | Recycled Plastics',
   description:
-    "Browse a list of materials including PET, HDPE, LDPE, PP, PS, ABS, PC, PA, PE and more. See descriptions, colors, countries and prices.",
+    'Browse a list of materials including PET, HDPE, LDPE, PP, PS, ABS, PC, PA, PE and more. See descriptions, colors, countries and prices.',
 });
 
 export default async function Page() {

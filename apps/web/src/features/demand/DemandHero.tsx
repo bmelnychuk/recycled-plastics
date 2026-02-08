@@ -1,5 +1,5 @@
-import { Package, Globe, TrendingUp, Building2 } from "lucide-react";
-import { FC } from "react";
+import { Package, Globe, TrendingUp, Building2 } from 'lucide-react';
+import { FC } from 'react';
 
 export interface DemandHeroProps {
   activeListings: number;
@@ -8,12 +8,17 @@ export interface DemandHeroProps {
   buyers: number;
 }
 
-export const DemandHero: FC<DemandHeroProps> = ({ activeListings, countries, thisWeek, buyers }) => {
+export const DemandHero: FC<DemandHeroProps> = ({
+  activeListings,
+  countries,
+  thisWeek,
+  buyers,
+}) => {
   const stats = [
-    { label: "Active Listings", value: activeListings, icon: Package },
-    { label: "Countries", value: countries, icon: Globe },
-    { label: "Last Week", value: thisWeek, icon: TrendingUp },
-    { label: "Buyers", value: buyers, icon: Building2 },
+    { label: 'Active Listings', value: activeListings, icon: Package },
+    { label: 'Countries', value: countries, icon: Globe },
+    { label: 'Last Week', value: thisWeek, icon: TrendingUp },
+    { label: 'Buyers', value: buyers, icon: Building2 },
   ];
 
   return (
@@ -22,7 +27,8 @@ export const DemandHero: FC<DemandHeroProps> = ({ activeListings, countries, thi
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Demand</h1>
           <p className="text-muted-foreground mt-1">
-            Explore buying requests for recycled plastics from verified buyers worldwide
+            Explore buying requests for recycled plastics from verified buyers
+            worldwide
           </p>
         </div>
         <div className="flex flex-wrap gap-6">

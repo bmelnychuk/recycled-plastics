@@ -1,23 +1,22 @@
-"use client";
+'use client';
 
-import { News } from "@/backend";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/design-system/components/ui/card";
-import { Separator } from "@/design-system/components/ui/separator";
-import { FC } from "react";
+} from '@/design-system/components/ui/card';
+import { Separator } from '@/design-system/components/ui/separator';
+import { FC } from 'react';
 
-const newsDateFormatter = new Intl.DateTimeFormat("en-US", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
+const newsDateFormatter = new Intl.DateTimeFormat('en-US', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
 });
 
-export const NewsCard: FC<{ news: News[] }> = ({ news }) => {
+export const NewsCard: FC<{ news: any[] }> = ({ news }) => {
   return (
     <Card className="flex flex-col h-full">
       <CardHeader>

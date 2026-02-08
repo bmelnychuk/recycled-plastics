@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, {
   useCallback,
@@ -8,7 +8,7 @@ import React, {
   ForwardedRef,
   FC,
   useRef,
-} from "react";
+} from 'react';
 
 import {
   Command,
@@ -17,12 +17,12 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/design-system/components/ui/command";
+} from '@/design-system/components/ui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/design-system/components/ui/popover";
+} from '@/design-system/components/ui/popover';
 import {
   ChevronDown,
   CheckIcon,
@@ -30,11 +30,11 @@ import {
   ChevronsUpDown,
   Check,
   X,
-} from "lucide-react";
-import { countries } from "country-data-list";
-import { cn } from "@/design-system/lib/utils";
-import { Button } from "@/design-system/components/ui/button";
-import { CircleFlag } from "react-circle-flags";
+} from 'lucide-react';
+import { countries } from 'country-data-list';
+import { cn } from '@/design-system/lib/utils';
+import { Button } from '@/design-system/components/ui/button';
+import { CircleFlag } from 'react-circle-flags';
 
 export interface Country {
   alpha2: string;
@@ -73,7 +73,11 @@ export const CountryDropdown: FC<CountryDropdownProps> = ({
   }, []);
 
   const allOptions: Country[] = countries.all.filter(
-    (c) => c.emoji && c.status !== "deleted" && c.ioc !== "PRK" && (!options || options.includes(c.alpha2))
+    (c) =>
+      c.emoji &&
+      c.status !== 'deleted' &&
+      c.ioc !== 'PRK' &&
+      (!options || options.includes(c.alpha2)),
   );
   const selectedCountry = allOptions.find((c) => c.alpha2 === value);
 
@@ -82,7 +86,7 @@ export const CountryDropdown: FC<CountryDropdownProps> = ({
       onChange?.(country.alpha2);
       setOpen(false);
     },
-    [onChange]
+    [onChange],
   );
   const handleClear = useCallback(() => {
     onChange?.(null);
@@ -111,9 +115,9 @@ export const CountryDropdown: FC<CountryDropdownProps> = ({
               <Globe className="text-gray-500" />
             )}
             <span
-              className={selectedCountry ? "text-gray-900" : "text-gray-500"}
+              className={selectedCountry ? 'text-gray-900' : 'text-gray-500'}
             >
-              {selectedCountry ? selectedCountry.name : "Select country..."}
+              {selectedCountry ? selectedCountry.name : 'Select country...'}
             </span>
           </div>
           <ChevronsUpDown className="opacity-50" />
@@ -150,8 +154,8 @@ export const CountryDropdown: FC<CountryDropdownProps> = ({
                     {option.name}
                     <Check
                       className={cn(
-                        "ml-auto",
-                        value === option.alpha2 ? "opacity-100" : "opacity-0"
+                        'ml-auto',
+                        value === option.alpha2 ? 'opacity-100' : 'opacity-0',
                       )}
                     />
                   </CommandItem>

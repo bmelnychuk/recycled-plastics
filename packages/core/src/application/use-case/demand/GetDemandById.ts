@@ -1,7 +1,7 @@
 import { CompanyRepository } from '../../../domain/company/CompanyRepository';
-import { User } from '../../auth/User';
-import { MaterialDemandRepository } from '../../../domain/material/demand/MaterialDemandRepository';
-import { DemandViewModel } from '../../view-model/ViewModels';
+import { SignedInUser } from '../../auth/AuthService';
+import { MaterialDemandRepository } from '../../../domain/demand/MaterialDemandRepository';
+import { DemandViewModel } from '../../view-models';
 
 export class GetDemandById {
   constructor(
@@ -10,7 +10,7 @@ export class GetDemandById {
   ) {}
 
   async invoke(input: {
-    user?: User;
+    user?: SignedInUser;
     id: {
       companyId: string;
       demandId: string;

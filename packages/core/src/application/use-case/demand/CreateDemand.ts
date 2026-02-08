@@ -2,15 +2,14 @@ import z from 'zod';
 import {
   assertCanAccessCompany,
   assertCreateMaterialPermission,
-  User,
-} from '../../auth/User';
+  SignedInUser,
+} from '../../auth/AuthService';
 import {
   MaterialDemand,
   MaterialDemandSchema,
-} from '../../../domain/material/demand/Demand';
+} from '../../../domain/demand/Demand';
 import { newUuid } from '../../../lib/identity';
-import { MaterialDemandRepository } from '../../../domain/material/demand/MaterialDemandRepository';
-
+import { MaterialDemandRepository } from '../../../domain/demand/MaterialDemandRepository';
 
 export const NewMaterialDemandSchema = MaterialDemandSchema.omit({
   createdDate: true,
@@ -25,10 +24,10 @@ export type NewMaterialDemand = z.infer<typeof NewMaterialDemandSchema>;
 export class CreateDemand {
   constructor(
     private readonly materialDemandRepository: MaterialDemandRepository,
-  ) { }
+  ) {}
 
   public async invoke(
-    user: User,
+    user: SignedInUser,
     newDemand: NewMaterialDemand,
   ): Promise<MaterialDemand> {
     assertCreateMaterialPermission(user);

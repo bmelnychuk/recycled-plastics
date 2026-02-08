@@ -1,7 +1,7 @@
-import { MaterialSupplyRepository } from '../../../domain/material/supply/MaterialSupplyRepository';
+import { MaterialSupplyRepository } from '../../../domain/supply/MaterialSupplyRepository';
 import { CompanyRepository } from '../../../domain/company/CompanyRepository';
-import { User } from '../../auth/User';
-import { SupplyViewModel } from '../../view-model/ViewModels';
+import { SignedInUser } from '../../auth/AuthService';
+import { SupplyViewModel } from '../../view-models';
 
 export class GetActiveSupply {
   constructor(
@@ -10,7 +10,7 @@ export class GetActiveSupply {
   ) {}
 
   async invoke(input: {
-    user?: User;
+    user?: SignedInUser;
     startDate?: Date;
   }): Promise<SupplyViewModel[]> {
     const { user, startDate } = input;

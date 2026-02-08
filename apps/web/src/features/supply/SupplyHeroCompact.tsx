@@ -1,15 +1,18 @@
-import { Package, Building2 } from "lucide-react";
-import { FC } from "react";
+import { Package, Building2 } from 'lucide-react';
+import { FC } from 'react';
 
 export interface SupplyHeroCompactProps {
   activeListings: number;
   suppliers: number;
 }
 
-export const SupplyHeroCompact: FC<SupplyHeroCompactProps> = ({ activeListings, suppliers }) => {
+export const SupplyHeroCompact: FC<SupplyHeroCompactProps> = ({
+  activeListings,
+  suppliers,
+}) => {
   const stats = [
-    { label: "Active Listings", value: activeListings, icon: Package },
-    { label: "Suppliers", value: suppliers, icon: Building2 },
+    { label: 'Active Listings', value: activeListings, icon: Package },
+    { label: 'Suppliers', value: suppliers, icon: Building2 },
   ];
 
   return (

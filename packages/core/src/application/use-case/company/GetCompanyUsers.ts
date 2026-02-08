@@ -1,21 +1,24 @@
 import { CompanyRepository } from '../../../domain/company/CompanyRepository';
-import { UserRepository } from '../../../domain/user/UserRepository';
-import { assertCanAccessCompany, assertIsAdmin, User } from '../../auth/User';
-
-import { User as DomainUser } from '../../../domain/user/User';
-import { UserViewModel } from '../../view-model/ViewModels';
+import {
+  assertCanAccessCompany,
+  AuthService,
+  SignedInUser,
+} from '../../auth/AuthService';
 
 export class GetCompanyUsers {
   constructor(
-    private readonly userRepository: UserRepository,
+    private readonly authService: AuthService,
     private readonly companyRepository: CompanyRepository,
   ) {}
 
-  public async invoke(user: User, companyId: string): Promise<UserViewModel[]> {
+  public async invoke(
+    user: SignedInUser,
+    companyId: string,
+  ): Promise<SignedInUser[]> {
     assertCanAccessCompany(user, companyId);
-
     const company = await this.companyRepository.getById(companyId);
-    const users = await this.userRepository.getByCompanyId(companyId);
-    return users.map((u: DomainUser) => ({ ...u, company }));
+    const userIds = company.userIds ?? [];
+    const users = await this.authService.getByExternalIds(userIds);
+    return users;
   }
 }

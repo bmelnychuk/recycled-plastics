@@ -1,4 +1,3 @@
-
 import {
   Card,
   CardAction,
@@ -6,72 +5,72 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/design-system/components/ui/card";
-import Image from "next/image";
-import { ImageZoom } from "@/design-system/components/ui/shadcn-io/image-zoom";
-import { cn } from "@/design-system/lib/utils";
-import { CircleFlag } from "react-circle-flags";
-import { FileText } from "lucide-react";
-import { Button } from "@/design-system/components/ui/button";
-import { Badge } from "@/design-system/components/ui/badge";
-import { FC } from "react";
+} from '@/design-system/components/ui/card';
+import Image from 'next/image';
+import { ImageZoom } from '@/design-system/components/ui/shadcn-io/image-zoom';
+import { cn } from '@/design-system/lib/utils';
+import { CircleFlag } from 'react-circle-flags';
+import { FileText } from 'lucide-react';
+import { Button } from '@/design-system/components/ui/button';
+import { Badge } from '@/design-system/components/ui/badge';
+import { FC } from 'react';
 
 const material = {
-  id: "650e8400-e29b-41d4-a716-446655440009",
-  companyId: "650e8400-e29b-41d4-a716-446655440010",
-  createdDate: "2024-01-23T13:45:00.000Z",
-  updatedDate: "2024-02-01T09:30:00.000Z",
-  name: "PP-123-3321",
-  description: "Flexible EVA compound optimized for medical-grade extrusion.",
+  id: '650e8400-e29b-41d4-a716-446655440009',
+  companyId: '650e8400-e29b-41d4-a716-446655440010',
+  createdDate: '2024-01-23T13:45:00.000Z',
+  updatedDate: '2024-02-01T09:30:00.000Z',
+  name: 'PP-123-3321',
+  description: 'Flexible EVA compound optimized for medical-grade extrusion.',
   material: {
-    type: "eva",
-    color: "black",
-    condition: "regrind",
-    certification: "GRS",
-    contamination: "< 1%",
-    meltFlowIndex: "12 g/10 min",
-    bulkDensity: "0.45 g/cm³",
-    moistureContent: "0.2%",
-    odor: "neutral",
-    packaging: "Big bags",
+    type: 'eva',
+    color: 'black',
+    condition: 'regrind',
+    certification: 'GRS',
+    contamination: '< 1%',
+    meltFlowIndex: '12 g/10 min',
+    bulkDensity: '0.45 g/cm³',
+    moistureContent: '0.2%',
+    odor: 'neutral',
+    packaging: 'Big bags',
   },
-  price: { amount: 210, currency: "EUR" },
+  price: { amount: 210, currency: 'EUR' },
   amount: 1200,
   documents: null,
   pictures: null,
-  location: { country: "IT" },
+  location: { country: 'IT' },
 };
 
 const pictures = [
-  "https://picsum.photos/seed/800/600/600",
-  "https://picsum.photos/seed/801/600/600",
-  "https://picsum.photos/seed/802/600/600",
-  "https://picsum.photos/seed/803/600/600",
-  "https://picsum.photos/seed/804/600/600",
-  "https://picsum.photos/seed/805/600/600",
-  "https://picsum.photos/seed/806/600/600",
-  "https://picsum.photos/seed/807/600/600",
+  'https://picsum.photos/seed/800/600/600',
+  'https://picsum.photos/seed/801/600/600',
+  'https://picsum.photos/seed/802/600/600',
+  'https://picsum.photos/seed/803/600/600',
+  'https://picsum.photos/seed/804/600/600',
+  'https://picsum.photos/seed/805/600/600',
+  'https://picsum.photos/seed/806/600/600',
+  'https://picsum.photos/seed/807/600/600',
 ];
 
 const pdfDocuments = [
-  "https://assets.staging.cirplus.com/catalog/PP-0210-13.pdf",
-  "https://assets.staging.cirplus.com/catalog/PP-0210-13.pdf",
-  "https://assets.staging.cirplus.com/catalog/PP-0210-13.pdf",
+  'https://assets.staging.cirplus.com/catalog/PP-0210-13.pdf',
+  'https://assets.staging.cirplus.com/catalog/PP-0210-13.pdf',
+  'https://assets.staging.cirplus.com/catalog/PP-0210-13.pdf',
 ];
 
 const formatPrice = (amount: number, currency: string): string => {
   const value = amount / 100;
 
-  if (currency === "JPY") {
+  if (currency === 'JPY') {
     return `¥${Math.round(value).toLocaleString()}`;
   }
 
   const currencySymbols: Record<string, string> = {
-    USD: "$",
-    EUR: "€",
-    GBP: "£",
-    CHF: "CHF",
-    CNY: "¥",
+    USD: '$',
+    EUR: '€',
+    GBP: '£',
+    CHF: 'CHF',
+    CNY: '¥',
   };
 
   const symbol = currencySymbols[currency] || currency;
@@ -80,56 +79,56 @@ const formatPrice = (amount: number, currency: string): string => {
 
 const humanizeKey = (key: string) =>
   key
-    .replace(/_/g, " ")
-    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/_/g, ' ')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
     .replace(/\b\w/g, (char) => char.toUpperCase());
 
 const formatPropertyValue = (value: unknown): string => {
   if (value === null || value === undefined) {
-    return "—";
+    return '—';
   }
 
-  if (typeof value === "string") {
+  if (typeof value === 'string') {
     return humanizeKey(value);
   }
 
-  if (typeof value === "number" || typeof value === "boolean") {
+  if (typeof value === 'number' || typeof value === 'boolean') {
     return String(value);
   }
 
   if (Array.isArray(value)) {
-    return value.map(formatPropertyValue).join(", ");
+    return value.map(formatPropertyValue).join(', ');
   }
 
-  if (typeof value === "object") {
+  if (typeof value === 'object') {
     const entries = Object.entries(value as Record<string, unknown>);
 
     if (
       entries.length === 2 &&
-      entries.some(([key]) => key === "min") &&
-      entries.some(([key]) => key === "max")
+      entries.some(([key]) => key === 'min') &&
+      entries.some(([key]) => key === 'max')
     ) {
-      const min = (value as { min?: unknown }).min ?? "—";
-      const max = (value as { max?: unknown }).max ?? "—";
+      const min = (value as { min?: unknown }).min ?? '—';
+      const max = (value as { max?: unknown }).max ?? '—';
       return `${min} – ${max}`;
     }
 
     return entries
       .map(
         ([nestedKey, nestedValue]) =>
-          `${humanizeKey(nestedKey)}: ${formatPropertyValue(nestedValue)}`
+          `${humanizeKey(nestedKey)}: ${formatPropertyValue(nestedValue)}`,
       )
-      .join(", ");
+      .join(', ');
   }
 
   return String(value);
 };
 
 const formatDate = (date: string) =>
-  new Intl.DateTimeFormat("en", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
+  new Intl.DateTimeFormat('en', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
   }).format(new Date(date));
 
 const Stat = ({ label, value }: { label: string; value: string }) => (
@@ -148,7 +147,7 @@ export const MaterialDetailsCard: FC<{ material: { name: string } }> = ({
     ([key, value]) => ({
       label: humanizeKey(key),
       value: formatPropertyValue(value),
-    })
+    }),
   );
 
   return (
@@ -158,7 +157,7 @@ export const MaterialDetailsCard: FC<{ material: { name: string } }> = ({
           {input.name}
         </CardTitle>
         <CardDescription>
-          Listed {formatDate(material.createdDate)} • Last updated{" "}
+          Listed {formatDate(material.createdDate)} • Last updated{' '}
           {formatDate(material.updatedDate)}
         </CardDescription>
         <CardAction>
@@ -175,7 +174,7 @@ export const MaterialDetailsCard: FC<{ material: { name: string } }> = ({
               label="Price / kg"
               value={formatPrice(
                 material.price.amount,
-                material.price.currency
+                material.price.currency,
               )}
             />
             <Stat
@@ -264,7 +263,7 @@ export const MaterialDetailsCard: FC<{ material: { name: string } }> = ({
                 key={picture}
                 className="block"
                 backdropClassName={cn(
-                  '[&_[data-rmiz-modal-overlay="visible"]]:bg-black/80'
+                  '[&_[data-rmiz-modal-overlay="visible"]]:bg-black/80',
                 )}
               >
                 <figure className="group relative aspect-[16/9] overflow-hidden rounded-xl border border-slate-200 bg-white transition-shadow hover:shadow-md">

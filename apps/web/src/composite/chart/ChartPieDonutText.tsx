@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { Label, Pie, PieChart } from "recharts";
+import * as React from 'react';
+import { Label, Pie, PieChart } from 'recharts';
 
 import {
   Card,
@@ -11,53 +11,53 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/design-system/components/ui/card";
+} from '@/design-system/components/ui/card';
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/design-system/components/ui/chart";
-import { FC } from "react";
-import { DefaultCardAction } from "../refactor/DefaultCardAction";
+} from '@/design-system/components/ui/chart';
+import { FC } from 'react';
+import { DefaultCardAction } from '../refactor/DefaultCardAction';
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from "@/design-system/components/ui/toggle-group";
+} from '@/design-system/components/ui/toggle-group';
 
-export const description = "A donut chart with text";
+export const description = 'A donut chart with text';
 
 const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
+  { browser: 'chrome', visitors: 275, fill: 'var(--color-chrome)' },
+  { browser: 'safari', visitors: 200, fill: 'var(--color-safari)' },
+  { browser: 'firefox', visitors: 287, fill: 'var(--color-firefox)' },
+  { browser: 'edge', visitors: 173, fill: 'var(--color-edge)' },
+  { browser: 'other', visitors: 190, fill: 'var(--color-other)' },
 ];
 
 const chartConfig = {
   visitors: {
-    label: "Amount",
+    label: 'Amount',
   },
   chrome: {
-    label: "PP",
-    color: "var(--chart-1)",
+    label: 'PP',
+    color: 'var(--chart-1)',
   },
   safari: {
-    label: "PET",
-    color: "var(--chart-2)",
+    label: 'PET',
+    color: 'var(--chart-2)',
   },
   firefox: {
-    label: "HDPE",
-    color: "var(--chart-3)",
+    label: 'HDPE',
+    color: 'var(--chart-3)',
   },
   edge: {
-    label: "LDPE",
-    color: "var(--chart-4)",
+    label: 'LDPE',
+    color: 'var(--chart-4)',
   },
   other: {
-    label: "Other",
-    color: "var(--chart-5)",
+    label: 'Other',
+    color: 'var(--chart-5)',
   },
 } satisfies ChartConfig;
 
@@ -98,7 +98,7 @@ export const ChartPieDonutText: FC = () => {
               >
                 <Label
                   content={({ viewBox }) => {
-                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                    if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
                       return (
                         <text
                           x={viewBox.cx}
@@ -143,9 +143,9 @@ export const ChartPieDonutText: FC = () => {
                     className="mt-1 h-2.5 w-2.5 shrink-0 rounded-sm border border-border/60"
                     style={{
                       backgroundColor:
-                        "color" in configEntry
+                        'color' in configEntry
                           ? configEntry.color
-                          : fill ?? `var(--chart-${browser})`,
+                          : (fill ?? `var(--chart-${browser})`),
                     }}
                   />
 

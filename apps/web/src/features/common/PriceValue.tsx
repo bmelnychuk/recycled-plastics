@@ -1,26 +1,25 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 interface Price {
-    amount: number;
-    currency: string;
+  amount: number;
+  currency: string;
 }
 
 const currencySymbols: Record<string, string> = {
-    USD: "$",
-    EUR: "€",
-    GBP: "£",
-    CHF: "CHF",
-    CNY: "¥",
+  USD: '$',
+  EUR: '€',
+  GBP: '£',
+  CHF: 'CHF',
+  CNY: '¥',
 };
 
 const formatPrice = (price: Price): string => {
-    const { amount, currency } = price;
-    const value = amount / 100;
-    const symbol = currencySymbols[currency] || currency;
-    return `${symbol}${value.toFixed(2)}`;
+  const { amount, currency } = price;
+  const value = amount / 100;
+  const symbol = currencySymbols[currency] || currency;
+  return `${symbol}${value.toFixed(2)}`;
 };
 
-
 export const PriceValue: FC<{ price: Price }> = ({ price }) => {
-    return <>{formatPrice(price)}</>;
+  return <>{formatPrice(price)}</>;
 };

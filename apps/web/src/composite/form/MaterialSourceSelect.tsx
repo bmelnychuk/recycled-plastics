@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 import {
   Select,
@@ -8,12 +8,12 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/design-system/components/ui/select";
-import { FC } from "react";
-import z from "zod";
-import { Package, Target } from "lucide-react";
+} from '@/design-system/components/ui/select';
+import { FC } from 'react';
+import z from 'zod';
+import { Package, Target } from 'lucide-react';
 
-const MaterialTypeSchema = z.enum(["Post Industrial", "Post Consumer"]);
+const MaterialTypeSchema = z.enum(['Post Industrial', 'Post Consumer']);
 
 export const MaterialSourceSelect: FC<{ name?: string }> = ({ name }) => {
   const options = MaterialTypeSchema.options;

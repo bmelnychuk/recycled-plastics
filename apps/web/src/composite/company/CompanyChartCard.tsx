@@ -4,8 +4,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/design-system/components/ui/card";
-import { AreaChartInteractive } from "./AreaChartInteractive";
+} from '@/design-system/components/ui/card';
+import { AreaChartInteractive } from './AreaChartInteractive';
 
 export const CompanyChartCard = () => {
   return (

@@ -4,11 +4,11 @@ interface Price {
 }
 
 const currencySymbols: Record<string, string> = {
-  USD: "$",
-  EUR: "€",
-  GBP: "£",
-  CHF: "CHF",
-  CNY: "¥",
+  USD: '$',
+  EUR: '€',
+  GBP: '£',
+  CHF: 'CHF',
+  CNY: '¥',
 };
 
 export const formatPrice = (price: Price): string => {

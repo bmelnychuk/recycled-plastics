@@ -1,6 +1,17 @@
 import { z } from 'zod';
-import { AddressSchema, ColorCodeSchema, DocumentSchema } from '../common/types';
+import {
+  AddressSchema,
+  ColorCodeSchema,
+  DocumentSchema,
+} from '../common/common';
 
+export const CompanyContactSchema = z.object({
+  firstName: z.string().nonempty(),
+  lastName: z.string().nonempty(),
+  email: z.email().toLowerCase(),
+  title: z.string().optional(),
+  phone: z.string().nonempty(),
+});
 
 export const CompanySchema = z.object({
   id: z.uuid(),
@@ -13,6 +24,7 @@ export const CompanySchema = z.object({
   email: z.email().toLowerCase(),
   phone: z.string().nonempty(),
   address: AddressSchema,
+  mainContact: CompanyContactSchema,
   branding: z
     .object({
       logo: z.url().optional(),
@@ -21,6 +33,7 @@ export const CompanySchema = z.object({
     .optional(),
   verified: z.boolean(),
   privateDocuments: z.array(DocumentSchema).optional(),
+  userIds: z.array(z.uuid()).optional(),
 });
 
 export const CompanyDetailsSchema = CompanySchema.extend({
@@ -30,3 +43,4 @@ export const CompanyDetailsSchema = CompanySchema.extend({
 
 export type Company = z.infer<typeof CompanySchema>;
 export type CompanyDetails = z.infer<typeof CompanyDetailsSchema>;
+export type CompanyContact = z.infer<typeof CompanyContactSchema>;

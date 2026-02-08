@@ -1,19 +1,12 @@
+import { Company } from '../../../domain/company/Company';
 import { CompanyRepository } from '../../../domain/company/CompanyRepository';
-import { UserRepository } from '../../../domain/user/UserRepository';
-import { CompanyViewModel } from '../../view-model/ViewModels';
+import { assertUser, SignedInUser } from '../../auth/AuthService';
 
-export class GetCompanyDetails {
-  constructor(
-    private readonly companyRepository: CompanyRepository,
-    private readonly userRepository: UserRepository,
-  ) {}
+export class GetCompanyById {
+  constructor(private readonly companyRepository: CompanyRepository) {}
 
-  public async invoke(companyId: string): Promise<CompanyViewModel> {
-    const [company, contacts] = await Promise.all([
-      this.companyRepository.getDetailsById(companyId),
-      this.userRepository.getByCompanyId(companyId),
-    ]);
-    const mainContact = contacts[0];
-    return { ...company, mainContact };
+  public invoke(user: SignedInUser, companyId: string): Promise<Company> {
+    assertUser(user);
+    return this.companyRepository.getDetailsById(companyId);
   }
 }

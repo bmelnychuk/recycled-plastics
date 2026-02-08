@@ -1,14 +1,8 @@
-import {
-  Company,
-  CompanySchema
-} from '../../../domain/company/Company';
+import { Company, CompanySchema } from '../../../domain/company/Company';
 import { CompanyRepository } from '../../../domain/company/CompanyRepository';
-import { User } from '../../auth/User';
+import { SignedInUser, AuthService } from '../../auth/AuthService';
 import { newUuid } from '../../../lib/identity';
-import { UserRepository } from '../../../domain/user/UserRepository';
-import { UserSchema } from '../../../domain/user/User';
 import { z } from 'zod';
-
 
 export const NewCompanySchema = CompanySchema.omit({
   createdDate: true,
@@ -23,34 +17,39 @@ export type NewCompany = z.infer<typeof NewCompanySchema>;
 export class CreateCompany {
   constructor(
     private readonly companyRepository: CompanyRepository,
-    private readonly userRepository: UserRepository,
-  ) { }
+    // private readonly authService: AuthService
+  ) {}
 
-  public async invoke(user: User, newCompany: NewCompany): Promise<Company> {
+  public async invoke(
+    user: SignedInUser,
+    newCompany: NewCompany,
+  ): Promise<Company> {
     if (!user.isAdmin) {
       return this.createUnverifiedCompany(user, newCompany);
+    } else {
+      const now = new Date().toISOString();
+      const company = CompanySchema.parse({
+        ...newCompany,
+        id: newCompany.id ?? newUuid(),
+        createdDate: now,
+        updatedDate: now,
+        userIds: [],
+      });
+
+      await this.companyRepository.create(company);
+      return company;
     }
-
-    const now = new Date().toISOString();
-    const company = CompanySchema.parse({
-      ...newCompany,
-      id: newCompany.id ?? newUuid(),
-      createdDate: now,
-      updatedDate: now,
-    });
-
-    await this.companyRepository.create(company);
-
-    return company;
   }
 
   public async createUnverifiedCompany(
-    user: User,
+    user: SignedInUser,
     newCompany: NewCompany,
   ): Promise<Company> {
-    const userRecord = await this.userRepository.getById(user.id);
-    if (user.companyId || userRecord.companyId)
-      throw new Error('User already belongs to a company');
+    if (user.companyId) throw new Error('User already belongs to a company');
+
+    const userId = user.id ?? newUuid();
+
+    // await this.authService.attachExternalId({ authId: user.authId, userId });
 
     const now = new Date().toISOString();
     const company = CompanySchema.parse({
@@ -59,18 +58,10 @@ export class CreateCompany {
       createdDate: now,
       updatedDate: now,
       verified: false,
+      userIds: [user.id],
     });
 
-    const updatedUser = UserSchema.parse({
-      ...userRecord,
-      companyId: company.id,
-    });
-
-    await Promise.all([
-      this.userRepository.update(updatedUser),
-      this.companyRepository.create(company),
-    ]);
-
+    await this.companyRepository.create(company);
     return company;
   }
 }

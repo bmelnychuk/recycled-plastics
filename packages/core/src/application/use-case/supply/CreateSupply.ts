@@ -1,13 +1,13 @@
-import { MaterialSupplyRepository } from '../../../domain/material/supply/MaterialSupplyRepository';
+import { MaterialSupplyRepository } from '../../../domain/supply/MaterialSupplyRepository';
 import {
   assertCanAccessCompany,
   assertCreateMaterialPermission,
-  User,
-} from '../../auth/User';
+  SignedInUser,
+} from '../../auth/AuthService';
 import {
   MaterialSupply,
-  MaterialSupplySchema
-} from '../../../domain/material/supply/Supply';
+  MaterialSupplySchema,
+} from '../../../domain/supply/Supply';
 import { newUuid } from '../../../lib/identity';
 import z from 'zod';
 
@@ -21,11 +21,11 @@ export const NewMaterialSupplySchema = MaterialSupplySchema.omit({
 
 export type NewMaterialSupply = z.infer<typeof NewMaterialSupplySchema>;
 
-export class CreateMaterialSupply {
-  constructor(private readonly supplyRepository: MaterialSupplyRepository) { }
+export class CreateSupply {
+  constructor(private readonly supplyRepository: MaterialSupplyRepository) {}
 
   public async invoke(
-    user: User,
+    user: SignedInUser,
     newSupply: NewMaterialSupply,
   ): Promise<MaterialSupply> {
     assertCreateMaterialPermission(user);

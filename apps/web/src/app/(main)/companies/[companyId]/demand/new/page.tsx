@@ -1,17 +1,19 @@
-import { getCompanyDetails } from "@/backend/api";
-import { notFound } from "next/navigation";
-import { NewDemandForm } from "@/features/demand/DemandForm";
-import { getSignedInUser } from "@/backend/api/session";
+import { notFound } from 'next/navigation';
+import { NewDemandForm } from '@/features/demand/DemandForm';
+import { application } from '@/core';
 
 export default async function Page({
   params,
 }: {
   params: Promise<{ companyId: string }>;
 }) {
-  const user = await getSignedInUser();
   const { companyId } = await params;
-  const company = await getCompanyDetails(companyId);
-  if (!company || user.companyId !== companyId) {
+  const [user, company] = await Promise.all([
+    application.getCurrentUser(),
+    application.getCompanyById(companyId),
+  ]);
+
+  if (!company || user?.companyId !== companyId) {
     notFound();
   } else {
     return (

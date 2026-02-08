@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { FC, useState, useCallback, useEffect, useRef } from "react";
+import { FC, useState, useCallback, useEffect, useRef } from 'react';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandItem,
   CommandList,
-} from "@/design-system/components/ui/command";
+} from '@/design-system/components/ui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/design-system/components/ui/popover";
-import { Input } from "@/design-system/components/ui/input";
-import { Building2, Check, X, Search } from "lucide-react";
-import { cn } from "@/design-system/lib/utils";
+} from '@/design-system/components/ui/popover';
+import { Input } from '@/design-system/components/ui/input';
+import { Building2, Check, X, Search } from 'lucide-react';
+import { cn } from '@/design-system/lib/utils';
 
 type CompanyId = string;
 
@@ -37,11 +37,11 @@ export const CompanySelect: FC<{
   value,
   onChange,
   disabled,
-  placeholder = "Type to search companies...",
+  placeholder = 'Type to search companies...',
   name,
 }) => {
   const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [triggerWidth, setTriggerWidth] = useState<number | undefined>();
   const triggerRef = useRef<HTMLDivElement>(null);
 
@@ -60,7 +60,7 @@ export const CompanySelect: FC<{
   }, [selectedCompany]);
 
   const filteredOptions = options.filter((company) =>
-    company.name.toLowerCase().includes(inputValue.toLowerCase())
+    company.name.toLowerCase().includes(inputValue.toLowerCase()),
   );
 
   const handleSelect = useCallback(
@@ -69,7 +69,7 @@ export const CompanySelect: FC<{
       setInputValue(company.name);
       setOpen(false);
     },
-    [onChange]
+    [onChange],
   );
 
   const handleClear = useCallback(
@@ -78,10 +78,10 @@ export const CompanySelect: FC<{
       e.preventDefault();
       e.stopPropagation();
       onChange(undefined);
-      setInputValue("");
+      setInputValue('');
       setOpen(false);
     },
-    [onChange]
+    [onChange],
   );
 
   const handleInputChange = useCallback(
@@ -95,7 +95,7 @@ export const CompanySelect: FC<{
         onChange(undefined);
       }
     },
-    [selectedCompany, onChange]
+    [selectedCompany, onChange],
   );
 
   const handleInputFocus = useCallback(() => {
@@ -111,7 +111,7 @@ export const CompanySelect: FC<{
       }
       setOpen(newOpen);
     },
-    [inputValue]
+    [inputValue],
   );
 
   return (
@@ -119,9 +119,17 @@ export const CompanySelect: FC<{
       <PopoverTrigger asChild>
         <div ref={triggerRef} className="relative">
           <div className="absolute left-3 top-1/2 -translate-y-1/2">
-            {selectedCompany 
-            ? <Building2 size={16} className={cn("mr-2", selectedCompany.verified ? "text-green-500" : "text-gray-500")} />
-            : <Search className="h-4 w-4 text-gray-500" />}
+            {selectedCompany ? (
+              <Building2
+                size={16}
+                className={cn(
+                  'mr-2',
+                  selectedCompany.verified ? 'text-green-500' : 'text-gray-500',
+                )}
+              />
+            ) : (
+              <Search className="h-4 w-4 text-gray-500" />
+            )}
           </div>
           <Input
             name={name}
@@ -161,12 +169,18 @@ export const CompanySelect: FC<{
                   value={option.name}
                   onSelect={() => handleSelect(option)}
                 >
-                  <Building2 size={16} className={cn("mr-2", option.verified ? "text-green-500" : "text-gray-500")} />
+                  <Building2
+                    size={16}
+                    className={cn(
+                      'mr-2',
+                      option.verified ? 'text-green-500' : 'text-gray-500',
+                    )}
+                  />
                   {option.name}
                   <Check
                     className={cn(
-                      "ml-auto",
-                      value === option.id ? "opacity-100" : "opacity-0"
+                      'ml-auto',
+                      value === option.id ? 'opacity-100' : 'opacity-0',
                     )}
                   />
                 </CommandItem>

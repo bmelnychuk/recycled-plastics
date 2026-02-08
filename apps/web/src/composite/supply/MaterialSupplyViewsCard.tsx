@@ -4,10 +4,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/design-system/components/ui/card";
-import { DateValueAreaChart } from "../chart/DateValueAreaChart";
+} from '@/design-system/components/ui/card';
+import { DateValueAreaChart } from '../chart/DateValueAreaChart';
 
-import { FC } from "react";
+import { FC } from 'react';
 
 export const MaterialSupplyViewsCard: FC<{ data?: any }> = ({ data }) => {
   const hasData = (data?.data?.length ?? 0) > 1;

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Button } from "@/design-system/components/ui/button";
+import { Button } from '@/design-system/components/ui/button';
 import {
   Card,
   CardContent,
@@ -9,41 +9,41 @@ import {
   CardTitle,
   CardDescription,
   CardAction,
-} from "@/design-system/components/ui/card";
-import { Check } from "lucide-react";
-import { FC } from "react";
-import { toast } from "sonner";
-import { useState } from "react";
-import { SignedInUser } from "@/backend";
-import { Badge } from "@/design-system/components/ui/badge";
+} from '@/design-system/components/ui/card';
+import { Check } from 'lucide-react';
+import { FC } from 'react';
+import { toast } from 'sonner';
+import { useState } from 'react';
+import { SignedInUser } from '@rp/core';
+import { Badge } from '@/design-system/components/ui/badge';
 
 const FREE_FEATURES = [
-  "Basic material listings",
-  "Up to 10 active listings",
-  "Community support",
-  "Basic analytics",
+  'Basic material listings',
+  'Up to 10 active listings',
+  'Community support',
+  'Basic analytics',
 ];
 
 const PRO_FEATURES = [
-  "<strong>Unlimited</strong> material listings",
-  "<strong>Advanced analytics</strong> dashboard",
-  "<strong>Priority</strong> customer support",
-  "<strong>API access</strong> for integrations",
-  "<strong>Custom branding</strong> options",
-  "<strong>Export</strong> data & reports",
+  '<strong>Unlimited</strong> material listings',
+  '<strong>Advanced analytics</strong> dashboard',
+  '<strong>Priority</strong> customer support',
+  '<strong>API access</strong> for integrations',
+  '<strong>Custom branding</strong> options',
+  '<strong>Export</strong> data & reports',
 ];
 
 export const BillingInfo: FC<{ user: SignedInUser }> = ({ user }) => {
   const [isUpgrading, setIsUpgrading] = useState(false);
-  const isPro = user.plan === "pro";
+  const isPro = false;
 
   const handleUpgradeToPro = async () => {
     setIsUpgrading(true);
     try {
-      const response = await fetch("/api/stripe/checkout", {
-        method: "POST",
+      const response = await fetch('/api/stripe/checkout', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       });
 
@@ -52,10 +52,10 @@ export const BillingInfo: FC<{ user: SignedInUser }> = ({ user }) => {
       if (data.url) {
         window.location.href = data.url;
       } else {
-        toast.error("Failed to start checkout session");
+        toast.error('Failed to start checkout session');
       }
     } catch (error) {
-      toast.error("Failed to start checkout session");
+      toast.error('Failed to start checkout session');
     } finally {
       setIsUpgrading(false);
     }
@@ -64,10 +64,10 @@ export const BillingInfo: FC<{ user: SignedInUser }> = ({ user }) => {
   const handleManageSubscription = async () => {
     setIsUpgrading(true);
     try {
-      const response = await fetch("/api/stripe/portal", {
-        method: "POST",
+      const response = await fetch('/api/stripe/portal', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       });
 
@@ -76,10 +76,10 @@ export const BillingInfo: FC<{ user: SignedInUser }> = ({ user }) => {
       if (data.url) {
         window.location.href = data.url;
       } else {
-        toast.error("Failed to open billing portal");
+        toast.error('Failed to open billing portal');
       }
     } catch (error) {
-      toast.error("Failed to open billing portal");
+      toast.error('Failed to open billing portal');
     } finally {
       setIsUpgrading(false);
     }
@@ -154,7 +154,7 @@ export const BillingInfo: FC<{ user: SignedInUser }> = ({ user }) => {
                   <span className="ml-2 text-muted-foreground">/month</span>
                 </div>
                 <CardDescription className="mt-2">
-                  To unlock all features                  
+                  To unlock all features
                 </CardDescription>
               </div>
             </div>
@@ -186,10 +186,10 @@ export const BillingInfo: FC<{ user: SignedInUser }> = ({ user }) => {
               className="w-full"
             >
               {isUpgrading
-                ? "Processing..."
+                ? 'Processing...'
                 : isPro
-                ? "Manage Subscription"
-                : "Upgrade to Pro"}
+                  ? 'Manage Subscription'
+                  : 'Upgrade to Pro'}
             </Button>
           </CardFooter>
         </Card>

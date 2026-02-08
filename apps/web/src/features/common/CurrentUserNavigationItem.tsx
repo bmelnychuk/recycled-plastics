@@ -1,91 +1,122 @@
-"use client";
+'use client';
 
-import { Avatar, AvatarFallback } from "@/design-system/components/ui/avatar";
+import { Avatar, AvatarFallback } from '@/design-system/components/ui/avatar';
+import { LogOut, Settings, User } from 'lucide-react';
+import { useClerk } from '@clerk/nextjs';
+
+import Link from 'next/link';
+
+import { FC, useState } from 'react';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/design-system/components/ui/dropdown-menu";
-import { Building2, LogOut, Sparkles, User } from "lucide-react";
-import { useClerk } from "@clerk/nextjs";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/design-system/components/ui/popover';
+import { Button } from '@/design-system/components/ui/button';
+import { Separator } from '@/design-system/components/ui/separator';
 
-import Link from "next/link";
-
-import { FC } from "react";
-import { SignedInUser } from "@/backend";
+export interface UserProfile {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
 
 interface Props {
-  user: SignedInUser;
+  user: UserProfile;
 }
 
 export const CurrentUserNavigationItem: FC<Props> = ({ user }) => {
-  const { signOut } = useClerk();
-  const idAdmin = user.isAdmin;
+  const clerk = useClerk();
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
-  // const offerUpgrade = user.plan !== "pro" && !idAdmin;
-  const offerUpgrade = false;
-  
-  const initial = user.firstName.charAt(0).toUpperCase();
-
-  const hasVerifiedCompany = user.companyId && user.company?.verified;  
+  if (!user) return null;
+  const initial = user.firstName?.charAt(0).toUpperCase() || '~';
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+      <PopoverTrigger asChild>
         <Avatar className="cursor-pointer border border-black">
           <AvatarFallback>{initial}</AvatarFallback>
         </Avatar>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        side="bottom"
-        align="end"
-        alignOffset={8}
-        className="w-64"
-      >
-        <DropdownMenuLabel className="p-0 font-normal">
-          <div className="flex items-center gap-3 px-3 py-3 text-left text-sm">
+      </PopoverTrigger>
+      <PopoverContent align="end" onOpenAutoFocus={(e) => e.preventDefault()}>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
             <Avatar className="h-10 w-10 border border-black">
               <AvatarFallback>{initial}</AvatarFallback>
             </Avatar>
-            <div className="grid flex-1 gap-0.5 text-left text-sm leading-tight">
-              <span className="truncate font-medium">
+            <div className="flex flex-col gap-0.5">
+              <span className="text-sm font-bold">
                 {user.firstName} {user.lastName}
               </span>
-              <span className="mt-0.5 truncate text-xs font-medium text-primary">
-                {user.plan === "pro" ? "Pro" : "Free"} Plan
+              <span className="text-xs text-muted-foreground">
+                {user.email}
               </span>
             </div>
           </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/profile">
-            <User />
-            Profile
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href={hasVerifiedCompany ? "/company" : "/company-profile"}>
-            <Building2 />
-            My Company
-          </Link>
-        </DropdownMenuItem>
-        {offerUpgrade && (
-          <DropdownMenuItem asChild>
-            <Link href="/billing">
-              <Sparkles /> Upgrade to Pro
-            </Link>
-          </DropdownMenuItem>
-        )}
+          <Separator />
+          <div className="flex flex-col gap-1">
+            <Button
+              variant="ghost"
+              className="justify-start gap-2"
+              asChild
+              onClick={() => setIsPopoverOpen(false)}
+            >
+              <Link href="/settings">
+                <Settings /> Settings
+              </Link>
+            </Button>
 
-        <DropdownMenuItem onClick={() => signOut()}>
-          <LogOut />
-          Sign out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+            <Button
+              variant="ghost"
+              className="justify-start gap-2"
+              onClick={() => {
+                setIsPopoverOpen(false);
+                clerk.openUserProfile();
+              }}
+            >
+              <User /> Profile
+            </Button>
+
+            <Button
+              variant="ghost"
+              className="justify-start gap-2"
+              onClick={() => {
+                setIsPopoverOpen(false);
+                clerk.signOut();
+              }}
+            >
+              <LogOut /> Sign out
+            </Button>
+          </div>
+          <Separator />
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
+            <a
+              href="/legal/terms"
+              className="hover:text-foreground transition-colors"
+              onClick={() => setIsPopoverOpen(false)}
+            >
+              Terms
+            </a>
+            <span>·</span>
+            <a
+              href="/legal/privacy"
+              className="hover:text-foreground transition-colors"
+              onClick={() => setIsPopoverOpen(false)}
+            >
+              Privacy
+            </a>
+            <span>·</span>
+            <a
+              href="/legal/imprint"
+              className="hover:text-foreground transition-colors"
+              onClick={() => setIsPopoverOpen(false)}
+            >
+              Imprint
+            </a>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 };

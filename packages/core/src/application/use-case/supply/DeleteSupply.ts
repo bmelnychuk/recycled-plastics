@@ -1,11 +1,11 @@
-import { assertCanAccessCompany, User } from '../../auth/User';
-import { MaterialSupplyRepository } from '../../../domain/material/supply/MaterialSupplyRepository';
+import { assertCanAccessCompany, SignedInUser } from '../../auth/AuthService';
+import { MaterialSupplyRepository } from '../../../domain/supply/MaterialSupplyRepository';
 
 export class DeleteSupply {
   constructor(private readonly supplyRepository: MaterialSupplyRepository) {}
 
   public async invoke(
-    user: User,
+    user: SignedInUser,
     id: { companyId: string; supplyId: string },
   ): Promise<void> {
     const { companyId, supplyId } = id;

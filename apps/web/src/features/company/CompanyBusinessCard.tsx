@@ -1,15 +1,15 @@
-import { Company } from "@/backend";
+import { Company } from '@rp/core';
 import {
   Card,
   CardAction,
   CardContent,
   CardHeader,
-} from "@/design-system/components/ui/card";
-import { ExternalLink, Globe, Mail, MapPin } from "lucide-react";
-import Link from "next/link";
-import { countries } from "country-data-list";
-import { CompanyLogo } from "../../composite/company/CompanyLogo";
-import { Button } from "@/design-system/components/ui/button";
+} from '@/design-system/components/ui/card';
+import { ExternalLink, Globe, Mail, MapPin } from 'lucide-react';
+import Link from 'next/link';
+import { countries } from 'country-data-list';
+import { CompanyLogo } from '../../composite/company/CompanyLogo';
+import { Button } from '@/design-system/components/ui/button';
 
 export const CompanyBusinessCard = ({ company }: { company: Company }) => {
   const country = company.address.country;
@@ -37,7 +37,9 @@ export const CompanyBusinessCard = ({ company }: { company: Company }) => {
         </div>
         <CardAction>
           <Link href={`/companies/${company.id}`} target="_blank">
-            <Button variant="ghost"><ExternalLink /></Button>
+            <Button variant="ghost">
+              <ExternalLink />
+            </Button>
           </Link>
         </CardAction>
       </CardHeader>

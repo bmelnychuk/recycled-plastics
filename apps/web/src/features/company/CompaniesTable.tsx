@@ -1,64 +1,68 @@
-"use client";
+'use client';
 
-import { ColumnDef } from "@tanstack/react-table";
-import { Table as TanStackTable } from "@tanstack/react-table";
-import { Company } from "@/backend";
-import { DataTable } from "@/design-system/custom/data-table";
-import { FC } from "react";
-import Link from "next/link";
-import { CircleFlag } from "react-circle-flags";
-import { formatDate } from "../../composite/common/date-utils";
-import { Button } from "@/design-system/components/ui/button";
-import { Toggle } from "@/design-system/components/ui/toggle";
-import { CheckCircle, Circle, Plus, Search } from "lucide-react";
+import { ColumnDef } from '@tanstack/react-table';
+import { Table as TanStackTable } from '@tanstack/react-table';
+import { Company } from '@rp/core';
+import { DataTable } from '@/design-system/custom/data-table';
+import { FC } from 'react';
+import Link from 'next/link';
+import { CircleFlag } from 'react-circle-flags';
+import { formatDate } from '../../composite/common/date-utils';
+import { Button } from '@/design-system/components/ui/button';
+import { Toggle } from '@/design-system/components/ui/toggle';
+import { CheckCircle, Circle, Plus, Search } from 'lucide-react';
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@/design-system/components/ui/input-group";
+} from '@/design-system/components/ui/input-group';
 
 const columns: ColumnDef<Company>[] = [
   {
-    id: "search",
+    id: 'search',
     header: () => null,
     cell: () => null,
     size: 0,
     accessorFn: (row) =>
-      `${row.name} ${row.email ?? ""} ${row.industry ?? ""} ${row.address.country ?? ""}`.toLowerCase(),
+      `${row.name} ${row.email ?? ''} ${row.industry ?? ''} ${row.address.country ?? ''}`.toLowerCase(),
     filterFn: (row, columnId, filterValue) => {
-      const searchable = (row.getValue(columnId) as string) ?? "";
+      const searchable = (row.getValue(columnId) as string) ?? '';
       return searchable.includes((filterValue as string).toLowerCase());
     },
     enableSorting: false,
   },
   {
-    accessorKey: "name",
-    header: "Company",
+    accessorKey: 'name',
+    header: 'Company',
     size: 200,
     cell: ({ row }) => (
       <div onClick={(e) => e.stopPropagation()}>
-        <Link href={`/admin/companies/${row.original.id}/edit`} className="underline">
+        <Link
+          href={`/admin/companies/${row.original.id}/edit`}
+          className="underline"
+        >
           {row.original.name}
         </Link>
       </div>
     ),
   },
   {
-    accessorKey: "createdDate",
-    header: "Created date",
+    accessorKey: 'createdDate',
+    header: 'Created date',
     accessorFn: ({ createdDate }) => formatDate(createdDate),
     size: 120,
   },
   {
-    accessorKey: "verified",
-    header: "Verified",
+    accessorKey: 'verified',
+    header: 'Verified',
     size: 100,
     cell: ({ row }) => (
       <div className="h-12 flex items-center">
-        {row.original.verified
-          ? <CheckCircle className="w-4 h-4 text-green-500" />
-          : <Circle className="w-4 h-4 text-gray-500" />
-        }
+        {row.original.verified ? (
+          <CheckCircle className="w-4 h-4 text-green-500" />
+        ) : (
+          <Circle className="w-4 h-4 text-gray-500" />
+        )}
       </div>
     ),
     filterFn: (row, columnId, filterValue) => {
@@ -67,18 +71,18 @@ const columns: ColumnDef<Company>[] = [
     },
   },
   {
-    accessorKey: "industry",
-    header: "Industry",
+    accessorKey: 'industry',
+    header: 'Industry',
     size: 150,
   },
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: 'email',
+    header: 'Email',
     size: 200,
   },
   {
-    accessorKey: "website",
-    header: "Website",
+    accessorKey: 'website',
+    header: 'Website',
     size: 200,
     cell: ({ row }) =>
       row.original.website ? (
@@ -88,9 +92,9 @@ const columns: ColumnDef<Company>[] = [
       ) : null,
   },
   {
-    id: "country",
-    accessorKey: "location.country",
-    header: "Country",
+    id: 'country',
+    accessorKey: 'location.country',
+    header: 'Country',
     size: 80,
     cell: ({ row }) => (
       <div className="h-12 flex items-center">
@@ -108,7 +112,7 @@ const columns: ColumnDef<Company>[] = [
 
 const getFilterValue = (
   table: TanStackTable<Company>,
-  columnId: string
+  columnId: string,
 ): string | undefined => {
   return table.getColumn(columnId)?.getFilterValue() as string | undefined;
 };
@@ -116,14 +120,12 @@ const getFilterValue = (
 const setFilterValue = (
   table: TanStackTable<Company>,
   columnId: string,
-  value: string
+  value: string,
 ): void => {
   table.getColumn(columnId)?.setFilterValue(value);
 };
 
-export const CompaniesTable: FC<{ companies: Company[] }> = ({
-  companies,
-}) => {
+export const CompaniesTable: FC<{ companies: Company[] }> = ({ companies }) => {
   return (
     <DataTable
       columns={columns}
@@ -136,9 +138,9 @@ export const CompaniesTable: FC<{ companies: Company[] }> = ({
               <InputGroup className="bg-background hover:bg-accent hover:text-accent-foreground transition-colors">
                 <InputGroupInput
                   placeholder="Search"
-                  value={getFilterValue(table, "search") || ""}
+                  value={getFilterValue(table, 'search') || ''}
                   onChange={(e) =>
-                    setFilterValue(table, "search", e.target.value)
+                    setFilterValue(table, 'search', e.target.value)
                   }
                 />
                 <InputGroupAddon className="text-muted-foreground">
@@ -149,12 +151,14 @@ export const CompaniesTable: FC<{ companies: Company[] }> = ({
             <Toggle
               variant="outline"
               className="bg-background data-[state=on]:bg-background"
-              pressed={!!table.getColumn("verified")?.getFilterValue()}
+              pressed={!!table.getColumn('verified')?.getFilterValue()}
               onPressedChange={(pressed) =>
-                table.getColumn("verified")?.setFilterValue(pressed || undefined)
+                table
+                  .getColumn('verified')
+                  ?.setFilterValue(pressed || undefined)
               }
             >
-              {table.getColumn("verified")?.getFilterValue() ? (
+              {table.getColumn('verified')?.getFilterValue() ? (
                 <>
                   <CheckCircle className="w-4 h-4" />
                   Show all

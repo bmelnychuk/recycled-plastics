@@ -1,15 +1,18 @@
-import { Package, Building2 } from "lucide-react";
-import { FC } from "react";
+import { Package, Building2 } from 'lucide-react';
+import { FC } from 'react';
 
 export interface DemandHeroCompactProps {
   activeListings: number;
   buyers: number;
 }
 
-export const DemandHeroCompact: FC<DemandHeroCompactProps> = ({ activeListings, buyers }) => {
+export const DemandHeroCompact: FC<DemandHeroCompactProps> = ({
+  activeListings,
+  buyers,
+}) => {
   const stats = [
-    { label: "Active Listings", value: activeListings, icon: Package },
-    { label: "Buyers", value: buyers, icon: Building2 },
+    { label: 'Active Listings', value: activeListings, icon: Package },
+    { label: 'Buyers', value: buyers, icon: Building2 },
   ];
 
   return (
@@ -18,7 +21,8 @@ export const DemandHeroCompact: FC<DemandHeroCompactProps> = ({ activeListings, 
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Demand</h1>
           <p className="text-muted-foreground mt-1">
-            Explore buying requests for recycled plastics from verified buyers worldwide
+            Explore buying requests for recycled plastics from verified buyers
+            worldwide
           </p>
         </div>
         <div className="flex flex-wrap gap-6">

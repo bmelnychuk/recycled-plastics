@@ -1,29 +1,30 @@
-import { MaterialSupply } from "@/backend";
-import { FC, useState } from "react";
-import Link from "next/link";
-import { Button } from "@/design-system/components/ui/button";
-import {
-  ExternalLink,
-  FileText,
-} from "lucide-react";
+import { MaterialSupply } from '@rp/core';
+import { FC, useState } from 'react';
+import Link from 'next/link';
+import { Button } from '@/design-system/components/ui/button';
+import { ExternalLink, FileText } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from "@/design-system/components/ui/sheet";
-import { CircleFlag } from "react-circle-flags";
-import { PriceValue } from "@/features/common/PriceValue";
-import Image from "next/image";
-import { ScrollArea } from "@/design-system/components/ui/scroll-area";
-import { CountryName } from "../common/CountryName";
-import { MaterialTypeLabel, MinMaxValueLabel } from "@/features/material/labels";
-import { ColorLabel } from "../material/MaterialColor";
-import { MaterialDataTable } from "../material/MaterialDataTable";
+} from '@/design-system/components/ui/sheet';
+import { CircleFlag } from 'react-circle-flags';
+import { PriceValue } from '@/features/common/PriceValue';
+import Image from 'next/image';
+import { ScrollArea } from '@/design-system/components/ui/scroll-area';
+import { CountryName } from '../common/CountryName';
+import {
+  MaterialTypeLabel,
+  MinMaxValueLabel,
+} from '@/features/material/labels';
+import { ColorLabel } from '../material/MaterialColor';
+import { MaterialDataTable } from '../material/MaterialDataTable';
 
-
-export const SupplySheetButton: FC<{ supply: MaterialSupply }> = ({ supply }) => {
+export const SupplySheetButton: FC<{ supply: MaterialSupply }> = ({
+  supply,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const countryCode = supply.location.country;
@@ -55,7 +56,6 @@ export const SupplySheetButton: FC<{ supply: MaterialSupply }> = ({ supply }) =>
                   )}
                   {/* Key Stats Grid */}
                   <div className="grid grid-cols-3 gap-5">
-
                     {/* Material */}
                     <div className="flex items-start gap-2">
                       <div className="flex-1 min-w-0">
@@ -85,7 +85,10 @@ export const SupplySheetButton: FC<{ supply: MaterialSupply }> = ({ supply }) =>
                           Viscosity
                         </div>
                         <div className="font-semibold truncate">
-                          <MinMaxValueLabel value={supply.material.viscosity?.value} fallback="-" />
+                          <MinMaxValueLabel
+                            value={supply.material.viscosity?.value}
+                            fallback="-"
+                          />
                         </div>
                       </div>
                     </div>
@@ -126,7 +129,9 @@ export const SupplySheetButton: FC<{ supply: MaterialSupply }> = ({ supply }) =>
                             height="14"
                             width="14"
                           />
-                          <span className="truncate"><CountryName countryCode={countryCode} /></span>
+                          <span className="truncate">
+                            <CountryName countryCode={countryCode} />
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -204,9 +209,7 @@ export const SupplySheetButton: FC<{ supply: MaterialSupply }> = ({ supply }) =>
 
           <SheetFooter className="p-6 border-t">
             <Button asChild className="w-full">
-              <Link
-                href={`/companies/${supply.companyId}/supply/${supply.id}`}
-              >
+              <Link href={`/companies/${supply.companyId}/supply/${supply.id}`}>
                 <ExternalLink className="mr-2 h-4 w-4" />
                 View Full Details
               </Link>

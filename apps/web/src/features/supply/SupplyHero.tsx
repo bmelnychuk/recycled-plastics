@@ -1,5 +1,5 @@
-import { Package, Globe, TrendingUp, Building2 } from "lucide-react";
-import { FC } from "react";
+import { Package, Globe, TrendingUp, Building2 } from 'lucide-react';
+import { FC } from 'react';
 
 export interface SupplyHeroProps {
   activeListings: number;
@@ -8,12 +8,17 @@ export interface SupplyHeroProps {
   suppliers: number;
 }
 
-export const SupplyHero: FC<SupplyHeroProps> = ({ activeListings, countries, thisWeek, suppliers }) => {
+export const SupplyHero: FC<SupplyHeroProps> = ({
+  activeListings,
+  countries,
+  thisWeek,
+  suppliers,
+}) => {
   const stats = [
-    { label: "Active Listings", value: activeListings, icon: Package },
-    { label: "Countries", value: countries, icon: Globe },
-    { label: "Last Week", value: thisWeek, icon: TrendingUp },
-    { label: "Suppliers", value: suppliers, icon: Building2 },
+    { label: 'Active Listings', value: activeListings, icon: Package },
+    { label: 'Countries', value: countries, icon: Globe },
+    { label: 'Last Week', value: thisWeek, icon: TrendingUp },
+    { label: 'Suppliers', value: suppliers, icon: Building2 },
   ];
 
   return (

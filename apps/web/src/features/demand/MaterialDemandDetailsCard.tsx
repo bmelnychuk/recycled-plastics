@@ -1,4 +1,4 @@
-import { MaterialDemand, SignedInUser } from "@/backend";
+import { MaterialDemand, SignedInUser } from '@rp/core';
 import {
   Card,
   CardAction,
@@ -6,17 +6,17 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/design-system/components/ui/card";
-import { CircleFlag } from "react-circle-flags";
-import { FileText } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/design-system/components/ui/button";
-import { FC } from "react";
-import { formatDate } from "../../composite/common/date-utils";
-import { formatPrice } from "../../composite/common/price-utils";
-import { MaterialDataTable } from "@/features/material/MaterialDataTable";
-import { CountryName } from "@/features/common/CountryName";
-import { ColorLabel } from "@/features/material/MaterialColor";
+} from '@/design-system/components/ui/card';
+import { CircleFlag } from 'react-circle-flags';
+import { FileText } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/design-system/components/ui/button';
+import { FC } from 'react';
+import { formatDate } from '../../composite/common/date-utils';
+import { formatPrice } from '../../composite/common/price-utils';
+import { MaterialDataTable } from '@/features/material/MaterialDataTable';
+import { CountryName } from '@/features/common/CountryName';
+import { ColorLabel } from '@/features/material/MaterialColor';
 
 const Stat = ({ label, value }: { label: string; value: string }) => (
   <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
@@ -49,7 +49,7 @@ export const MaterialDemandDetailsCard: FC<{
           <DemandTitle demand={material} />
         </CardTitle>
         <CardDescription>
-          Listed {formatDate(material.createdDate)} • Last updated{" "}
+          Listed {formatDate(material.createdDate)} • Last updated{' '}
           {formatDate(material.updatedDate)}
         </CardDescription>
         {canEdit && (
@@ -83,7 +83,9 @@ export const MaterialDemandDetailsCard: FC<{
                   height="20"
                   width="20"
                 />
-                <div><CountryName countryCode={material.location.country} /></div>
+                <div>
+                  <CountryName countryCode={material.location.country} />
+                </div>
               </div>
             </div>
           </div>
@@ -96,34 +98,36 @@ export const MaterialDemandDetailsCard: FC<{
           </div>
           <MaterialDataTable material={material.material} />
         </section>
-        {Boolean(material.documents?.length) && <section>
-          <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">
-              Documents
-            </h3>
-          </div>
+        {Boolean(material.documents?.length) && (
+          <section>
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">
+                Documents
+              </h3>
+            </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {material.documents?.map((document, index) => (
-              <a
-                key={`${document}-${index}`}
-                href={document.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
-              >
-                <span className="flex min-w-0 items-center gap-2">
-                  <span className="inline-flex size-8 items-center justify-center rounded-full bg-slate-100 text-slate-500">
-                    <FileText className="size-4" aria-hidden />
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {material.documents?.map((document, index) => (
+                <a
+                  key={`${document}-${index}`}
+                  href={document.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                >
+                  <span className="flex min-w-0 items-center gap-2">
+                    <span className="inline-flex size-8 items-center justify-center rounded-full bg-slate-100 text-slate-500">
+                      <FileText className="size-4" aria-hidden />
+                    </span>
+                    <span className="flex-1 min-w-0 line-clamp-2 wrap-break-word text-left">
+                      {document.name}
+                    </span>
                   </span>
-                  <span className="flex-1 min-w-0 line-clamp-2 wrap-break-word text-left">
-                    {document.name}
-                  </span>
-                </span>
-              </a>
-            ))}
-          </div>
-        </section>}
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
       </CardContent>
     </Card>
   );

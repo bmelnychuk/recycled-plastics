@@ -1,5 +1,5 @@
-import { Badge } from "@/design-system/components/ui/badge";
-import { FC } from "react";
+import { Badge } from '@/design-system/components/ui/badge';
+import { FC } from 'react';
 
 export const SupplyBadge: FC = () => {
   return (

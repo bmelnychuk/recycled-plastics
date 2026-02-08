@@ -1,4 +1,6 @@
-export const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
+export const hexToRgb = (
+  hex: string,
+): { r: number; g: number; b: number } | null => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
@@ -11,13 +13,13 @@ export const hexToRgb = (hex: string): { r: number; g: number; b: number } | nul
 
 export const rgbToHex = (r: number, g: number, b: number): string => {
   return (
-    "#" +
+    '#' +
     [r, g, b]
       .map((x) => {
         const hex = Math.round(x).toString(16);
-        return hex.length === 1 ? "0" + hex : hex;
+        return hex.length === 1 ? '0' + hex : hex;
       })
-      .join("")
+      .join('')
   );
 };
 
@@ -31,7 +33,7 @@ export const generateColorShades = (primaryColor: string) => {
     return rgbToHex(
       Math.min(255, r + (255 - r) * amount),
       Math.min(255, g + (255 - g) * amount),
-      Math.min(255, b + (255 - b) * amount)
+      Math.min(255, b + (255 - b) * amount),
     );
   };
 
@@ -39,7 +41,7 @@ export const generateColorShades = (primaryColor: string) => {
     return rgbToHex(
       Math.max(0, r * (1 - amount)),
       Math.max(0, g * (1 - amount)),
-      Math.max(0, b * (1 - amount))
+      Math.max(0, b * (1 - amount)),
     );
   };
 
@@ -59,10 +61,10 @@ export const generateColorShades = (primaryColor: string) => {
 
 export const getContrastColor = (hexColor: string): string => {
   const rgb = hexToRgb(hexColor);
-  if (!rgb) return "#000000";
+  if (!rgb) return '#000000';
 
   const { r, g, b } = rgb;
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 
-  return luminance > 0.5 ? "#000000" : "#FFFFFF";
+  return luminance > 0.5 ? '#000000' : '#FFFFFF';
 };

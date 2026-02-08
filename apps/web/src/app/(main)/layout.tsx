@@ -1,20 +1,19 @@
-import { Footer } from "@/features/common/Footer";
-import { NavigationBar } from "@/features/common/NavigationBar";
-import { ScrollArea } from "@/design-system/components/ui/scroll-area";
-
-import { getCurrentUser } from "@/backend/api/session";
+import { Footer } from '@/features/common/Footer';
+import { NavigationBar } from '@/features/common/NavigationBar';
+import { ScrollArea } from '@/design-system/components/ui/scroll-area';
+import { application } from '@/core';
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getCurrentUser();
+  const signedInUser = await application.getCurrentUser();
 
   return (
     <ScrollArea className="h-screen">
       <nav className="border-b">
-        <NavigationBar user={user ?? undefined} />
+        <NavigationBar user={signedInUser} />
       </nav>
       <main className="flex-1">
         {children}

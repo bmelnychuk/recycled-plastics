@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import type { MapMouseEvent } from "mapbox-gl";
-import type { MapRef } from "react-map-gl/mapbox";
-import { Map as MapGl, Source, Layer } from "react-map-gl/mapbox";
-import { FC, useRef, useState } from "react";
-import "mapbox-gl/dist/mapbox-gl.css";
+import type { MapMouseEvent } from 'mapbox-gl';
+import type { MapRef } from 'react-map-gl/mapbox';
+import { Map as MapGl, Source, Layer } from 'react-map-gl/mapbox';
+import { FC, useRef, useState } from 'react';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import {
   Card,
   CardAction,
@@ -12,7 +12,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/design-system/components/ui/card";
+} from '@/design-system/components/ui/card';
 import {
   Table,
   TableBody,
@@ -20,9 +20,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/design-system/components/ui/table";
-import { Button } from "@/design-system/components/ui/button";
-import { XIcon } from "lucide-react";
+} from '@/design-system/components/ui/table';
+import { Button } from '@/design-system/components/ui/button';
+import { XIcon } from 'lucide-react';
 
 export interface CountryHighlight {
   countryCode: string;
@@ -36,21 +36,21 @@ export interface CountryHighlight {
 // const hoveredCountryBorderColor = "#3E9B4F";
 
 const germanCompanyShipments = [
-  { companyName: "PolyCycle GmbH", city: "Berlin", amount: 312 },
-  { companyName: "RePlastics AG", city: "Munich", amount: 284 },
-  { companyName: "Circular Matters", city: "Hamburg", amount: 265 },
-  { companyName: "GreenLoop Industries", city: "Frankfurt", amount: 241 },
-  { companyName: "EcoForm Solutions", city: "Cologne", amount: 228 },
-  { companyName: "Nordic Polymer", city: "Bremen", amount: 219 },
-  { companyName: "SüdPlast Vertriebs", city: "Stuttgart", amount: 207 },
-  { companyName: "Rhein Recycling Co.", city: "Düsseldorf", amount: 198 },
-  { companyName: "LoopUp Partners", city: "Leipzig", amount: 176 },
-  { companyName: "NextCycle Labs", city: "Dresden", amount: 169 },
-  { companyName: "BlueMatter GmbH", city: "Hanover", amount: 154 },
-  { companyName: "ZeroWaste Logistics", city: "Essen", amount: 143 },
-  { companyName: "PolyTech Services", city: "Nuremberg", amount: 131 },
-  { companyName: "CircularWave", city: "Mannheim", amount: 124 },
-  { companyName: "MetroLoop Trading", city: "Bochum", amount: 118 },
+  { companyName: 'PolyCycle GmbH', city: 'Berlin', amount: 312 },
+  { companyName: 'RePlastics AG', city: 'Munich', amount: 284 },
+  { companyName: 'Circular Matters', city: 'Hamburg', amount: 265 },
+  { companyName: 'GreenLoop Industries', city: 'Frankfurt', amount: 241 },
+  { companyName: 'EcoForm Solutions', city: 'Cologne', amount: 228 },
+  { companyName: 'Nordic Polymer', city: 'Bremen', amount: 219 },
+  { companyName: 'SüdPlast Vertriebs', city: 'Stuttgart', amount: 207 },
+  { companyName: 'Rhein Recycling Co.', city: 'Düsseldorf', amount: 198 },
+  { companyName: 'LoopUp Partners', city: 'Leipzig', amount: 176 },
+  { companyName: 'NextCycle Labs', city: 'Dresden', amount: 169 },
+  { companyName: 'BlueMatter GmbH', city: 'Hanover', amount: 154 },
+  { companyName: 'ZeroWaste Logistics', city: 'Essen', amount: 143 },
+  { companyName: 'PolyTech Services', city: 'Nuremberg', amount: 131 },
+  { companyName: 'CircularWave', city: 'Mannheim', amount: 124 },
+  { companyName: 'MetroLoop Trading', city: 'Bochum', amount: 118 },
 ];
 
 export const AnalyticsMapView: FC<{
@@ -93,22 +93,24 @@ export const AnalyticsMapView: FC<{
   };
 
   const countryCodes = countryHighlights.map((country) => country.countryCode);
-  const hoverCountry = countryHighlights.find((country) => country.countryCode === hoveredCountry);
+  const hoverCountry = countryHighlights.find(
+    (country) => country.countryCode === hoveredCountry,
+  );
 
   return (
     <div className="relative h-full w-full">
       <MapGl
         initialViewState={{ latitude: 50.0, longitude: 8.0, zoom: 4 }}
         style={{
-          height: "100%",
-          width: "100%",
-          borderRadius: "12px",
-          overflow: "hidden",
+          height: '100%',
+          width: '100%',
+          borderRadius: '12px',
+          overflow: 'hidden',
         }}
         mapStyle="mapbox://styles/mapbox/light-v10"
         mapboxAccessToken="pk.eyJ1IjoiYm1lbG55Y2h1ayIsImEiOiJjbTFyd3lqY2EwMDhxMmtxdjgwcHd4djdzIn0.ua-dMcW2Ps5eOn0r3b1R4g"
         ref={mapRef}
-        interactiveLayerIds={["country-highlight"]}
+        interactiveLayerIds={['country-highlight']}
         // onClick={onClick}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -124,39 +126,42 @@ export const AnalyticsMapView: FC<{
               type="fill"
               source-layer="country_boundaries"
               filter={[
-                "all",
-                ["in", ["get", "iso_3166_1"], ["literal", countryCodes]],
-                ["==", ["get", "disputed"], "false"],
+                'all',
+                ['in', ['get', 'iso_3166_1'], ['literal', countryCodes]],
+                ['==', ['get', 'disputed'], 'false'],
                 [
-                  "any",
-                  ["==", "all", ["get", "worldview"]],
-                  ["in", "US", ["get", "worldview"]],
+                  'any',
+                  ['==', 'all', ['get', 'worldview']],
+                  ['in', 'US', ['get', 'worldview']],
                 ],
               ]}
               paint={{
-                "fill-color": [
-                  "case",
+                'fill-color': [
+                  'case',
                   ...(hoveredCountry
-                    ? [["==", ["get", "iso_3166_1"], hoveredCountry], hoverCountry?.hoverColor]
+                    ? [
+                        ['==', ['get', 'iso_3166_1'], hoveredCountry],
+                        hoverCountry?.hoverColor,
+                      ]
                     : []),
                   ...countryHighlights.flatMap((country) => [
-                    ["==", ["get", "iso_3166_1"], country.countryCode],
+                    ['==', ['get', 'iso_3166_1'], country.countryCode],
                     country.color,
                   ]),
-                  "#088",
+                  '#088',
                 ],
-                "fill-opacity": [
-                  "case",
+                'fill-opacity': [
+                  'case',
                   ...(hoveredCountry
-                    ? [["==", ["get", "iso_3166_1"], hoveredCountry], 0.7]
+                    ? [['==', ['get', 'iso_3166_1'], hoveredCountry], 0.7]
                     : []),
                   ...countryHighlights.flatMap((country) => [
-                    ["==", ["get", "iso_3166_1"], country.countryCode],
+                    ['==', ['get', 'iso_3166_1'], country.countryCode],
                     country.opacity,
                   ]),
                   0.4,
                 ],
-                "fill-outline-color": "#000",
+                'fill-outline-color': '#000',
               }}
             />
             {hoveredCountry && (
@@ -165,18 +170,18 @@ export const AnalyticsMapView: FC<{
                 type="line"
                 source-layer="country_boundaries"
                 filter={[
-                  "all",
-                  ["==", ["get", "iso_3166_1"], hoveredCountry],
-                  ["==", ["get", "disputed"], "false"],
+                  'all',
+                  ['==', ['get', 'iso_3166_1'], hoveredCountry],
+                  ['==', ['get', 'disputed'], 'false'],
                   [
-                    "any",
-                    ["==", "all", ["get", "worldview"]],
-                    ["in", "US", ["get", "worldview"]],
+                    'any',
+                    ['==', 'all', ['get', 'worldview']],
+                    ['in', 'US', ['get', 'worldview']],
                   ],
                 ]}
                 paint={{
-                  "line-color": hoverCountry?.hoverBorderColor,
-                  "line-width": 2,
+                  'line-color': hoverCountry?.hoverBorderColor,
+                  'line-width': 2,
                 }}
               />
             )}
@@ -218,7 +223,7 @@ export const AnalyticsMapView: FC<{
                     </TableCell>
                     <TableCell>{entry.city}</TableCell>
                     <TableCell className="text-right">
-                      {entry.amount.toLocaleString("en-US")}
+                      {entry.amount.toLocaleString('en-US')}
                     </TableCell>
                   </TableRow>
                 ))}

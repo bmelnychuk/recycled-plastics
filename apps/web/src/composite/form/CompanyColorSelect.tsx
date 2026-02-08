@@ -1,51 +1,51 @@
-"use client";
+'use client';
 
-import { FC, useState, useCallback, useEffect, useRef } from "react";
+import { FC, useState, useCallback, useEffect, useRef } from 'react';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandItem,
   CommandList,
-} from "@/design-system/components/ui/command";
+} from '@/design-system/components/ui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/design-system/components/ui/popover";
-import { Palette, Check, ChevronDown } from "lucide-react";
-import { cn } from "@/design-system/lib/utils";
+} from '@/design-system/components/ui/popover';
+import { Palette, Check, ChevronDown } from 'lucide-react';
+import { cn } from '@/design-system/lib/utils';
 
 const allColors = {
-  amber: "#f3d673",
-  blue: "#acd8fc",
-  bronze: "#dfcdc5",
-  brown: "#e4cdb7",
-  crimson: "#f3bed1",
-  cyan: "#9ddde7",
-  gold: "#d8d0bf",
-  grass: "#b2ddb5",
-  gray: "#d9d9d9",
-  green: "#adddc0",
-  indigo: "#c1d0ff",
-  iris: "#cbcdff",
-  jade: "#acdec8",
-  lime: "#c2da91",
-  mint: "#9ce0d0",
-  olive: "#d7dad7",
-  orange: "#ffc182",
-  pink: "#efbfdd",
-  plum: "#e9c2ec",
-  purple: "#e0c4f4",
-  red: "#fdbdbe",
-  ruby: "#f8bfc8",
-  sand: "#dad9d6",
-  sky: "#a9daed",
-  slate: "#d9d9e0",
-  teal: "#a1ded2",
-  tomato: "#fdbdaf",
-  violet: "#d4cafe",
-  yellow: "#f3d768",
+  amber: '#f3d673',
+  blue: '#acd8fc',
+  bronze: '#dfcdc5',
+  brown: '#e4cdb7',
+  crimson: '#f3bed1',
+  cyan: '#9ddde7',
+  gold: '#d8d0bf',
+  grass: '#b2ddb5',
+  gray: '#d9d9d9',
+  green: '#adddc0',
+  indigo: '#c1d0ff',
+  iris: '#cbcdff',
+  jade: '#acdec8',
+  lime: '#c2da91',
+  mint: '#9ce0d0',
+  olive: '#d7dad7',
+  orange: '#ffc182',
+  pink: '#efbfdd',
+  plum: '#e9c2ec',
+  purple: '#e0c4f4',
+  red: '#fdbdbe',
+  ruby: '#f8bfc8',
+  sand: '#dad9d6',
+  sky: '#a9daed',
+  slate: '#d9d9e0',
+  teal: '#a1ded2',
+  tomato: '#fdbdaf',
+  violet: '#d4cafe',
+  yellow: '#f3d768',
 };
 
 export const defaultColor = allColors.indigo;
@@ -70,7 +70,7 @@ export const CompanyColorSelect: FC<{
 
   // Find the color name for the current value
   const selectedColorName = colorEntries.find(
-    ([_, colorValue]) => colorValue === value
+    ([_, colorValue]) => colorValue === value,
   )?.[0];
 
   const handleSelect = useCallback(
@@ -78,7 +78,7 @@ export const CompanyColorSelect: FC<{
       onChange?.(colorValue);
       setOpen(false);
     },
-    [onChange]
+    [onChange],
   );
 
   return (
@@ -131,8 +131,8 @@ export const CompanyColorSelect: FC<{
                   <span className="capitalize">{colorName}</span>
                   <Check
                     className={cn(
-                      "ml-auto h-4 w-4",
-                      value === colorValue ? "opacity-100" : "opacity-0"
+                      'ml-auto h-4 w-4',
+                      value === colorValue ? 'opacity-100' : 'opacity-0',
                     )}
                   />
                 </CommandItem>
@@ -141,7 +141,7 @@ export const CompanyColorSelect: FC<{
           </CommandList>
         </Command>
       </PopoverContent>
-      {name && <input type="hidden" name={name} value={value ?? ""} />}
+      {name && <input type="hidden" name={name} value={value ?? ''} />}
     </Popover>
   );
 };

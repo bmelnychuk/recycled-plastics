@@ -1,18 +1,18 @@
-import { CardContent, CardHeader } from "@/design-system/components/ui/card";
+import { CardContent, CardHeader } from '@/design-system/components/ui/card';
 
-import { User } from "@/backend";
+import { CompanyContact } from '@rp/core';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@/design-system/components/ui/avatar";
-import { Card } from "@/design-system/components/ui/card";
-import { Mail, Phone } from "lucide-react";
-import { FC } from "react";
+} from '@/design-system/components/ui/avatar';
+import { Card } from '@/design-system/components/ui/card';
+import { Mail, Phone } from 'lucide-react';
+import { FC } from 'react';
 
-export const ContactBusinessCard: FC<{ user: User }> = ({ user }) => {
+export const ContactBusinessCard: FC<{ user: CompanyContact }> = ({ user }) => {
   const displayName = `${user.firstName} ${user.lastName}`;
-  const phoneNumber = user.contactData?.phoneNumbers?.[0];
+  const phoneNumber = '';
   const initials = `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
 
   return (

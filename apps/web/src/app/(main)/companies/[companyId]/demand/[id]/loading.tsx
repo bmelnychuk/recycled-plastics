@@ -2,8 +2,8 @@ import {
   Card,
   CardContent,
   CardHeader,
-} from "@/design-system/components/ui/card";
-import { Skeleton } from "@/design-system/components/ui/skeleton";
+} from '@/design-system/components/ui/card';
+import { Skeleton } from '@/design-system/components/ui/skeleton';
 
 export default function Loading() {
   return (

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Column,
@@ -12,7 +12,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 
 import {
   Table,
@@ -21,10 +21,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/design-system/components/ui/table";
-import { FC, ReactNode, useState } from "react";
-import { Button } from "@/design-system/components/ui/button";
-import { ArrowDown, ArrowUp } from "lucide-react";
+} from '@/design-system/components/ui/table';
+import { FC, ReactNode, useState } from 'react';
+import { Button } from '@/design-system/components/ui/button';
+import { ArrowDown, ArrowUp } from 'lucide-react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -85,7 +85,7 @@ export function DataTable<TData, TValue>({
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
                 );
@@ -98,7 +98,7 @@ export function DataTable<TData, TValue>({
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                data-state={row.getIsSelected() && "selected"}
+                data-state={row.getIsSelected() && 'selected'}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
@@ -122,7 +122,7 @@ export function DataTable<TData, TValue>({
 
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex items-center justify-center text-sm font-medium">
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
+          Page {table.getState().pagination.pageIndex + 1} of{' '}
           {table.getPageCount()}
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
@@ -155,7 +155,7 @@ export const SortableHeader = <TData,>({
 }: {
   column: Column<TData>;
   title: string;
-  isSorted?: false | "asc" | "desc";
+  isSorted?: false | 'asc' | 'desc';
 }) => {
   return (
     <div
@@ -163,8 +163,8 @@ export const SortableHeader = <TData,>({
       className="flex items-center cursor-pointer"
     >
       {title}
-      {isSorted === "asc" && <ArrowUp className="ml-2 h-4 w-4" />}
-      {isSorted === "desc" && <ArrowDown className="ml-2 h-4 w-4" />}
+      {isSorted === 'asc' && <ArrowUp className="ml-2 h-4 w-4" />}
+      {isSorted === 'desc' && <ArrowDown className="ml-2 h-4 w-4" />}
     </div>
   );
 };

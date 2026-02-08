@@ -2,8 +2,8 @@ import { DynamoDbRepository } from './DynamoDbRepository';
 
 import { GetCommand, PutCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { subMonths } from 'date-fns';
-import { MaterialDemandRepository } from '../../domain/material/demand/MaterialDemandRepository';
-import { MaterialDemand } from '../../domain/material/demand/Demand';
+import { MaterialDemandRepository } from '../../domain/demand/MaterialDemandRepository';
+import { MaterialDemand } from '../../domain/demand/Demand';
 import { getEarliestDate } from '../../lib/dates';
 
 export class DynamoDbMaterialDemandRepository

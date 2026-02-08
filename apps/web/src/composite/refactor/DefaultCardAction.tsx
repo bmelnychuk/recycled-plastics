@@ -1,15 +1,15 @@
-import { CardAction } from "@/design-system/components/ui/card";
+import { CardAction } from '@/design-system/components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/design-system/components/ui/select";
+} from '@/design-system/components/ui/select';
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from "@/design-system/components/ui/toggle-group";
+} from '@/design-system/components/ui/toggle-group';
 
 export const DefaultCardAction = () => {
   return (

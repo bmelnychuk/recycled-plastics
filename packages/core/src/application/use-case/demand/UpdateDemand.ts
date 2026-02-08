@@ -1,11 +1,15 @@
 import z from 'zod';
-import { assertCanAccessCompany, CompanyUser } from '../../auth/User';
+import {
+  assertCanAccessCompany,
+  assertUserAndCompanyVerified,
+  CompanyUser,
+  SignedInUser,
+} from '../../auth/AuthService';
 import {
   MaterialDemand,
   MaterialDemandSchema,
-} from '../../../domain/material/demand/Demand';
-import { MaterialDemandRepository } from '../../../domain/material/demand/MaterialDemandRepository';
-
+} from '../../../domain/demand/Demand';
+import { MaterialDemandRepository } from '../../../domain/demand/MaterialDemandRepository';
 
 export const MaterialDemandUpdateSchema = MaterialDemandSchema.omit({
   createdDate: true,
@@ -16,16 +20,19 @@ export const MaterialDemandUpdateSchema = MaterialDemandSchema.omit({
 
 export type MaterialDemandUpdate = z.infer<typeof MaterialDemandUpdateSchema>;
 
-export class UpdateMaterialDemand {
+export class UpdateDemand {
   constructor(
     private readonly materialDemandRepository: MaterialDemandRepository,
-  ) { }
+  ) {}
 
   public async invoke(
-    user: CompanyUser,
+    user: SignedInUser,
     materialDemandUpdate: MaterialDemandUpdate,
   ): Promise<MaterialDemand> {
+    assertUserAndCompanyVerified(user);
     const companyId = materialDemandUpdate.companyId ?? user.companyId;
+    if (!companyId) throw new Error('Company ID is required');
+
     assertCanAccessCompany(user, companyId);
 
     const existing = await this.materialDemandRepository.getById(

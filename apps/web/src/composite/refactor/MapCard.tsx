@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Card,
@@ -7,24 +7,24 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/design-system/components/ui/card";
-import { AnalyticsMapView } from "./AnalyticsMapView";
+} from '@/design-system/components/ui/card';
+import { AnalyticsMapView } from './AnalyticsMapView';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/design-system/components/ui/select";
-import { CountiesChart } from "./map/CountiesChart";
-import { Bold, Italic, Underline } from "lucide-react";
+} from '@/design-system/components/ui/select';
+import { CountiesChart } from './map/CountiesChart';
+import { Bold, Italic, Underline } from 'lucide-react';
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from "@/design-system/components/ui/toggle-group";
-import { DefaultCardAction } from "./DefaultCardAction";
+} from '@/design-system/components/ui/toggle-group';
+import { DefaultCardAction } from './DefaultCardAction';
 
-const color = "#94CE9A";
+const color = '#94CE9A';
 
 export const MapCard = () => {
   return (
@@ -39,17 +39,17 @@ export const MapCard = () => {
           <div className="col-span-3 w-full h-full flex-1 min-h-0">
             <AnalyticsMapView
               countryHighlights={[
-                { countryCode: "DE", color, opacity: 0.5 },
-                { countryCode: "FR", color, opacity: 0.5 },
-                { countryCode: "PL", color, opacity: 0.5 },
-                { countryCode: "GB", color, opacity: 0.5 },
-                { countryCode: "AU", color, opacity: 0.5 },
-                { countryCode: "NZ", color, opacity: 0.5 },
-                { countryCode: "IE", color, opacity: 0.5 },
-                { countryCode: "NL", color, opacity: 0.5 },
-                { countryCode: "BE", color, opacity: 0.5 },
-                { countryCode: "SE", color, opacity: 0.5 },
-                { countryCode: "CN", color, opacity: 0.5 },
+                { countryCode: 'DE', color, opacity: 0.5 },
+                { countryCode: 'FR', color, opacity: 0.5 },
+                { countryCode: 'PL', color, opacity: 0.5 },
+                { countryCode: 'GB', color, opacity: 0.5 },
+                { countryCode: 'AU', color, opacity: 0.5 },
+                { countryCode: 'NZ', color, opacity: 0.5 },
+                { countryCode: 'IE', color, opacity: 0.5 },
+                { countryCode: 'NL', color, opacity: 0.5 },
+                { countryCode: 'BE', color, opacity: 0.5 },
+                { countryCode: 'SE', color, opacity: 0.5 },
+                { countryCode: 'CN', color, opacity: 0.5 },
               ]}
               onCountryClick={(countryCode) => {
                 // console.log(countryCode);

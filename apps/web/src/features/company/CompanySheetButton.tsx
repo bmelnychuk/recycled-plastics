@@ -1,7 +1,7 @@
-import { Company } from "@/backend";
-import { FC, useState } from "react";
-import Link from "next/link";
-import { Button } from "@/design-system/components/ui/button";
+import { Company } from '@rp/core';
+import { FC, useState } from 'react';
+import Link from 'next/link';
+import { Button } from '@/design-system/components/ui/button';
 import {
   ExternalLink,
   Building2,
@@ -10,24 +10,23 @@ import {
   Phone,
   MapPin,
   Calendar,
-} from "lucide-react";
+} from 'lucide-react';
 import {
   Sheet,
   SheetContent,
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from "@/design-system/components/ui/sheet";
-import { CompanyLogo } from "@/composite/company/CompanyLogo";
-import { defaultColor } from "@/composite/form/CompanyColorSelect";
-import { CircleFlag } from "react-circle-flags";
-import { CountryName } from "../common/CountryName";
+} from '@/design-system/components/ui/sheet';
+import { CompanyLogo } from '@/composite/company/CompanyLogo';
+import { defaultColor } from '@/composite/form/CompanyColorSelect';
+import { CircleFlag } from 'react-circle-flags';
+import { CountryName } from '../common/CountryName';
 
 export const CompanySheetButton: FC<{ company: Company }> = ({ company }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const countryCode = company.address.country;
-
 
   return (
     <>
@@ -35,7 +34,7 @@ export const CompanySheetButton: FC<{ company: Company }> = ({ company }) => {
         onClick={() => setIsOpen(true)}
         className="underline hover:text-primary transition-colors cursor-pointer"
       >
-        {" "}
+        {' '}
         {company.name}
       </button>
 
@@ -66,7 +65,7 @@ export const CompanySheetButton: FC<{ company: Company }> = ({ company }) => {
                   </h3>
                   <div className="flex items-center gap-2 mt-1 text-sm">
                     <Building2 className="w-3.5 h-3.5" />
-                    <span>{company.industry || " - "}</span>
+                    <span>{company.industry || ' - '}</span>
                   </div>
                 </div>
               </div>
@@ -163,7 +162,11 @@ export const CompanySheetButton: FC<{ company: Company }> = ({ company }) => {
                           {company.address.zipCode} {company.address.city}
                         </div>
                         <div className="flex items-center gap-2">
-                          <div><CountryName countryCode={company.address.country} /></div>
+                          <div>
+                            <CountryName
+                              countryCode={company.address.country}
+                            />
+                          </div>
                           <CircleFlag
                             countryCode={countryCode.toLowerCase()}
                             height="16"
@@ -188,12 +191,12 @@ export const CompanySheetButton: FC<{ company: Company }> = ({ company }) => {
                     </div>
                     <div className="font-medium">
                       {new Date(company.createdDate).toLocaleDateString(
-                        "en-US",
+                        'en-US',
                         {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        }
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        },
                       )}
                     </div>
                   </div>

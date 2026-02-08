@@ -1,15 +1,15 @@
-import { ReactNode } from "react";
-import { getCurrentUser } from "@/backend/api/session";
-import { redirect } from "next/navigation";
-import { SettingsNavigation } from "@/features/settings/SettingsNavigation";
+import { ReactNode } from 'react';
+import { application } from '@/core';
+import { redirect } from 'next/navigation';
+import { SettingsNavigation } from '@/features/settings/SettingsNavigation';
 
 export default async function AuthenticatedLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  const user = await getCurrentUser();
-  if (!user) redirect("/");
+  const user = await application.getCurrentUser();
+  if (!user) redirect('/');
 
   return (
     <div className="flex min-h-screen">

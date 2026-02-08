@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { FC, useState, useCallback, useEffect, useRef } from "react";
+import { FC, useState, useCallback, useEffect, useRef } from 'react';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandItem,
   CommandList,
-} from "@/design-system/components/ui/command";
+} from '@/design-system/components/ui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/design-system/components/ui/popover";
-import { Input } from "@/design-system/components/ui/input";
-import { User, Check, X, Search } from "lucide-react";
-import { cn } from "@/design-system/lib/utils";
+} from '@/design-system/components/ui/popover';
+import { Input } from '@/design-system/components/ui/input';
+import { User, Check, X, Search } from 'lucide-react';
+import { cn } from '@/design-system/lib/utils';
 
 type UserId = string;
 
@@ -38,10 +38,10 @@ export const UsersSelect: FC<{
   value,
   onChange,
   disabled,
-  placeholder = "Type to search users...",
+  placeholder = 'Type to search users...',
 }) => {
   const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [triggerWidth, setTriggerWidth] = useState<number | undefined>();
   const triggerRef = useRef<HTMLDivElement>(null);
 
@@ -62,7 +62,10 @@ export const UsersSelect: FC<{
   const filteredOptions = options.filter((user) => {
     const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
     const searchTerm = inputValue.toLowerCase();
-    return fullName.includes(searchTerm) || user.email.toLowerCase().includes(searchTerm);
+    return (
+      fullName.includes(searchTerm) ||
+      user.email.toLowerCase().includes(searchTerm)
+    );
   });
 
   const handleSelect = useCallback(
@@ -71,7 +74,7 @@ export const UsersSelect: FC<{
       setInputValue(`${user.firstName} ${user.lastName}`);
       setOpen(false);
     },
-    [onChange]
+    [onChange],
   );
 
   const handleClear = useCallback(
@@ -79,10 +82,10 @@ export const UsersSelect: FC<{
       e.preventDefault();
       e.stopPropagation();
       onChange(undefined);
-      setInputValue("");
+      setInputValue('');
       setOpen(false);
     },
-    [onChange]
+    [onChange],
   );
 
   const handleInputChange = useCallback(
@@ -92,11 +95,14 @@ export const UsersSelect: FC<{
       setOpen(newValue.length >= 3);
 
       // If input doesn't match selected user, clear selection
-      if (selectedUser && newValue !== `${selectedUser.firstName} ${selectedUser.lastName}`) {
+      if (
+        selectedUser &&
+        newValue !== `${selectedUser.firstName} ${selectedUser.lastName}`
+      ) {
         onChange(undefined);
       }
     },
-    [selectedUser, onChange]
+    [selectedUser, onChange],
   );
 
   const handleInputFocus = useCallback(() => {
@@ -111,7 +117,7 @@ export const UsersSelect: FC<{
       }
       setOpen(newOpen);
     },
-    [inputValue]
+    [inputValue],
   );
 
   return (
@@ -160,13 +166,17 @@ export const UsersSelect: FC<{
                 >
                   <User size={16} className="mr-2" />
                   <div className="flex flex-col">
-                    <span>{option.firstName} {option.lastName}</span>
-                    <span className="text-xs text-muted-foreground">{option.email}</span>
+                    <span>
+                      {option.firstName} {option.lastName}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {option.email}
+                    </span>
                   </div>
                   <Check
                     className={cn(
-                      "ml-auto",
-                      value === option.id ? "opacity-100" : "opacity-0"
+                      'ml-auto',
+                      value === option.id ? 'opacity-100' : 'opacity-0',
                     )}
                   />
                 </CommandItem>

@@ -1,28 +1,29 @@
-import { MaterialDemand, MaterialSupply } from "@/backend";
-import { FC, useState } from "react";
-import Link from "next/link";
-import { Button } from "@/design-system/components/ui/button";
-import {
-  ExternalLink,
-  FileText,
-} from "lucide-react";
+import { MaterialDemand } from '@rp/core';
+import { FC, useState } from 'react';
+import Link from 'next/link';
+import { Button } from '@/design-system/components/ui/button';
+import { ExternalLink, FileText } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from "@/design-system/components/ui/sheet";
-import { CircleFlag } from "react-circle-flags";
-import { PriceValue } from "@/features/common/PriceValue";
-import { ScrollArea } from "@/design-system/components/ui/scroll-area";
-import { CountryName } from "../common/CountryName";
-import { MaterialTypeLabel, MinMaxValueLabel } from "@/features/material/labels";
-import { ColorLabel } from "../material/MaterialColor";
-import { MaterialDataTable } from "../material/MaterialDataTable";
+} from '@/design-system/components/ui/sheet';
+import { CircleFlag } from 'react-circle-flags';
+import { PriceValue } from '@/features/common/PriceValue';
+import { ScrollArea } from '@/design-system/components/ui/scroll-area';
+import { CountryName } from '../common/CountryName';
+import {
+  MaterialTypeLabel,
+  MinMaxValueLabel,
+} from '@/features/material/labels';
+import { ColorLabel } from '../material/MaterialColor';
+import { MaterialDataTable } from '../material/MaterialDataTable';
 
-
-export const DemandSheetButton: FC<{ demand: MaterialDemand }> = ({ demand }) => {
+export const DemandSheetButton: FC<{ demand: MaterialDemand }> = ({
+  demand,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const countryCode = demand.location.country;
@@ -46,8 +47,7 @@ export const DemandSheetButton: FC<{ demand: MaterialDemand }> = ({ demand }) =>
               <div className="flex flex-col gap-3">
                 <SheetHeader className="px-4 pt-4">
                   <SheetTitle className="text-2xl font-semibold truncate">
-                    {material.type.toUpperCase()}{" "}
-                    {material.color}
+                    {material.type.toUpperCase()} {material.color}
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-4 px-4 pb-4 border-b">
@@ -56,7 +56,6 @@ export const DemandSheetButton: FC<{ demand: MaterialDemand }> = ({ demand }) =>
                   )}
                   {/* Key Stats Grid */}
                   <div className="grid grid-cols-3 gap-5">
-
                     {/* Material */}
                     <div className="flex items-start gap-2">
                       <div className="flex-1 min-w-0">
@@ -86,7 +85,10 @@ export const DemandSheetButton: FC<{ demand: MaterialDemand }> = ({ demand }) =>
                           Viscosity
                         </div>
                         <div className="font-semibold truncate">
-                          <MinMaxValueLabel value={material.viscosity?.value} fallback="-" />
+                          <MinMaxValueLabel
+                            value={material.viscosity?.value}
+                            fallback="-"
+                          />
                         </div>
                       </div>
                     </div>
@@ -127,7 +129,9 @@ export const DemandSheetButton: FC<{ demand: MaterialDemand }> = ({ demand }) =>
                             height="14"
                             width="14"
                           />
-                          <span className="truncate"><CountryName countryCode={countryCode} /></span>
+                          <span className="truncate">
+                            <CountryName countryCode={countryCode} />
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -174,9 +178,7 @@ export const DemandSheetButton: FC<{ demand: MaterialDemand }> = ({ demand }) =>
 
           <SheetFooter className="p-6 border-t">
             <Button asChild className="w-full">
-              <Link
-                href={`/companies/${demand.companyId}/demand/${demand.id}`}
-              >
+              <Link href={`/companies/${demand.companyId}/demand/${demand.id}`}>
                 <ExternalLink className="mr-2 h-4 w-4" />
                 View Full Details
               </Link>

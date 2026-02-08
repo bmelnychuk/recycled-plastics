@@ -1,5 +1,5 @@
-import { assertCanAccessCompany, User } from '../../auth/User';
-import { MaterialDemandRepository } from '../../../domain/material/demand/MaterialDemandRepository';
+import { assertCanAccessCompany, SignedInUser } from '../../auth/AuthService';
+import { MaterialDemandRepository } from '../../../domain/demand/MaterialDemandRepository';
 
 export class DeleteDemand {
   constructor(
@@ -7,7 +7,7 @@ export class DeleteDemand {
   ) {}
 
   public async invoke(
-    user: User,
+    user: SignedInUser,
     id: { companyId: string; demandId: string },
   ): Promise<void> {
     const { companyId, demandId } = id;

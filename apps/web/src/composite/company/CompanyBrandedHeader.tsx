@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { CompanyViewModel } from "@/backend";
-import { generateColorShades } from "../common/color-utils";
-import { Globe, Mail, MapPin, Phone, VerifiedIcon } from "lucide-react";
-import { countries } from "country-data-list";
-import { formatWebsite } from "../common/format-utils";
-import { ContactBusinessCard } from "./ContactBusinessCard";
-import { CompanyLogo } from "./CompanyLogo";
-import { defaultColor } from "../form/CompanyColorSelect";
+import { Company } from '@rp/core';
+import { generateColorShades } from '../common/color-utils';
+import { Globe, Mail, MapPin, Phone, VerifiedIcon } from 'lucide-react';
+import { countries } from 'country-data-list';
+import { formatWebsite } from '../common/format-utils';
+import { ContactBusinessCard } from './ContactBusinessCard';
+import { CompanyLogo } from './CompanyLogo';
+import { defaultColor } from '../form/CompanyColorSelect';
 
 interface CompanyBrandedHeaderProps {
-  company: CompanyViewModel;
+  company: Company;
 }
 
 export const CompanyBrandedHeader = ({
@@ -51,7 +51,9 @@ export const CompanyBrandedHeader = ({
 
               {/* Company Name and Industry */}
               <div className="flex-1 min-w-0">
-                <h1 className="text-2xl font-bold mb-1">{company.name} {!company.verified ? "(Unverified)" : ""}</h1>
+                <h1 className="text-2xl font-bold mb-1">
+                  {company.name} {!company.verified ? '(Unverified)' : ''}
+                </h1>
                 <p className="text-sm opacity-75">{company.industry}</p>
               </div>
             </div>
@@ -108,7 +110,7 @@ export const CompanyBrandedHeader = ({
                     countries[countryCode]?.name || countryCode,
                   ]
                     .filter(Boolean)
-                    .join(", ")}
+                    .join(', ')}
                 </span>
               </div>
             </div>

@@ -2,9 +2,9 @@ import {
   Card,
   CardContent,
   CardHeader,
-} from "@/design-system/components/ui/card";
-import { Skeleton } from "@/design-system/components/ui/skeleton";
-import { Separator } from "@/design-system/components/ui/separator";
+} from '@/design-system/components/ui/card';
+import { Skeleton } from '@/design-system/components/ui/skeleton';
+import { Separator } from '@/design-system/components/ui/separator';
 
 export default function Loading() {
   return (
@@ -44,10 +44,7 @@ export default function Loading() {
                   </thead>
                   <tbody>
                     {Array.from({ length: 15 }).map((_, i) => (
-                      <tr
-                        key={i}
-                        className="border-b transition-colors"
-                      >
+                      <tr key={i} className="border-b transition-colors">
                         <td className="p-4 align-middle">
                           <Skeleton className="h-4 w-20" />
                         </td>
