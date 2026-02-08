@@ -32,26 +32,24 @@ const application = new Application(
   getCurrentUser,
 );
 
-// export all functions from the application
-export const {
-  getActiveDemand,
-  getDemandById,
-  updateDemand,
-  createDemand,
-  getCompanyDemand,
-  getUnverifiedDemand,
-  getActiveSupply,
-  getSupplyById,
-  updateSupply,
-  createSupply,
-  getCompanySupply,
-  getUnverifiedSupply,
-  getCompanyById,
-  updateCompany,
-  createCompany,
-  updateCurrentCompany,
-  getVerifiedCompanies,
-  getUnverifiedCompanies,
-  getCurrentCompany,
-  getAllCompanies,
-} = application;
+// export all functions from the application (bound to preserve `this`)
+export const getActiveDemand = application.getActiveDemand.bind(application);
+export const getDemandById = application.getDemandById.bind(application);
+export const updateDemand = application.updateDemand.bind(application);
+export const createDemand = application.createDemand.bind(application);
+export const getCompanyDemand = application.getCompanyDemand.bind(application);
+export const getUnverifiedDemand = application.getUnverifiedDemand.bind(application);
+export const getActiveSupply = application.getActiveSupply.bind(application);
+export const getSupplyById = application.getSupplyById.bind(application);
+export const updateSupply = application.updateSupply.bind(application);
+export const createSupply = application.createSupply.bind(application);
+export const getCompanySupply = application.getCompanySupply.bind(application);
+export const getUnverifiedSupply = application.getUnverifiedSupply.bind(application);
+export const getCompanyById = application.getCompanyById.bind(application);
+export const updateCompany = application.updateCompany.bind(application);
+export const createCompany = application.createCompany.bind(application);
+export const updateCurrentCompany = application.updateCurrentCompany.bind(application);
+export const getVerifiedCompanies = application.getVerifiedCompanies.bind(application);
+export const getUnverifiedCompanies = application.getUnverifiedCompanies.bind(application);
+export const getCurrentCompany = application.getCurrentCompany.bind(application);
+export const getAllCompanies = application.getAllCompanies.bind(application);
