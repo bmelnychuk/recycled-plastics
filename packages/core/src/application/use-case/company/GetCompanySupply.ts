@@ -14,11 +14,16 @@ export class GetCompanySupply {
     companyId: string,
   ): Promise<SupplyViewModel[]> {
     assertUser(user);
+
+    const isCompanyUser = user.companyId === companyId || user.isAdmin;
+
     const [company, supply] = await Promise.all([
       this.companyRepository.getById(companyId),
       this.supplyRepository.getByCompanyId(companyId),
     ]);
 
-    return supply.map((s) => ({ ...s, company }));
+    return supply
+      .filter((s) => isCompanyUser || s.verified)
+      .map((s) => ({ ...s, company }));
   }
 }

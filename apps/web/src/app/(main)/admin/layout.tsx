@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { redirect } from 'next/navigation';
-import { getCurrentUser } from '@/core';
+import { getCurrentUser } from '@/server';
 
 export default async function AuthenticatedLayout({
   children,

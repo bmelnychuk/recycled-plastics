@@ -1,7 +1,7 @@
 import { SupplyHero } from '@/features/supply/SupplyHero';
 import { ActiveSupplyTable } from '@/features/supply/SupplyTable';
 import { isAfter, subDays } from 'date-fns';
-import { getCurrentUser, getActiveSupply } from '@/core';
+import { getCurrentUser, getActiveSupply } from '@/server';
 
 export const generateMetadata = () => ({
   title: 'Materials | Recycled Plastics',

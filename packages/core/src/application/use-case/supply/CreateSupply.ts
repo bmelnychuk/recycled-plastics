@@ -16,7 +16,6 @@ export const NewMaterialSupplySchema = MaterialSupplySchema.omit({
   updatedDate: true,
 }).extend({
   id: z.uuid().optional(),
-  companyId: z.uuid().optional(),
 });
 
 export type NewMaterialSupply = z.infer<typeof NewMaterialSupplySchema>;
@@ -29,12 +28,12 @@ export class CreateSupply {
     newSupply: NewMaterialSupply,
   ): Promise<MaterialSupply> {
     assertCreateMaterialPermission(user);
+    assertCanAccessCompany(user, newSupply.companyId);
     const now = new Date().toISOString();
 
     const supply: MaterialSupply = MaterialSupplySchema.parse({
       ...newSupply,
       id: newSupply.id ?? newUuid(),
-      companyId: newSupply.companyId ?? user.companyId,
       createdDate: now,
       updatedDate: now,
     });

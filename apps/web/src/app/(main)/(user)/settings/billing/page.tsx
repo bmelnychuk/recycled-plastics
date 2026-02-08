@@ -1,5 +1,5 @@
 import { BillingInfo } from '@/features/settings/billing/BillingInfo';
-import { getCurrentUser } from '@/core';
+import { getCurrentUser } from '@/server';
 import { redirect } from 'next/navigation';
 
 export default async function Page() {

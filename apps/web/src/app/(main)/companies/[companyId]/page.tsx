@@ -1,7 +1,12 @@
-import { getCurrentUser, getCompanyById, getCompanyDemand, getCompanySupply } from '@/core';
+import {
+  getCurrentUser,
+  getCompanyById,
+  getCompanyDemand,
+  getCompanySupply,
+  getCompanyUsers,
+} from '@/server';
 import { CompanyBrandedHeader } from '@/composite/company/CompanyBrandedHeader';
 import { CompanyMaterials } from '@/composite/company/CompanyMaterials';
-import { auth } from '@clerk/nextjs/server';
 import { notFound } from 'next/navigation';
 
 export default async function Page({
@@ -9,16 +14,16 @@ export default async function Page({
 }: {
   params: Promise<{ companyId: string }>;
 }) {
-  const { sessionClaims } = await auth();
-  const isAdmin = sessionClaims?.role === 'admin';
-
   const { companyId } = await params;
   const user = await getCurrentUser();
 
-  const [company, demand, supply] = await Promise.all([
+  const isCompanyUser = user?.companyId === companyId || user?.isAdmin;
+
+  const [company, demand, supply, users] = await Promise.all([
     getCompanyById(companyId),
     getCompanyDemand(companyId),
     getCompanySupply(companyId),
+    isCompanyUser ? getCompanyUsers(companyId) : Promise.resolve([]),
   ]);
 
   if (!company || !user) notFound();
@@ -27,6 +32,7 @@ export default async function Page({
     <div className="min-h-screen">
       <CompanyBrandedHeader company={company} />
       <CompanyMaterials
+        users={users}
         company={company}
         supply={supply}
         demand={demand}

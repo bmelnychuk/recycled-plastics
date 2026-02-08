@@ -1,13 +1,19 @@
 import { NewSupplyForm } from '@/features/supply/SupplyForm';
-import { getVerifiedCompanies } from '@/core';
+import { getCurrentUser, getVerifiedCompanies } from '@/server';
+import { redirect } from 'next/navigation';
 
 export default async function Page() {
-  const companies = await getVerifiedCompanies();
+  const [user, companies] = await Promise.all([
+    getCurrentUser(),
+    getVerifiedCompanies(),
+  ]);
+
+  if (!user) redirect('/');
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-6 md:px-6 md:py-10">
       <h1 className="text-2xl font-bold mb-6">New material supply</h1>
-      <NewSupplyForm companies={companies} />
+      <NewSupplyForm user={user} companies={companies} />
     </div>
   );
 }

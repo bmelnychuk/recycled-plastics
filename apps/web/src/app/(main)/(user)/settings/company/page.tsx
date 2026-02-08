@@ -1,4 +1,4 @@
-import { getCurrentCompany } from '@/core';
+import { getCurrentCompany, getCurrentUser } from '@/server';
 import {
   EditCurrentCompanyForm,
   NewCompanyForm,
@@ -12,14 +12,18 @@ import {
 } from '@/design-system/components/ui/item';
 import { InfoIcon } from 'lucide-react';
 import { Button } from '@/design-system/components/ui/button';
+import { notFound, redirect } from 'next/navigation';
 
 export default async function Page() {
+  const user = await getCurrentUser();
   const company = await getCurrentCompany();
+
+  if (!user) redirect('/');
 
   return (
     <div className="p-10 flex flex-col gap-6">
       <h1 className="text-2xl font-bold">
-        {company?.verified ? 'Company' : 'Company (Unverified)'}
+        {company && !company.verified ? 'Company (Unverified)' : 'Company'}
       </h1>
       {company?.verified && (
         <div className="flex w-full max-w-lg ">
@@ -43,9 +47,9 @@ export default async function Page() {
       )}
       <div className="w-full max-w-4xl">
         {company ? (
-          <EditCurrentCompanyForm id={company.id} defaultValues={company} />
+          <EditCurrentCompanyForm company={company} />
         ) : (
-          <NewCompanyForm />
+          <NewCompanyForm user={user} />
         )}
       </div>
     </div>

@@ -37,11 +37,12 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 @vercel/oidc-aws-credentials-provider
 
-pnpm --filter @rp/core add zod
+pnpm --filter @rp/core add react-image-file-resizer
 
 pnpm --filter @rp/core add @aws-sdk/lib-dynamodb
 pnpm --filter @rp/core add @aws-sdk/s3-request-presigner
 pnpm --filter @rp/core add @aws-sdk/client-dynamodb
 pnpm --filter @rp/core add @aws-sdk/client-s3
 
-pnpm --filter apps/web add @vercel/oidc-aws-credentials-provider
+pnpm --filter apps/web add
+pnpm --filter web add next-themes

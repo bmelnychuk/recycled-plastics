@@ -1,5 +1,5 @@
 import { RecentMaterials } from '@/composite/dashboard/RecentMaterials';
-import { getActiveDemand, getActiveSupply, getCurrentUser } from '@/core';
+import { getActiveDemand, getActiveSupply, getCurrentUser } from '@/server';
 import { DemandHeroCompact } from '@/features/demand/DemandHeroCompact';
 import { SupplyHeroCompact } from '@/features/supply/SupplyHeroCompact';
 

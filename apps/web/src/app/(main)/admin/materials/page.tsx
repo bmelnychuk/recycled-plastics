@@ -1,4 +1,4 @@
-import { getUnverifiedDemand, getUnverifiedSupply } from '@/core';
+import { getUnverifiedDemand, getUnverifiedSupply } from '@/server';
 import { MaterialsTable } from '@/features/admin/MaterialsTable';
 
 export default async function Page() {

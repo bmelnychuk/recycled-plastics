@@ -9,10 +9,7 @@ import { User, CreditCardIcon, LucideIcon, Building2 } from 'lucide-react';
 export function SettingsNavigation() {
   return (
     <nav className="flex flex-col gap-1 p-4">
-      <NavLink href="/profile" icon={User}>
-        User
-      </NavLink>
-      <NavLink href="/company-profile" icon={Building2}>
+      <NavLink href="/settings/company" icon={Building2}>
         Company
       </NavLink>
       {/* <NavLink href="/billing" icon={CreditCardIcon}>

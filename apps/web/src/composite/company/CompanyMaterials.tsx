@@ -5,6 +5,7 @@ import {
   SignedInUser,
   Company,
   MaterialSupply,
+  User,
 } from '@rp/core';
 import {
   Tabs,
@@ -18,15 +19,18 @@ import { CompanyDemandTable } from '../../features/demand/DemandTable';
 import Link from 'next/link';
 import { PencilIcon } from 'lucide-react';
 import { CompanySupplyTable } from '../../features/supply/SupplyTable';
+import { CompanyUserTable } from '@/features/admin/UserTable';
 
 interface CompanyMaterialsProps {
   company: Company;
   supply: MaterialSupply[];
   demand: MaterialDemand[];
   user: SignedInUser;
+  users: User[];
 }
 
 export const CompanyMaterials = ({
+  users,
   company,
   supply,
   demand,
@@ -57,7 +61,7 @@ export const CompanyMaterials = ({
                 Demand Materials
               </span>
             </TabsTrigger>
-            {/* {users.length > 0 && (
+            {users.length > 0 && (
               <TabsTrigger
                 value="users"
                 className="text-sm px-6 py-2.5 data-[state=active]:bg-white rounded-md transition-all"
@@ -65,7 +69,7 @@ export const CompanyMaterials = ({
                 <span className="font-bold text-base">{users.length}</span>
                 <span className="ml-2 font-medium text-slate-600">Users</span>
               </TabsTrigger>
-            )} */}
+            )}
           </TabsList>
           {canEdit && (
             <Button asChild variant="secondary">
@@ -93,11 +97,15 @@ export const CompanyMaterials = ({
           />
         </TabsContent>
 
-        {/* {users.length > 0 && user && (
+        {users.length > 0 && user && (
           <TabsContent value="users" className="mt-0">
-            <CompanyUserTable user={user} users={users} companyId={company.id} />
+            <CompanyUserTable
+              user={user}
+              users={users}
+              companyId={company.id}
+            />
           </TabsContent>
-        )} */}
+        )}
       </Tabs>
     </div>
   );

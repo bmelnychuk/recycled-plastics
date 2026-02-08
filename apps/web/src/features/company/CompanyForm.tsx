@@ -9,10 +9,8 @@ import {
   FieldDescription,
   FieldLabel,
 } from '@/design-system/components/ui/field';
-import { Checkbox } from '@/design-system/components/ui/checkbox';
 import { CountryDropdown } from '@/features/common/CountryDropdown';
 import { CompanyColorSelect } from '@/composite/form/CompanyColorSelect';
-import Image from 'next/image';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
@@ -23,6 +21,7 @@ import {
   CompanyUpdateSchema,
   NewCompanySchema,
   CurrentCompanyUpdateSchema,
+  SignedInUser,
 } from '@rp/core';
 import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
@@ -31,7 +30,7 @@ import { Trash, Upload, ImagePlus, AlertTriangleIcon } from 'lucide-react';
 import { FormSection } from '../common/FormSection';
 import { Card, CardContent } from '@/design-system/components/ui/card';
 import { Switch } from '@/design-system/components/ui/switch';
-import { updateCompany, updateCurrentCompany, createCompany } from '@/core';
+import { updateCompany, updateCurrentCompany, createCompany } from '@/client';
 
 const FormStateSchema = CompanySchema.omit({
   id: true,
@@ -46,7 +45,6 @@ const initialValues: FormState = {
     firstName: '',
     lastName: '',
     email: '',
-    phone: '',
   },
   name: '',
   description: '',
@@ -75,9 +73,7 @@ export const EditCompanyForm: FC<{
 
   const onSubmit = async (data: FormState, logoFile?: File): Promise<void> => {
     try {
-      await updateCompany(
-        CompanyUpdateSchema.parse({ ...data, id }),
-      );
+      await updateCompany(CompanyUpdateSchema.parse({ ...data, id }), logoFile);
       toast.success('Company updated successfully');
       router.replace(`/companies/${id}`);
     } catch (error) {
@@ -90,18 +86,23 @@ export const EditCompanyForm: FC<{
 };
 
 export const EditCurrentCompanyForm: FC<{
-  id: string;
-  defaultValues: Company;
-}> = ({ id, defaultValues }) => {
+  company: Company;
+}> = ({ company }) => {
   const router = useRouter();
 
   const onSubmit = async (data: FormState, logoFile?: File): Promise<void> => {
     try {
       await updateCurrentCompany(
-        CurrentCompanyUpdateSchema.parse({ ...data, id }),
+        CurrentCompanyUpdateSchema.parse(data),
+        company.id,
+        logoFile,
       );
       toast.success('Company updated successfully');
-      router.replace(`/companies/${id}`);
+      if (company.verified) {
+        router.replace(`/companies/${company.id}`);
+      } else {
+        router.replace('/settings/company');
+      }
     } catch (error) {
       console.error(error);
       toast.error('Failed to update company');
@@ -110,28 +111,42 @@ export const EditCurrentCompanyForm: FC<{
 
   return (
     <CompanyForm
-      defaultValues={defaultValues}
+      defaultValues={company}
       onSubmit={onSubmit}
       hiddenFields={['verified']}
-      disabled={defaultValues.verified}
+      disabled={company.verified}
     />
   );
 };
 
-export const NewCompanyForm = () => {
+export const NewCompanyForm: FC<{
+  user: SignedInUser;
+}> = ({ user }) => {
   const router = useRouter();
 
   const onSubmit = async (data: FormState, logoFile?: File): Promise<void> => {
     try {
-      await createCompany(NewCompanySchema.parse(data));
+      const company = await createCompany(
+        NewCompanySchema.parse(data),
+        logoFile,
+      );
       toast.success('Company created successfully');
-      router.push('/companies');
+      if (user.isAdmin) {
+        router.push(`/companies/${company.id}`);
+      } else {
+        router.push('/settings/company');
+      }
     } catch (error) {
       toast.error('Failed to create company');
     }
   };
 
-  return <CompanyForm onSubmit={onSubmit} />;
+  return (
+    <CompanyForm
+      onSubmit={onSubmit}
+      hiddenFields={user.isAdmin ? [] : ['verified']}
+    />
+  );
 };
 
 export const CompanyForm: FC<{
@@ -347,6 +362,98 @@ export const CompanyForm: FC<{
       <Separator />
 
       <FormSection
+        title="Main Contact"
+        description="Provide details of the main contact person"
+      >
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-6">
+          <div className="col-span-3">
+            <Controller
+              name="mainContact.firstName"
+              disabled={disabled}
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="mainContact.firstName">
+                    First Name
+                  </FieldLabel>
+                  <Input {...field} placeholder="Enter first name" />
+                </Field>
+              )}
+            />
+          </div>
+          <div className="col-span-3">
+            <Controller
+              name="mainContact.lastName"
+              disabled={disabled}
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="mainContact.lastName">
+                    Last Name
+                  </FieldLabel>
+                  <Input {...field} placeholder="Enter last name" />
+                </Field>
+              )}
+            />
+          </div>
+          <div className="col-span-full">
+            <Controller
+              name="mainContact.title"
+              disabled={disabled}
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="mainContact.title">Title</FieldLabel>
+                  <Input
+                    {...field}
+                    value={field.value ?? ''}
+                    placeholder="e.g., CEO, Sales Manager"
+                  />
+                </Field>
+              )}
+            />
+          </div>
+          <div className="col-span-full">
+            <Controller
+              name="mainContact.email"
+              disabled={disabled}
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="mainContact.email">Email</FieldLabel>
+                  <Input
+                    {...field}
+                    type="email"
+                    placeholder="contact@example.com"
+                  />
+                </Field>
+              )}
+            />
+          </div>
+          <div className="col-span-full">
+            <Controller
+              name="mainContact.phone"
+              disabled={disabled}
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="mainContact.phone">Phone</FieldLabel>
+                  <Input
+                    {...field}
+                    value={field.value ?? ''}
+                    type="tel"
+                    placeholder="+1 (555) 000-0000"
+                  />
+                </Field>
+              )}
+            />
+          </div>
+        </div>
+      </FormSection>
+
+      <Separator />
+
+      <FormSection
         title="Branding"
         description="Customize the company's visual appearance"
       >
@@ -356,15 +463,14 @@ export const CompanyForm: FC<{
             <div className="mt-2">
               {logoFile || currentLogo ? (
                 <div className="group relative w-32 h-32 rounded-lg border-2 border-dashed border-border overflow-hidden bg-muted/50">
-                  <Image
+                  <img
                     src={
                       logoFile
                         ? URL.createObjectURL(logoFile)
                         : (currentLogo ?? '')
                     }
                     alt="Company logo"
-                    fill
-                    className="object-contain p-2"
+                    className="size-full object-contain p-2"
                   />
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                     <Button
@@ -382,6 +488,7 @@ export const CompanyForm: FC<{
                     <Button
                       type="button"
                       size="icon"
+                      disabled={disabled}
                       variant="destructive"
                       onClick={handleRemoveLogo}
                       aria-label="Remove logo"

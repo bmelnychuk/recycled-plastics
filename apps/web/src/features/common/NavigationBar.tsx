@@ -132,18 +132,6 @@ export const NavigationBar: FC<Props> = ({ user }) => {
                     </li>
                     <li>
                       <NavigationMenuLink asChild>
-                        <Link href="/admin/users">
-                          <div className="text-sm leading-none font-medium">
-                            Users
-                          </div>
-                          <div className="text-muted-foreground line-clamp-2 text-sm leading-snug">
-                            Browse all users. Update user details.
-                          </div>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
                         <Link href="/admin/materials">
                           <div className="text-sm leading-none font-medium">
                             Materials
@@ -178,7 +166,9 @@ export const NavigationBar: FC<Props> = ({ user }) => {
               Admin
             </Badge>
           )}
-          {userProfile && <CurrentUserNavigationItem user={userProfile} />}
+          {userProfile && user && (
+            <CurrentUserNavigationItem user={userProfile} signedInUser={user} />
+          )}
         </SignedIn>
       </div>
     </div>

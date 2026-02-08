@@ -1,4 +1,4 @@
-import { getCurrentUser, getActiveDemand } from '@/core';
+import { getCurrentUser, getActiveDemand } from '@/server';
 import { DemandHero } from '@/features/demand/DemandHero';
 import { ActiveDemandTable } from '@/features/demand/DemandTable';
 import { isAfter, subDays } from 'date-fns';

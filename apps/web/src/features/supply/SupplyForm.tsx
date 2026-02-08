@@ -4,7 +4,6 @@ import { Button } from '@/design-system/components/ui/button';
 import { Input } from '@/design-system/components/ui/input';
 import { Separator } from '@/design-system/components/ui/separator';
 import { Textarea } from '@/design-system/components/ui/textarea';
-import Image from 'next/image';
 import { MaterialTypeSelect } from '@/features/material/MaterialTypeSelect';
 import { MaterialDataForm } from '@/features/material/MaterialDataForm';
 
@@ -40,12 +39,13 @@ import {
   NewMaterialSupplySchema,
   Company,
   SupplyUpdateSchema,
+  SignedInUser,
 } from '@rp/core';
 import { PriceInput } from '../common/form/input/PriceInput';
 import { CountryDropdown } from '../common/CountryDropdown';
 import { Switch } from '@/design-system/components/ui/switch';
 import { Card, CardContent } from '@/design-system/components/ui/card';
-import { createSupply, updateSupply } from '@/core';
+import { createSupply, updateSupply } from '@/client';
 
 const FormStateSchema = MaterialSupplySchema.omit({
   createdDate: true,
@@ -76,9 +76,10 @@ const defaultValues: FormState = {
 };
 
 export const EditSupplyForm: FC<{
+  user: SignedInUser;
   supply: MaterialSupply;
   companies: Company[];
-}> = ({ supply, companies }) => {
+}> = ({ user, supply, companies }) => {
   const router = useRouter();
 
   const onSubmit = async (
@@ -89,16 +90,20 @@ export const EditSupplyForm: FC<{
     try {
       await updateSupply(
         SupplyUpdateSchema.parse({ ...data, id: supply.id }),
+        files,
+        pictures,
       );
       toast.success('Material supply updated successfully');
       router.replace(`/companies/${supply.companyId}/supply/${supply.id}`);
     } catch (error) {
+      console.error(error);
       toast.error('Failed to update material demand');
     }
   };
 
   return (
     <SupplyForm
+      user={user}
       defaultValues={supply}
       onSubmit={onSubmit}
       companies={companies}
@@ -107,9 +112,10 @@ export const EditSupplyForm: FC<{
 };
 
 export const NewSupplyForm: FC<{
+  user: SignedInUser;
   companies: Company[];
   companyId?: string;
-}> = ({ companies, companyId }) => {
+}> = ({ user, companies, companyId }) => {
   const router = useRouter();
 
   const onSubmit = async (
@@ -119,7 +125,7 @@ export const NewSupplyForm: FC<{
   ): Promise<void> => {
     try {
       const validatedData = NewMaterialSupplySchema.parse(data);
-      await createSupply(validatedData);
+      await createSupply(validatedData, documents, pictures);
       toast.success('Material supply created successfully');
       router.push('/supply');
     } catch (error) {
@@ -130,6 +136,7 @@ export const NewSupplyForm: FC<{
 
   return (
     <SupplyForm
+      user={user}
       defaultValues={{ ...defaultValues, companyId: companyId ?? '' }}
       onSubmit={onSubmit}
       companies={companies}
@@ -138,6 +145,7 @@ export const NewSupplyForm: FC<{
 };
 
 const SupplyForm: FC<{
+  user: SignedInUser;
   defaultValues?: FormState;
   companies: Company[];
   onSubmit: (
@@ -145,7 +153,7 @@ const SupplyForm: FC<{
     docFiles: File[],
     pictureFiles: File[],
   ) => Promise<void>;
-}> = ({ defaultValues, onSubmit: onSubmitCallback, companies }) => {
+}> = ({ user, defaultValues, onSubmit: onSubmitCallback, companies }) => {
   const [docFiles, setDocFiles] = useState<File[]>([]);
   const [pictureFiles, setPictureFiles] = useState<File[]>([]);
 
@@ -224,7 +232,7 @@ const SupplyForm: FC<{
               <FieldLabel htmlFor="companyId">Company</FieldLabel>
               <CompanySelect
                 name="companyId"
-                disabled={Boolean(defaultValues?.companyId)}
+                disabled={Boolean(defaultValues?.companyId) || !user.isAdmin}
                 options={companies}
                 value={field.value}
                 onChange={field.onChange}
@@ -407,7 +415,7 @@ const SupplyForm: FC<{
 
       <FormSection
         title="Images"
-        description=" Provide pictures about the material"
+        description="Provide pictures about the material"
       >
         <Dropzone
           maxSize={1024 * 1024 * 10}
@@ -428,12 +436,10 @@ const SupplyForm: FC<{
             {pictures.map((picture, index) => (
               <div key={`picture-${index}`} className="space-y-2">
                 <figure className="group relative aspect-video overflow-hidden rounded-xl border border-slate-200">
-                  <Image
+                  <img
                     src={picture.url}
                     alt={`Material preview ${index + 1}`}
-                    fill
-                    sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover center"
+                    className="absolute inset-0 size-full object-cover object-center"
                   />
                   <div className="pointer-events-none absolute inset-0 flex justify-end p-2 opacity-100 transition group-hover:opacity-100">
                     <Button
@@ -459,12 +465,10 @@ const SupplyForm: FC<{
             {pictureFiles.map((picture, index) => (
               <div key={`localpicture-${index}`} className="space-y-2">
                 <figure className="group relative aspect-video overflow-hidden rounded-xl border border-slate-200">
-                  <Image
+                  <img
                     src={URL.createObjectURL(picture)}
                     alt={`Material preview ${index + 1}`}
-                    fill
-                    sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover center"
+                    className="absolute inset-0 size-full object-cover object-center"
                   />
                   <div className="pointer-events-none absolute inset-0 flex justify-end p-2 opacity-100 transition group-hover:opacity-100">
                     <Button
@@ -491,36 +495,38 @@ const SupplyForm: FC<{
 
       <Separator />
 
-      <FormSection title="Verification status" description="">
-        <Controller
-          name="verified"
-          control={form.control}
-          render={({ field }) => (
-            <Card>
-              <CardContent className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <AlertTriangleIcon />
-                  <div>
-                    <FieldLabel htmlFor="verified" className="Flex1">
-                      Verified
-                    </FieldLabel>
-                    <FieldDescription>
-                      Once verified, the material supply will be displayed
-                      publicly
-                    </FieldDescription>
+      {user.isAdmin && (
+        <FormSection title="Verification status" description="">
+          <Controller
+            name="verified"
+            control={form.control}
+            render={({ field }) => (
+              <Card>
+                <CardContent className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <AlertTriangleIcon />
+                    <div>
+                      <FieldLabel htmlFor="verified" className="Flex1">
+                        Verified
+                      </FieldLabel>
+                      <FieldDescription>
+                        Once verified, the material supply will be displayed
+                        publicly
+                      </FieldDescription>
+                    </div>
                   </div>
-                </div>
-                <Switch
-                  id="verified"
-                  checked={Boolean(field.value)}
-                  onCheckedChange={field.onChange}
-                  className="w-12! h-7! data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 [&>span]:size-6! [&>span]:data-[state=checked]:translate-x-[calc(100%-2px)]"
-                />
-              </CardContent>
-            </Card>
-          )}
-        />
-      </FormSection>
+                  <Switch
+                    id="verified"
+                    checked={Boolean(field.value)}
+                    onCheckedChange={field.onChange}
+                    className="w-12! h-7! data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 [&>span]:size-6! [&>span]:data-[state=checked]:translate-x-[calc(100%-2px)]"
+                  />
+                </CardContent>
+              </Card>
+            )}
+          />
+        </FormSection>
+      )}
       <div className="flex items-center justify-end space-x-4">
         {hasErrors && (
           <div className="text-red-500 text-sm">Form has invalid fields</div>

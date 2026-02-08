@@ -1,7 +1,7 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { SignedInUser } from '@rp/core';
+import { SignedInUser, User } from '@rp/core';
 import { DataTable } from '../../design-system/custom/data-table';
 import { FC } from 'react';
 import Link from 'next/link';
@@ -15,17 +15,7 @@ import {
 } from '@/design-system/components/ui/input-group';
 import { formatDate } from '../../composite/common/date-utils';
 
-type UserViewModel = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  title: string;
-  plan: string;
-  createdDate: string;
-};
-
-const allColumns: ColumnDef<UserViewModel>[] = [
+const allColumns: ColumnDef<User>[] = [
   {
     id: 'search',
     header: () => null,
@@ -72,38 +62,20 @@ const allColumns: ColumnDef<UserViewModel>[] = [
     size: 200,
     cell: ({ row }) => <div>{row.original.email}</div>,
   },
-  {
-    accessorKey: 'title',
-    header: 'Title',
-    size: 150,
-    cell: ({ row }) => <div>{row.original.title || '-'}</div>,
-  },
-  {
-    accessorKey: 'plan',
-    header: 'Plan',
-    size: 100,
-    cell: ({ row }) => <div className="capitalize">{row.original.plan}</div>,
-  },
-  {
-    accessorKey: 'createdDate',
-    header: 'Created',
-    accessorFn: ({ createdDate }) => formatDate(createdDate),
-    size: 100,
-  },
 ];
 
 const userColumns = allColumns.filter(({ id }) => id !== 'name_link');
 const adminColumns = allColumns.filter(({ id }) => id !== 'name_text');
 
 const getFilterValue = (
-  table: TanStackTable<UserViewModel>,
+  table: TanStackTable<User>,
   columnId: string,
 ): string | undefined => {
   return table.getColumn(columnId)?.getFilterValue() as string | undefined;
 };
 
 const setFilterValue = (
-  table: TanStackTable<UserViewModel>,
+  table: TanStackTable<User>,
   columnId: string,
   value: string,
 ): void => {
@@ -112,7 +84,7 @@ const setFilterValue = (
 
 export const CompanyUserTable: FC<{
   user: SignedInUser;
-  users: UserViewModel[];
+  users: User[];
   companyId: string;
 }> = ({ user, users, companyId }) => {
   return (
@@ -126,8 +98,8 @@ export const CompanyUserTable: FC<{
 };
 
 const UserTable: FC<{
-  users: UserViewModel[];
-  columns: ColumnDef<UserViewModel>[];
+  users: User[];
+  columns: ColumnDef<User>[];
   companyId?: string;
   user: SignedInUser;
 }> = ({ users, columns, companyId, user }) => {

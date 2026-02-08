@@ -1,7 +1,7 @@
 import { Footer } from '@/features/common/Footer';
 import { NavigationBar } from '@/features/common/NavigationBar';
 import { ScrollArea } from '@/design-system/components/ui/scroll-area';
-import { getCurrentUser } from '@/core';
+import { getCurrentUser } from '@/server';
 
 export default async function RootLayout({
   children,

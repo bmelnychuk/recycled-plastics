@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from '@/design-system/components/ui/card';
 import { CircleFlag } from 'react-circle-flags';
-import { FileText } from 'lucide-react';
+import { CheckCircle, Circle, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/design-system/components/ui/button';
 import { FC } from 'react';
@@ -17,6 +17,7 @@ import { formatPrice } from '../../composite/common/price-utils';
 import { MaterialDataTable } from '@/features/material/MaterialDataTable';
 import { CountryName } from '@/features/common/CountryName';
 import { ColorLabel } from '@/features/material/MaterialColor';
+import { cn } from '@/design-system/lib/utils';
 
 const Stat = ({ label, value }: { label: string; value: string }) => (
   <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
@@ -49,8 +50,23 @@ export const MaterialDemandDetailsCard: FC<{
           <DemandTitle demand={material} />
         </CardTitle>
         <CardDescription>
-          Listed {formatDate(material.createdDate)} • Last updated{' '}
-          {formatDate(material.updatedDate)}
+        <div>
+            Listed {formatDate(material.createdDate)} • Last updated{' '}
+            {formatDate(material.updatedDate)}
+          </div>
+          <div
+            className={cn(
+              'mt-1 flex items-center gap-1.5 text-sm',
+              material.verified ? 'text-green-600' : 'text-slate-500',
+            )}
+          >
+            {material.verified ? (
+              <CheckCircle className="size-4 shrink-0" aria-hidden />
+            ) : (
+              <Circle className="size-4 shrink-0" aria-hidden />
+            )}
+            <span>{material.verified ? 'Verified' : 'Unverified'}</span>
+          </div>
         </CardDescription>
         {canEdit && (
           <CardAction>

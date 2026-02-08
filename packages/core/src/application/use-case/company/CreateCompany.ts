@@ -17,7 +17,7 @@ export type NewCompany = z.infer<typeof NewCompanySchema>;
 export class CreateCompany {
   constructor(
     private readonly companyRepository: CompanyRepository,
-    // private readonly authService: AuthService
+    private readonly authService: AuthService,
   ) {}
 
   public async invoke(
@@ -47,10 +47,6 @@ export class CreateCompany {
   ): Promise<Company> {
     if (user.companyId) throw new Error('User already belongs to a company');
 
-    const userId = user.id ?? newUuid();
-
-    // await this.authService.attachExternalId({ authId: user.authId, userId });
-
     const now = new Date().toISOString();
     const company = CompanySchema.parse({
       ...newCompany,
@@ -58,7 +54,12 @@ export class CreateCompany {
       createdDate: now,
       updatedDate: now,
       verified: false,
-      userIds: [user.id],
+      userIds: [user.authId],
+    });
+
+    await this.authService.updateUser(user.authId, {
+      companyId: company.id,
+      isCompanyVerified: false,
     });
 
     await this.companyRepository.create(company);

@@ -14,8 +14,6 @@ import z from 'zod';
 export const SupplyUpdateSchema = MaterialSupplySchema.omit({
   createdDate: true,
   updatedDate: true,
-}).extend({
-  companyId: z.uuid().optional(),
 });
 
 export type SupplyUpdate = z.infer<typeof SupplyUpdateSchema>;
@@ -30,13 +28,10 @@ export class UpdateSupply {
     supplyUpdate: SupplyUpdate,
   ): Promise<MaterialSupply> {
     assertUserAndCompanyVerified(user);
-    const companyId = supplyUpdate.companyId ?? user.companyId;
-    if (!companyId) throw new Error('Company ID is required');
-
-    assertCanAccessCompany(user, companyId);
+    assertCanAccessCompany(user, supplyUpdate.companyId);
 
     const existing = await this.materialSupplyRepository.getById(
-      companyId,
+      supplyUpdate.companyId,
       supplyUpdate.id,
     );
 

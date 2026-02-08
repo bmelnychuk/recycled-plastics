@@ -3,6 +3,8 @@ import { DynamoDbMaterialDemandRepository } from './infrastructure/dynamo-db/Dyn
 import { DynamoDbMaterialSupplyRepository } from './infrastructure/dynamo-db/DynamoDbMaterialSupplyRepository';
 import { MaterialDemand } from './domain/demand/Demand';
 import {
+  assertCanAccessCompany,
+  AuthService,
   SignedInUser,
   SignedInUserSchema,
 } from './application/auth/AuthService';
@@ -18,11 +20,13 @@ import { GetCompanyById } from './application/use-case/company/GetCompanyDetails
 import { Company } from './domain/company/Company';
 import {
   MaterialDemandUpdate,
+  MaterialDemandUpdateSchema,
   UpdateDemand,
 } from './application/use-case/demand/UpdateDemand';
 import {
   CreateDemand,
   NewMaterialDemand,
+  NewMaterialDemandSchema,
 } from './application/use-case/demand/CreateDemand';
 import {
   CreateCompany,
@@ -57,11 +61,17 @@ import { GetCompanySupply } from './application/use-case/company/GetCompanySuppl
 import { GetUnverifiedDemand } from './application/use-case/demand/GetUnverifiedDemand';
 import { GetUnverifiedSupply } from './application/use-case/supply/GetUnverifiedSupply';
 import { DynamoDBClientConfig } from '@aws-sdk/client-dynamodb';
-
-export const { MAIN_TABLE, CLERK_SECRET_KEY } = process.env as Record<
-  string,
-  string
->;
+import {
+  FileUploadRequest,
+  FileUploadRequestSchema,
+  FileUploadResponse,
+} from './application/service/FileUploadService';
+import { S3Storage } from './infrastructure/s3/S3Storage';
+import { S3ClientConfig } from '@aws-sdk/client-s3';
+import { newUuid } from './lib/identity';
+import { ClerkAuthService } from './infrastructure/clerk/ClerkAuthService';
+import { GetCompanyUsers } from './application/use-case/user/GetCompanyUsers';
+import { User } from './domain/user/User';
 
 export type GetCurrentUser = () => Promise<SignedInUser | undefined>;
 
@@ -69,6 +79,8 @@ export class Application {
   private readonly demand: MaterialDemandRepository;
   private readonly supply: MaterialSupplyRepository;
   private readonly companies: CompanyRepository;
+  private readonly authService: ClerkAuthService;
+  private readonly s3Storage: S3Storage;
 
   private readonly getActiveDemandUseCase: GetActiveDemand;
   private readonly getDemandByIdUseCase: GetDemandById;
@@ -91,14 +103,28 @@ export class Application {
   private readonly getVerifiedCompaniesUseCase: GetVerifiedCompanies;
   private readonly getUnverifiedCompaniesUseCase: GetUnverifiedCompanies;
 
+  private readonly getCompanyUsersUseCase: GetCompanyUsers;
+
   constructor(
     mainTable: string,
-    config: DynamoDBClientConfig,
+    private readonly bucket: string,
+    clerkSecretKey: string,
+    dynamoDbConfig: DynamoDBClientConfig,
+    s3Config: S3ClientConfig,
     public readonly getCurrentUser: GetCurrentUser,
   ) {
-    this.demand = new DynamoDbMaterialDemandRepository(mainTable, config);
-    this.supply = new DynamoDbMaterialSupplyRepository(mainTable, config);
-    this.companies = new DynamoDbCompanyRepository(mainTable, config);
+    this.authService = new ClerkAuthService(clerkSecretKey);
+
+    this.demand = new DynamoDbMaterialDemandRepository(
+      mainTable,
+      dynamoDbConfig,
+    );
+    this.supply = new DynamoDbMaterialSupplyRepository(
+      mainTable,
+      dynamoDbConfig,
+    );
+    this.companies = new DynamoDbCompanyRepository(mainTable, dynamoDbConfig);
+    this.s3Storage = new S3Storage(s3Config);
 
     this.getActiveDemandUseCase = new GetActiveDemand(
       this.demand,
@@ -133,11 +159,22 @@ export class Application {
     );
 
     this.getCompanyByIdUseCase = new GetCompanyById(this.companies);
-    this.updateCompanyUseCase = new UpdateCompany(this.companies);
+    this.updateCompanyUseCase = new UpdateCompany(
+      this.companies,
+      this.authService,
+    );
     this.updateCurrentCompanyUseCase = new UpdateCurrentCompany(this.companies);
-    this.createCompanyUseCase = new CreateCompany(this.companies);
+    this.createCompanyUseCase = new CreateCompany(
+      this.companies,
+      this.authService,
+    );
     this.getVerifiedCompaniesUseCase = new GetVerifiedCompanies(this.companies);
     this.getUnverifiedCompaniesUseCase = new GetUnverifiedCompanies(
+      this.companies,
+    );
+
+    this.getCompanyUsersUseCase = new GetCompanyUsers(
+      this.authService,
       this.companies,
     );
   }
@@ -163,9 +200,9 @@ export class Application {
     });
   }
 
-  public async getCompanyById(companyId: string): Promise<Company> {
+  public async getCompanyById(companyId: string): Promise<Company | null> {
     const user = await this.getCurrentUser();
-    if (!user) throw new Error('User not authenticated');
+    if (!user) return null;
     return this.getCompanyByIdUseCase.invoke(user, companyId);
   }
 
@@ -222,7 +259,6 @@ export class Application {
     supplyId: string,
   ): Promise<SupplyViewModel> {
     const user = await this.getCurrentUser();
-    if (!user) throw new Error('User not authenticated');
     return this.getSupplyByIdUseCase.invoke({
       user,
       id: { companyId, supplyId },
@@ -283,6 +319,55 @@ export class Application {
     if (!user) throw new Error('User not authenticated');
     return this.getUnverifiedSupplyUseCase.invoke(user);
   }
+
+  public async getCompanyUsers(companyId: string): Promise<User[]> {
+    const user = await this.getCurrentUser();
+    if (!user) throw new Error('User not authenticated');
+    return this.getCompanyUsersUseCase.invoke(user, companyId);
+  }
+
+  public async getFileUploadUrl(
+    request: FileUploadRequest,
+  ): Promise<FileUploadResponse> {
+    const user = await this.getCurrentUser();
+    if (!user) throw new Error('User not authenticated');
+    assertCanAccessCompany(user, request.companyId);
+
+    const { uploadType, contentType, companyId } = request;
+    const fileId = newUuid();
+
+    let s3Key = '';
+    switch (uploadType) {
+      case 'demand-document':
+        s3Key = `companies/${companyId}/demand/${request.materialId}/documents/${fileId}`;
+        break;
+      case 'supply-document':
+        s3Key = `companies/${companyId}/supply/${request.materialId}/documents/${fileId}`;
+        break;
+      case 'supply-picture':
+        s3Key = `companies/${companyId}/supply/${request.materialId}/pictures/${fileId}`;
+        break;
+      case 'company-logo':
+        s3Key = `companies/${companyId}/logo/${fileId}`;
+        break;
+      case 'company-private-document':
+        s3Key = `companies/${companyId}/private-documents/${fileId}`;
+        break;
+      default:
+        throw new Error('Invalid upload type');
+    }
+
+    const s3Upload = await this.s3Storage.getFileUploadUrl(this.bucket, {
+      s3Key,
+      contentType,
+    });
+
+    return {
+      fileId,
+      downloadUrl: s3Upload.downloadUrl,
+      uploadUrl: s3Upload.uploadUrl,
+    };
+  }
 }
 
 export * from './domain/material/Material';
@@ -297,14 +382,28 @@ export type {
   SignedInUser,
   SupplyViewModel,
   MaterialSupply,
+  NewMaterialSupply,
   MaterialDemand,
+  NewMaterialDemand,
+  MaterialDemandUpdate,
   DemandViewModel,
+  FileUploadRequest,
+  SupplyUpdate,
+  FileUploadResponse,
+  NewCompany,
+  CompanyUpdate,
+  CurrentCompanyUpdate,
 };
+
 export {
   SignedInUserSchema,
   NewCompanySchema,
   CompanyUpdateSchema,
   CurrentCompanyUpdateSchema,
   NewMaterialSupplySchema,
+  NewMaterialDemandSchema,
+  MaterialDemandUpdateSchema,
   SupplyUpdateSchema,
+  FileUploadRequestSchema,
+  newUuid,
 };

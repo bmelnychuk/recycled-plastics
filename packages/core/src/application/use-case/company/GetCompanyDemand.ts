@@ -18,7 +18,10 @@ export class GetCompanyDemand {
       this.companyRepository.getById(companyId),
       this.demandRepository.getByCompanyId(companyId),
     ]);
+    const isCompanyUser = user.companyId === companyId || user.isAdmin;
 
-    return demand.map((d) => ({ ...d, company }));
+    return demand
+      .filter((d) => isCompanyUser || d.verified)
+      .map((d) => ({ ...d, company }));
   }
 }

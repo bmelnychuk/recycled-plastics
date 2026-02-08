@@ -1,4 +1,4 @@
-import { getAllCompanies } from '@/core';
+import { getAllCompanies } from '@/server';
 
 import { CompaniesTable } from '@/features/company/CompaniesTable';
 

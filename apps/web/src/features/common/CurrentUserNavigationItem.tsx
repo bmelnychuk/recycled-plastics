@@ -1,7 +1,7 @@
 'use client';
 
 import { Avatar, AvatarFallback } from '@/design-system/components/ui/avatar';
-import { LogOut, Settings, User } from 'lucide-react';
+import { Building2, LogOut, Settings, User } from 'lucide-react';
 import { useClerk } from '@clerk/nextjs';
 
 import Link from 'next/link';
@@ -14,6 +14,7 @@ import {
 } from '@/design-system/components/ui/popover';
 import { Button } from '@/design-system/components/ui/button';
 import { Separator } from '@/design-system/components/ui/separator';
+import { SignedInUser } from '@rp/core';
 
 export interface UserProfile {
   firstName: string;
@@ -23,9 +24,13 @@ export interface UserProfile {
 
 interface Props {
   user: UserProfile;
+  signedInUser: SignedInUser;
 }
 
-export const CurrentUserNavigationItem: FC<Props> = ({ user }) => {
+export const CurrentUserNavigationItem: FC<Props> = ({
+  user,
+  signedInUser,
+}) => {
   const clerk = useClerk();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
@@ -62,7 +67,23 @@ export const CurrentUserNavigationItem: FC<Props> = ({ user }) => {
               asChild
               onClick={() => setIsPopoverOpen(false)}
             >
-              <Link href="/settings">
+              {signedInUser.companyId && signedInUser.isCompanyVerified ? (
+                <Link href="/company">
+                  <Building2 /> My Company
+                </Link>
+              ) : (
+                <Link href="/settings/company">
+                  <Building2 /> My Company
+                </Link>
+              )}
+            </Button>
+            <Button
+              variant="ghost"
+              className="justify-start gap-2"
+              asChild
+              onClick={() => setIsPopoverOpen(false)}
+            >
+              <Link href="/settings/company">
                 <Settings /> Settings
               </Link>
             </Button>
@@ -88,32 +109,6 @@ export const CurrentUserNavigationItem: FC<Props> = ({ user }) => {
             >
               <LogOut /> Sign out
             </Button>
-          </div>
-          <Separator />
-          <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
-            <a
-              href="/legal/terms"
-              className="hover:text-foreground transition-colors"
-              onClick={() => setIsPopoverOpen(false)}
-            >
-              Terms
-            </a>
-            <span>·</span>
-            <a
-              href="/legal/privacy"
-              className="hover:text-foreground transition-colors"
-              onClick={() => setIsPopoverOpen(false)}
-            >
-              Privacy
-            </a>
-            <span>·</span>
-            <a
-              href="/legal/imprint"
-              className="hover:text-foreground transition-colors"
-              onClick={() => setIsPopoverOpen(false)}
-            >
-              Imprint
-            </a>
           </div>
         </div>
       </PopoverContent>

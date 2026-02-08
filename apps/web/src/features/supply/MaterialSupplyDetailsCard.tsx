@@ -11,7 +11,7 @@ import Image from 'next/image';
 import { ImageZoom } from '@/design-system/components/ui/shadcn-io/image-zoom';
 import { cn } from '@/design-system/lib/utils';
 import { CircleFlag } from 'react-circle-flags';
-import { FileText } from 'lucide-react';
+import { CheckCircle, Circle, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/design-system/components/ui/button';
 import { FC } from 'react';
@@ -42,8 +42,23 @@ export const MaterialSupplyDetailsCard: FC<{
           {material.name}
         </CardTitle>
         <CardDescription>
-          Listed {formatDate(material.createdDate)} • Last updated{' '}
-          {formatDate(material.updatedDate)}
+          <div>
+            Listed {formatDate(material.createdDate)} • Last updated{' '}
+            {formatDate(material.updatedDate)}
+          </div>
+          <div
+            className={cn(
+              'mt-1 flex items-center gap-1.5 text-sm',
+              material.verified ? 'text-green-600' : 'text-slate-500',
+            )}
+          >
+            {material.verified ? (
+              <CheckCircle className="size-4 shrink-0" aria-hidden />
+            ) : (
+              <Circle className="size-4 shrink-0" aria-hidden />
+            )}
+            <span>{material.verified ? 'Verified' : 'Unverified'}</span>
+          </div>
         </CardDescription>
         {canEdit && (
           <CardAction>

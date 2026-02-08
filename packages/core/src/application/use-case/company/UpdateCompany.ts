@@ -1,6 +1,10 @@
 import { Company, CompanySchema } from '../../../domain/company/Company';
 import { CompanyRepository } from '../../../domain/company/CompanyRepository';
-import { assertCanAccessCompany, SignedInUser } from '../../auth/AuthService';
+import {
+  assertCanAccessCompany,
+  AuthService,
+  SignedInUser,
+} from '../../auth/AuthService';
 import { z } from 'zod';
 
 export const CompanyUpdateSchema = CompanySchema.omit({
@@ -11,7 +15,10 @@ export const CompanyUpdateSchema = CompanySchema.omit({
 export type CompanyUpdate = z.infer<typeof CompanyUpdateSchema>;
 
 export class UpdateCompany {
-  constructor(private readonly companyRepository: CompanyRepository) {}
+  constructor(
+    private readonly companyRepository: CompanyRepository,
+    private readonly authService: AuthService,
+  ) {}
 
   public async invoke(
     user: SignedInUser,
@@ -33,6 +40,16 @@ export class UpdateCompany {
     });
 
     await this.companyRepository.update(company);
+
+    if (existingCompany.verified !== company.verified) {
+      await Promise.all(
+        company.userIds?.map((userId) => {
+          return this.authService.updateUser(userId, {
+            isCompanyVerified: company.verified,
+          });
+        }) ?? [],
+      );
+    }
 
     return company;
   }

@@ -15,15 +15,22 @@ export class GetActiveDemand {
   }): Promise<MaterialDemand[]> {
     const { user, startDate } = input;
     const demand = await this.demandRepository.getActiveDemand(startDate);
-    const companyIds = demand.map(({ companyId }) => companyId);
-    const companies = user
-      ? await this.companyRepository.getByIds(companyIds)
-      : new Map();
 
-    return demand.map((d) => ({
-      ...d,
-      company: companies.get(d.companyId),
-      documents: user ? d.documents : [],
-    }));
+    const companyIds = demand.map(({ companyId }) => companyId);
+    const companies = await this.companyRepository.getByIds(companyIds);
+
+    return demand
+      .filter((d) => user?.isAdmin || user?.companyId === d.companyId || d.verified)
+      .map((d) => {
+        const company = companies.get(d.companyId);
+        if (!company || !company.verified) return undefined;
+
+        return {
+          ...d,
+          company: user ? company : undefined,
+          documents: user ? d.documents : [],
+        };
+      })
+      .filter((d) => !!d);
   }
 }

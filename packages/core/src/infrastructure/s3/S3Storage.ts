@@ -1,29 +1,27 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { PutObjectCommand, S3Client, S3ClientConfig } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { z } from 'zod';
-
-export const ContentTypeSchema = z.enum([
-  'application/pdf',
-  'image/png',
-  'image/jpeg',
-  'image/jpg',
-]);
+import { ContentTypeSchema } from '../../application/service/FileUploadService';
 
 export const FileUploadSchema = z.object({
   s3Key: z.string().nonempty(),
   contentType: ContentTypeSchema,
 });
 
-export const FileUploadResponseSchema = z.object({
+const FileUploadResponseSchema = z.object({
   downloadUrl: z.url(),
   uploadUrl: z.url(),
 });
 
-export type FileUploadResponse = z.infer<typeof FileUploadResponseSchema>;
+type FileUploadResponse = z.infer<typeof FileUploadResponseSchema>;
 export type FileUpload = z.infer<typeof FileUploadSchema>;
 
 export class S3Storage {
-  constructor(private readonly s3Client: S3Client = new S3Client()) {}
+  private readonly s3Client: S3Client;
+
+  constructor(config: S3ClientConfig = {}) {
+    this.s3Client = new S3Client(config);
+  }
 
   public async getFileUploadUrl(
     bucket: string,

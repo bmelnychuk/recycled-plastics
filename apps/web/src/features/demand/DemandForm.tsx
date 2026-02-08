@@ -36,11 +36,16 @@ import { MaterialDataForm } from '@/features/material/MaterialDataForm';
 import { CompanySelect } from '@/features/company/CompanySelect';
 import { Card, CardContent } from '@/design-system/components/ui/card';
 import { Switch } from '@/design-system/components/ui/switch';
-import { Company, MaterialDemand, MaterialDemandSchema } from '@rp/core';
+import {
+  Company,
+  MaterialDemand,
+  MaterialDemandSchema,
+  MaterialDemandUpdateSchema,
+  NewMaterialDemandSchema,
+  SignedInUser,
+} from '@rp/core';
 
-import { updateDemand, createDemand } from '@/core';
-import { NewMaterialDemandSchema } from '@rp/core/src/application/use-case/demand/CreateDemand';
-import { MaterialDemandUpdateSchema } from '@rp/core/src/application/use-case/demand/UpdateDemand';
+import { updateDemand, createDemand } from '@/client';
 
 const FormStateSchema = MaterialDemandSchema.omit({
   createdDate: true,
@@ -73,7 +78,8 @@ const initialValues: FormState = {
 export const EditDemandForm: FC<{
   demand: MaterialDemand;
   companies: Company[];
-}> = ({ demand, companies }) => {
+  user: SignedInUser;
+}> = ({ demand, companies, user }) => {
   const router = useRouter();
   const { id, companyId } = demand;
 
@@ -81,6 +87,7 @@ export const EditDemandForm: FC<{
     try {
       await updateDemand(
         MaterialDemandUpdateSchema.parse({ ...data, id: demand.id }),
+        files,
       );
       toast.success('Material demand updated successfully');
       router.replace(`/companies/${companyId}/demand/${id}`);
@@ -91,6 +98,7 @@ export const EditDemandForm: FC<{
 
   return (
     <DemandForm
+      user={user}
       defaultValues={demand}
       onSubmit={onSubmit}
       companies={companies}
@@ -99,14 +107,15 @@ export const EditDemandForm: FC<{
 };
 
 export const NewDemandForm: FC<{
+  user: SignedInUser;
   companies: Company[];
   companyId?: string;
-}> = ({ companies, companyId }) => {
+}> = ({ user, companies, companyId }) => {
   const router = useRouter();
 
   const onSubmit = async (data: FormState, files: File[]): Promise<void> => {
     try {
-      await createDemand(NewMaterialDemandSchema.parse(data));
+      await createDemand(NewMaterialDemandSchema.parse(data), files);
       toast.success('Material demand created successfully');
       router.push('/demand');
     } catch (error) {
@@ -116,6 +125,7 @@ export const NewDemandForm: FC<{
 
   return (
     <DemandForm
+      user={user}
       defaultValues={{ ...initialValues, companyId: companyId ?? '' }}
       companies={companies}
       onSubmit={onSubmit}
@@ -124,10 +134,11 @@ export const NewDemandForm: FC<{
 };
 
 const DemandForm: FC<{
+  user: SignedInUser;
   defaultValues?: FormState;
   companies: Company[];
   onSubmit: (data: FormState, files: File[]) => Promise<void>;
-}> = ({ defaultValues, companies, onSubmit: onSubmitCallback }) => {
+}> = ({ user, defaultValues, companies, onSubmit: onSubmitCallback }) => {
   const [files, setFiles] = useState<File[]>([]);
 
   const form = useForm<FormState>({
@@ -346,7 +357,7 @@ const DemandForm: FC<{
 
       <Separator />
 
-      <FormSection title="Verification status" description="">
+      {user.isAdmin && <FormSection title="Verification status" description="">
         <Controller
           name="verified"
           control={form.control}
@@ -375,7 +386,7 @@ const DemandForm: FC<{
             </Card>
           )}
         />
-      </FormSection>
+      </FormSection>}
 
       <div className="flex items-center justify-end space-x-4">
         {hasErrors && (

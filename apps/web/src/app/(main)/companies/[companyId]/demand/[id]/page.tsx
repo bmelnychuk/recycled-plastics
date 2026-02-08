@@ -2,7 +2,7 @@ import { CompanyBusinessCard } from '@/features/company/CompanyBusinessCard';
 import { CompanyTeaserCard } from '@/features/company/CompanyTeaserCard';
 import { ContactBusinessCard } from '@/composite/company/ContactBusinessCard';
 import { MaterialDemandDetailsCard } from '@/features/demand/MaterialDemandDetailsCard';
-import { getDemandById, getCompanyById, getCurrentUser } from '@/core';
+import { getDemandById, getCompanyById, getCurrentUser } from '@/server';
 
 export default async function Page({
   params,

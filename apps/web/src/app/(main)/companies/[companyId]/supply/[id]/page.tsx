@@ -1,4 +1,4 @@
-import { getSupplyById, getCompanyById, getCurrentUser } from '@/core';
+import { getSupplyById, getCompanyById, getCurrentUser } from '@/server';
 import { CompanyBusinessCard } from '@/features/company/CompanyBusinessCard';
 import { CompanyTeaserCard } from '@/features/company/CompanyTeaserCard';
 import { ContactBusinessCard } from '@/composite/company/ContactBusinessCard';

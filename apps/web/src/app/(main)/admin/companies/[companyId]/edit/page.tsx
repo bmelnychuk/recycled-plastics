@@ -1,4 +1,4 @@
-import { getCompanyById } from '@/core';
+import { getCompanyById } from '@/server';
 import { EditCompanyForm } from '@/features/company/CompanyForm';
 import { notFound } from 'next/navigation';
 

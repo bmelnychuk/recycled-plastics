@@ -5,15 +5,15 @@ import { assertCanAccessCompany, SignedInUser } from '../../auth/AuthService';
 
 export class GetCompanyUsers {
   constructor(
+    private readonly userRepository: UserRepository,
     private readonly companyRepository: CompanyRepository,
-    private readonly authService: UserRepository,
   ) {}
 
   public async invoke(user: SignedInUser, companyId: string): Promise<User[]> {
     assertCanAccessCompany(user, companyId);
     const company = await this.companyRepository.getById(companyId);
     const userIds = company.userIds ?? [];
-    const users = await this.authService.findByIds(userIds);
+    const users = await this.userRepository.findByIds(userIds);
     return Array.from(users.values());
   }
 }

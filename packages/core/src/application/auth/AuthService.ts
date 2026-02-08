@@ -47,7 +47,12 @@ export const assertIsAdmin = (user: SignedInUser): void => {
   throw new Error('Only admins can access this resource');
 };
 
+export interface AuthUserUpdatePayload {
+  externalId?: string;
+  companyId?: string;
+  isCompanyVerified?: boolean;
+}
+
 export interface AuthService {
-  attachExternalId(ids: { authId: string; userId: string }): Promise<void>;
-  getByExternalIds(externalIds: string[]): Promise<SignedInUser[]>;
+  updateUser(authUserId: string, data: AuthUserUpdatePayload): Promise<void>;
 }

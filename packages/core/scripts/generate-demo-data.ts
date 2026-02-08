@@ -22,10 +22,10 @@ import {
 const MAIN_TABLE =
   'recycled-plastics-api-staging-MainTable74195DAB-8X8DS39STQG8';
 
-const dynamoDb = new DynamoDbCompanyRepository(MAIN_TABLE);
-const companyRepository = new DynamoDbCompanyRepository(MAIN_TABLE);
-const supplyRepository = new DynamoDbMaterialSupplyRepository(MAIN_TABLE);
-const demandRepository = new DynamoDbMaterialDemandRepository(MAIN_TABLE);
+const dynamoDb = new DynamoDbCompanyRepository(MAIN_TABLE, {});
+const companyRepository = new DynamoDbCompanyRepository(MAIN_TABLE, {});
+const supplyRepository = new DynamoDbMaterialSupplyRepository(MAIN_TABLE, {});
+const demandRepository = new DynamoDbMaterialDemandRepository(MAIN_TABLE, {});
 
 const companies: Company[] = [
   {

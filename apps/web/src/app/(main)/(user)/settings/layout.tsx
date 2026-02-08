@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { getCurrentUser } from '@/core';
+import { getCurrentUser } from '@/server';
 import { redirect } from 'next/navigation';
 import { SettingsNavigation } from '@/features/settings/SettingsNavigation';
 

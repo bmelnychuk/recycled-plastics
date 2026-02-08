@@ -1,4 +1,10 @@
-import { getCompanyById, getCompanyDemand, getCompanySupply, getCurrentUser } from '@/core';
+import {
+  getCompanyById,
+  getCompanyDemand,
+  getCompanySupply,
+  getCompanyUsers,
+  getCurrentUser,
+} from '@/server';
 import { CompanyBrandedHeader } from '@/composite/company/CompanyBrandedHeader';
 import { CompanyMaterials } from '@/composite/company/CompanyMaterials';
 import { notFound } from 'next/navigation';
@@ -9,45 +15,27 @@ export default async function Page() {
 
   if (!companyId || !user.isCompanyVerified) notFound();
 
-  if (user.isAdmin) {
-    const [company, demand, supply] = await Promise.all([
-      getCompanyById(companyId),
-      getCompanyDemand(companyId),
-      getCompanySupply(companyId),
-    ]);
+  const isCompanyUser = user?.companyId === companyId || user?.isAdmin;
 
-    if (!company) notFound();
+  const [company, demand, supply, users] = await Promise.all([
+    getCompanyById(companyId),
+    getCompanyDemand(companyId),
+    getCompanySupply(companyId),
+    isCompanyUser ? getCompanyUsers(companyId) : Promise.resolve([]),
+  ]);
 
-    return (
-      <div className="min-h-screen">
-        <CompanyBrandedHeader company={company} />
-        <CompanyMaterials
-          company={company}
-          supply={supply}
-          demand={demand}
-          user={user}
-        />
-      </div>
-    );
-  } else {
-    const [company, demand, supply] = await Promise.all([
-      getCompanyById(companyId),
-      getCompanyDemand(companyId),
-      getCompanySupply(companyId),
-    ]);
+  if (!company) notFound();
 
-    if (!company) notFound();
-
-    return (
-      <div className="min-h-screen">
-        <CompanyBrandedHeader company={company} />
-        <CompanyMaterials
-          company={company}
-          supply={supply}
-          demand={demand}
-          user={user}
-        />
-      </div>
-    );
-  }
+  return (
+    <div className="min-h-screen">
+      <CompanyBrandedHeader company={company} />
+      <CompanyMaterials
+        users={users}
+        company={company}
+        supply={supply}
+        demand={demand}
+        user={user}
+      />
+    </div>
+  );
 }

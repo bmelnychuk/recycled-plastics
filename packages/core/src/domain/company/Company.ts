@@ -10,7 +10,7 @@ export const CompanyContactSchema = z.object({
   lastName: z.string().nonempty(),
   email: z.email().toLowerCase(),
   title: z.string().optional(),
-  phone: z.string().nonempty(),
+  phone: z.string().nonempty().optional(),
 });
 
 export const CompanySchema = z.object({
@@ -33,7 +33,7 @@ export const CompanySchema = z.object({
     .optional(),
   verified: z.boolean(),
   privateDocuments: z.array(DocumentSchema).optional(),
-  userIds: z.array(z.uuid()).optional(),
+  userIds: z.array(z.string()).optional(),
 });
 
 export const CompanyDetailsSchema = CompanySchema.extend({
