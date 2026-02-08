@@ -4,10 +4,16 @@ import { MaterialsCard } from "@/composite/dashboard/MaterialsCard";
 import { DemandHeroCompact } from "@/features/demand/DemandHeroCompact";
 import { SupplyHeroCompact } from "@/features/supply/SupplyHeroCompact";
 import { hello } from "@rp/core";
+import { awsCredentialsProvider } from '@vercel/oidc-aws-credentials-provider';
 
 import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
 
-const client = new DynamoDBClient({}); // OIDC credentials auto-picked
+const client = new DynamoDBClient({
+  region: process.env.AWS_REGION!,
+  credentials: awsCredentialsProvider({
+    roleArn: process.env.AWS_ROLE_ARN!,
+  }),
+});
 
 
 

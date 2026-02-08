@@ -4,6 +4,7 @@ import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as iam from 'aws-cdk-lib/aws-iam';
 
 const vercelProjectId = 'prj_KbEXjqEOPA8VH4yIgpdx4krtdP1o';
+const teamSlug = 'bmelnychuk-private';
 
 export class AppStack extends cdk.Stack {
   public readonly table: dynamodb.Table;
@@ -19,13 +20,18 @@ export class AppStack extends cdk.Stack {
 
     const role = new iam.Role(this, 'VercelOidcRole', {
       assumedBy: new iam.WebIdentityPrincipal(
-        `arn:aws:iam::${this.account}:oidc-provider/oidc.vercel.com`,
+        `arn:aws:iam::${this.account}:oidc-provider/oidc.vercel.com/bmelnychuk-private`,
         {
           StringEquals: {
-            'oidc.vercel.com:aud': 'sts.amazonaws.com',
-            'oidc.vercel.com:sub': `project:${vercelProjectId}`,
+            [`oidc.vercel.com/${teamSlug}:aud`]: `https://vercel.com/${teamSlug}`,
           },
-        }
+          StringLike: {
+            [`oidc.vercel.com/${teamSlug}:sub`]: [
+              `owner:${teamSlug}:project:*:environment:preview`,
+              `owner:${teamSlug}:project:*:environment:production`,
+            ],
+          },
+        },
       ),
     });
 
