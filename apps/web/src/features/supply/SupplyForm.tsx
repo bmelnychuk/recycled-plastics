@@ -317,7 +317,7 @@ const SupplyForm: FC<{
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="price">Price</FieldLabel>
+              <FieldLabel htmlFor="price">Price per ton</FieldLabel>
               <PriceInput
                 name="price"
                 value={field.value}
@@ -331,11 +331,11 @@ const SupplyForm: FC<{
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="amount">Amount</FieldLabel>
+              <FieldLabel htmlFor="amount">Amount (ton / month)</FieldLabel>
               <Input
                 {...field}
                 type="number"
-                placeholder="Amount in kg"
+                placeholder="0"
                 onFocus={(e) =>
                   e.target.addEventListener(
                     'wheel',

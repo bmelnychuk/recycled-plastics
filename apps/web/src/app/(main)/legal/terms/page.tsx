@@ -85,11 +85,11 @@ const GermanTermsPage = () => {
       <section id="intellectual-property">
         <h2>6. Geistiges Eigentum</h2>
         <p>
-          Die {appName}-Plattform, ihre Software, ihr Design und ihre Inhalte (mit
-          Ausnahme Ihrer Nutzerinhalte) gehören uns oder unseren Lizenzgebern
-          und sind durch Urheberrechte und andere Gesetze geschützt. Sie dürfen
-          diese ohne unsere Erlaubnis nicht kopieren, modifizieren oder
-          verbreiten.
+          Die {appName}-Plattform, ihre Software, ihr Design und ihre Inhalte
+          (mit Ausnahme Ihrer Nutzerinhalte) gehören uns oder unseren
+          Lizenzgebern und sind durch Urheberrechte und andere Gesetze
+          geschützt. Sie dürfen diese ohne unsere Erlaubnis nicht kopieren,
+          modifizieren oder verbreiten.
         </p>
       </section>
 
@@ -233,10 +233,10 @@ const EnglishTermsPage = () => {
       <section id="intellectual-property">
         <h2>6. Intellectual Property</h2>
         <p>
-          The {appName} platform, its software, design and content (excluding your
-          user content) are owned by us or our licensors and are protected by
-          copyright and other laws. You may not copy, modify, or distribute them
-          without our permission.
+          The {appName} platform, its software, design and content (excluding
+          your user content) are owned by us or our licensors and are protected
+          by copyright and other laws. You may not copy, modify, or distribute
+          them without our permission.
         </p>
       </section>
 

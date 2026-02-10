@@ -46,6 +46,7 @@ import {
 } from '@rp/core';
 
 import { updateDemand, createDemand } from '@/client';
+import { PriceInput } from '../common/form/input/PriceInput';
 
 const FormStateSchema = MaterialDemandSchema.omit({
   createdDate: true,
@@ -250,47 +251,45 @@ const DemandForm: FC<{
       <Separator />
       <FormSection
         title="Commercial information"
-        description=" Provide commercial information about the material"
+        description="Provide commercial information about the material"
       >
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-6">
-          <div className="col-span-full">
-            <Controller
-              name="price.amount"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="price.amount">Price</FieldLabel>
-                  <Input {...field} type="number" placeholder="Price per kg" />
-                </Field>
-              )}
-            />
-          </div>
-          <div className="col-span-full">
-            <Controller
-              name="amount"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="amount">Amount</FieldLabel>
-                  <Input
-                    {...field}
-                    type="number"
-                    placeholder="Amount in kg"
-                    onFocus={(e) =>
-                      e.target.addEventListener(
-                        'wheel',
-                        function (e) {
-                          e.preventDefault();
-                        },
-                        { passive: false },
-                      )
-                    }
-                  />
-                </Field>
-              )}
-            />
-          </div>
-        </div>
+        <Controller
+          name="price"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="price">Price per ton</FieldLabel>
+              <PriceInput
+                name="price"
+                value={field.value}
+                onChange={field.onChange}
+              />
+            </Field>
+          )}
+        />
+        <Controller
+          name="amount"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="amount">Amount (ton / month)</FieldLabel>
+              <Input
+                {...field}
+                type="number"
+                placeholder="0"
+                onFocus={(e) =>
+                  e.target.addEventListener(
+                    'wheel',
+                    function (e) {
+                      e.preventDefault();
+                    },
+                    { passive: false },
+                  )
+                }
+              />
+            </Field>
+          )}
+        />
       </FormSection>
       <Separator />
 

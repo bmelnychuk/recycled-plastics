@@ -27,9 +27,9 @@ const GermanImprintPage = () => {
         </p>
         <p>
           <strong>Beschreibung:</strong> {appName} ist eine öffentliche
-          Austauschplattform, auf der Nutzer Angebot und Nachfrage für
-          recycelte Kunststoffe einstellen, miteinander handeln und auf
-          aggregierte Marktdaten zugreifen können.
+          Austauschplattform, auf der Nutzer Angebot und Nachfrage für recycelte
+          Kunststoffe einstellen, miteinander handeln und auf aggregierte
+          Marktdaten zugreifen können.
         </p>
       </section>
 
@@ -85,9 +85,9 @@ const GermanImprintPage = () => {
         <p>
           Unser Angebot enthält Links zu externen Websites Dritter, auf deren
           Inhalte wir keinen Einfluss haben. Deshalb können wir für diese
-          fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten
-          Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten
-          verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der
+          fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der
+          verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der
+          Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der
           Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige
           Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine
           permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne
@@ -124,8 +124,8 @@ const EnglishImprintPage = () => {
         </p>
         <p>
           <strong>Description:</strong> {appName} is a public exchange platform
-          where users can list supply and demand for recycled plastics,
-          exchange with each other, and access aggregated market data.
+          where users can list supply and demand for recycled plastics, exchange
+          with each other, and access aggregated market data.
         </p>
       </section>
 
@@ -172,8 +172,8 @@ const EnglishImprintPage = () => {
           care. However, no guarantee can be given for the accuracy,
           completeness and timeliness of the content. As a service provider, we
           are responsible for our own content on these pages in accordance with
-          § 7 para.1 TMG under general law. There is no obligation to monitor
-          or check information transmitted or stored by third parties.
+          § 7 para.1 TMG under general law. There is no obligation to monitor or
+          check information transmitted or stored by third parties.
         </p>
 
         <h3>Liability for Links</h3>

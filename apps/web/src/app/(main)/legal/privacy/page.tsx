@@ -341,8 +341,7 @@ const EnglishPrivacyPage = () => {
           aggregated market data. {appName} is developed and operated by{' '}
           {appName}, a company based in Germany. If you have questions about
           this Privacy Policy or your data, please contact us using the contact
-          details in the{' '}
-          <a href="#contact">Contact Information</a> section.
+          details in the <a href="#contact">Contact Information</a> section.
         </p>
       </section>
 

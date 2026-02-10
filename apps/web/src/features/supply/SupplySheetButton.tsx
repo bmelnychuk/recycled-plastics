@@ -112,7 +112,7 @@ export const SupplySheetButton: FC<{ supply: MaterialSupply }> = ({
                           Available
                         </div>
                         <div className="font-semibold truncate">
-                          {supply.amount.toLocaleString()} kg
+                          {supply.amount.toLocaleString()} t
                         </div>
                       </div>
                     </div>

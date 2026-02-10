@@ -15,7 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Recycled Plastics',
-  description: 'Your trusted platform for circular economy insights, materials tracking, and sustainable pricing data.',
+  description:
+    'Your trusted platform for circular economy insights, materials tracking, and sustainable pricing data.',
 };
 
 export default function RootLayout({

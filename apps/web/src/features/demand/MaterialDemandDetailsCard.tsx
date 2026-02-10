@@ -87,7 +87,7 @@ export const MaterialDemandDetailsCard: FC<{
             <Stat label="Price / kg" value={formatPrice(material.price)} />
             <Stat
               label="Available"
-              value={`${material.amount.toLocaleString()} kg`}
+              value={`${material.amount.toLocaleString()} t`}
             />
             <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
               <p className="text-xs font-medium uppercase tracking-wide text-slate-500">

@@ -110,7 +110,7 @@ const allColumns: ColumnDef<DemandViewModel>[] = [
       />
     ),
     size: 80,
-    cell: ({ row }) => `${row.original.amount} kg`,
+    cell: ({ row }) => `${row.original.amount} t`,
   },
   {
     accessorKey: 'price.amount',

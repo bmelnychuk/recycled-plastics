@@ -38,7 +38,11 @@ const columns: ColumnDef<Company>[] = [
     cell: ({ row }) => (
       <div onClick={(e) => e.stopPropagation()}>
         <Link
-          href={`/admin/companies/${row.original.id}/edit`}
+          href={
+            row.original.verified
+              ? `/companies/${row.original.id}`
+              : `/admin/companies/${row.original.id}/edit`
+          }
           className="underline"
         >
           {row.original.name}

@@ -29,22 +29,22 @@ const allColumns: ColumnDef<User>[] = [
     },
     enableSorting: false,
   },
-  {
-    id: 'name_link',
-    header: 'Name',
-    accessorFn: ({ firstName, lastName }) => `${firstName} ${lastName}`,
-    size: 180,
-    cell: ({ row }) => (
-      <div className="h-12 flex items-center">
-        <Link
-          href={`/admin/users/${row.original.id}/edit`}
-          className="underline"
-        >
-          {row.original.firstName} {row.original.lastName}
-        </Link>
-      </div>
-    ),
-  },
+  // {
+  //   id: 'name_link',
+  //   header: 'Name',
+  //   accessorFn: ({ firstName, lastName }) => `${firstName} ${lastName}`,
+  //   size: 180,
+  //   cell: ({ row }) => (
+  //     <div className="h-12 flex items-center">
+  //       <Link
+  //         href={`/admin/users/${row.original.id}/edit`}
+  //         className="underline"
+  //       >
+  //         {row.original.firstName} {row.original.lastName}
+  //       </Link>
+  //     </div>
+  //   ),
+  // },
   {
     id: 'name_text',
     header: 'Name',
@@ -64,8 +64,8 @@ const allColumns: ColumnDef<User>[] = [
   },
 ];
 
-const userColumns = allColumns.filter(({ id }) => id !== 'name_link');
-const adminColumns = allColumns.filter(({ id }) => id !== 'name_text');
+// const userColumns = allColumns.filter(({ id }) => id !== 'name_link');
+// const adminColumns = allColumns.filter(({ id }) => id !== 'name_text');
 
 const getFilterValue = (
   table: TanStackTable<User>,
@@ -90,7 +90,7 @@ export const CompanyUserTable: FC<{
   return (
     <UserTable
       users={users}
-      columns={user.isAdmin ? adminColumns : userColumns}
+      columns={allColumns}
       companyId={companyId}
       user={user}
     />

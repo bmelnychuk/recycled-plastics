@@ -112,7 +112,7 @@ export const DemandSheetButton: FC<{ demand: MaterialDemand }> = ({
                           Available
                         </div>
                         <div className="font-semibold truncate">
-                          {demand.amount.toLocaleString()} kg
+                          {demand.amount.toLocaleString()} t
                         </div>
                       </div>
                     </div>

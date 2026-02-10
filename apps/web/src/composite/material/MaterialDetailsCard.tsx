@@ -179,7 +179,7 @@ export const MaterialDetailsCard: FC<{ material: { name: string } }> = ({
             />
             <Stat
               label="Available"
-              value={`${material.amount.toLocaleString()} kg`}
+              value={`${material.amount.toLocaleString()} t`}
             />
             <Stat label="Company" value="cirplus GmbH" />
             <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
