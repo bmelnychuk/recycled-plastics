@@ -1,0 +1,113 @@
+/* Legal Pages Stylesheet */
+/* Scoped to [data-legal-page] to avoid affecting other parts of the app */
+
+[data-legal-page] {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+[data-legal-page] h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  margin-top: 0;
+  color: #1a1a1a;
+  border-bottom: 2px solid #e5e5e5;
+  padding-bottom: 0.75rem;
+}
+
+[data-legal-page] h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: #2a2a2a;
+}
+
+[data-legal-page] h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #3a3a3a;
+}
+
+[data-legal-page] p {
+  margin-bottom: 1rem;
+  text-align: justify;
+}
+
+[data-legal-page] em {
+  color: #666;
+  font-style: italic;
+}
+
+[data-legal-page] strong {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+[data-legal-page] section {
+  margin-bottom: 2rem;
+}
+
+[data-legal-page] address {
+  font-style: normal;
+  line-height: 1.8;
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid #e5e5e5;
+}
+
+[data-legal-page] a {
+  color: #0066cc;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+[data-legal-page] a:hover {
+  color: #004499;
+  text-decoration: underline;
+}
+
+[data-legal-page] > div {
+  max-width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  [data-legal-page] {
+    padding: 1.5rem 1rem;
+  }
+
+  [data-legal-page] h1 {
+    font-size: 2rem;
+  }
+
+  [data-legal-page] h2 {
+    font-size: 1.5rem;
+  }
+
+  [data-legal-page] h3 {
+    font-size: 1.125rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  [data-legal-page] {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  [data-legal-page] a {
+    color: #000;
+    text-decoration: underline;
+  }
+}

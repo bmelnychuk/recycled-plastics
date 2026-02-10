@@ -50,7 +50,7 @@ export const MaterialDemandDetailsCard: FC<{
           <DemandTitle demand={material} />
         </CardTitle>
         <CardDescription>
-        <div>
+          <div>
             Listed {formatDate(material.createdDate)} • Last updated{' '}
             {formatDate(material.updatedDate)}
           </div>

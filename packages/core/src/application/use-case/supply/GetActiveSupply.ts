@@ -20,7 +20,9 @@ export class GetActiveSupply {
     const companies = await this.companyRepository.getByIds(companyIds);
 
     return supply
-      .filter((s) => user?.isAdmin || user?.companyId === s.companyId || s.verified)
+      .filter(
+        (s) => user?.isAdmin || user?.companyId === s.companyId || s.verified,
+      )
       .map((s) => {
         const company = companies.get(s.companyId);
         if (!company || !company.verified) return undefined;

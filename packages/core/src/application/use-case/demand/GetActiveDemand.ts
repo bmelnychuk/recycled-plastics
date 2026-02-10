@@ -20,7 +20,9 @@ export class GetActiveDemand {
     const companies = await this.companyRepository.getByIds(companyIds);
 
     return demand
-      .filter((d) => user?.isAdmin || user?.companyId === d.companyId || d.verified)
+      .filter(
+        (d) => user?.isAdmin || user?.companyId === d.companyId || d.verified,
+      )
       .map((d) => {
         const company = companies.get(d.companyId);
         if (!company || !company.verified) return undefined;

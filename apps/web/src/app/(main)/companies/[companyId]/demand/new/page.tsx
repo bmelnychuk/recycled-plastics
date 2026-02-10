@@ -7,7 +7,6 @@ export default async function Page({
 }: {
   params: Promise<{ companyId: string }>;
 }) {
-
   const { companyId } = await params;
 
   try {
@@ -15,7 +14,7 @@ export default async function Page({
       getCurrentUser(),
       getCompanyById(companyId),
     ]);
-    
+
     if (!company || !user) notFound();
 
     return (
@@ -23,15 +22,15 @@ export default async function Page({
         <h1 className="text-2xl font-bold mb-6">
           {company.name} - new material demand
         </h1>
-        <NewDemandForm user={user} companies={[company]} companyId={companyId} />
+        <NewDemandForm
+          user={user}
+          companies={[company]}
+          companyId={companyId}
+        />
       </div>
     );
-
   } catch (error) {
     console.error(error);
     notFound();
   }
-
-
-  
 }

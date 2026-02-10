@@ -357,36 +357,38 @@ const DemandForm: FC<{
 
       <Separator />
 
-      {user.isAdmin && <FormSection title="Verification status" description="">
-        <Controller
-          name="verified"
-          control={form.control}
-          render={({ field }) => (
-            <Card>
-              <CardContent className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <AlertTriangleIcon />
-                  <div>
-                    <FieldLabel htmlFor="verified" className="Flex1">
-                      Verified
-                    </FieldLabel>
-                    <FieldDescription>
-                      Once verified, the material supply will be displayed
-                      publicly
-                    </FieldDescription>
+      {user.isAdmin && (
+        <FormSection title="Verification status" description="">
+          <Controller
+            name="verified"
+            control={form.control}
+            render={({ field }) => (
+              <Card>
+                <CardContent className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <AlertTriangleIcon />
+                    <div>
+                      <FieldLabel htmlFor="verified" className="Flex1">
+                        Verified
+                      </FieldLabel>
+                      <FieldDescription>
+                        Once verified, the material supply will be displayed
+                        publicly
+                      </FieldDescription>
+                    </div>
                   </div>
-                </div>
-                <Switch
-                  id="verified"
-                  checked={Boolean(field.value)}
-                  onCheckedChange={field.onChange}
-                  className="w-12! h-7! data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 [&>span]:size-6! [&>span]:data-[state=checked]:translate-x-[calc(100%-2px)]"
-                />
-              </CardContent>
-            </Card>
-          )}
-        />
-      </FormSection>}
+                  <Switch
+                    id="verified"
+                    checked={Boolean(field.value)}
+                    onCheckedChange={field.onChange}
+                    className="w-12! h-7! data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 [&>span]:size-6! [&>span]:data-[state=checked]:translate-x-[calc(100%-2px)]"
+                  />
+                </CardContent>
+              </Card>
+            )}
+          />
+        </FormSection>
+      )}
 
       <div className="flex items-center justify-end space-x-4">
         {hasErrors && (
