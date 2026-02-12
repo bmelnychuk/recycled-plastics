@@ -17,7 +17,7 @@ export const MaterialDataTable: FC<{ material: MaterialData }> = ({
   return (
     <div className="overflow-hidden rounded-lg border">
       <table className="min-w-full divide-y divide-border text-sm">
-        <tbody className="divide-y divide-border bg-white">
+        <tbody className="divide-y divide-border">
           {materialProperties
             .filter((p) =>
               Array.isArray(material[p])

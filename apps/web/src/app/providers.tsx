@@ -9,16 +9,16 @@ import { Toaster } from 'sonner';
 
 export const Providers: FC<PropsWithChildren> = ({ children }) => {
   return (
-    // <ThemeProvider
-    //   attribute="class"
-    //   defaultTheme="light"
-    //   enableSystem
-    //   disableTransitionOnChange
-    // >
-    <ClerkProvider appearance={{ theme: shadcn }}>
-      <Toaster position="top-center" />
-      {children}
-    </ClerkProvider>
-    // </ThemeProvider>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <ClerkProvider appearance={{ theme: shadcn }}>
+        <Toaster position="top-center" />
+        {children}
+      </ClerkProvider>
+    </ThemeProvider>
   );
 };

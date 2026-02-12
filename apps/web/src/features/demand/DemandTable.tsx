@@ -36,6 +36,7 @@ import {
 import { generateBlurredName } from '@/lib/random';
 import { CompanySheetButton } from '../company/CompanySheetButton';
 import { DemandSheetButton } from './DemandSheetButton';
+import { DemandTableMobile } from './DemandTableMobile';
 
 const allColumns: ColumnDef<DemandViewModel>[] = [
   {
@@ -94,7 +95,7 @@ const allColumns: ColumnDef<DemandViewModel>[] = [
     size: 300,
     cell: ({ row }) => (
       <div className="max-w-md">
-        <div className="line-clamp-2 whitespace-normal break-words">
+        <div className="line-clamp-2 whitespace-normal wrap-break-word">
           {row.original.description}
         </div>
       </div>
@@ -204,29 +205,40 @@ export const CompanyDemandTable: FC<{
   user?: SignedInUser;
   companyId?: string;
 }> = ({ demand, user, companyId }) => {
-  const callToAction =
-    user?.isAdmin ||
-    (user?.isCompanyVerified && companyId === user?.companyId) ? (
-      <Button asChild>
-        <Link
-          href={
-            companyId
-              ? `/companies/${companyId}/demand/new`
-              : '/admin/demand/new'
-          }
-        >
-          <Plus />
-          Create request
-        </Link>
-      </Button>
-    ) : null;
+  const canAdd =
+    user?.isAdmin || (user?.isCompanyVerified && companyId === user?.companyId);
+  const createHref = companyId
+    ? `/companies/${companyId}/demand/new`
+    : '/admin/demand/new';
+
+  const callToAction = canAdd ? (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button asChild size="icon" aria-label="Create request">
+          <Link href={createHref}>
+            <Plus />
+          </Link>
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Create request</p>
+      </TooltipContent>
+    </Tooltip>
+  ) : null;
 
   return (
-    <DemandTable
-      demand={demand}
-      columns={companyColumns}
-      callToAction={callToAction}
-    />
+    <>
+      <div className="md:hidden">
+        <DemandTableMobile demand={demand} callToAction={callToAction} />
+      </div>
+      <div className="hidden md:block">
+        <DemandTable
+          demand={demand}
+          columns={companyColumns}
+          callToAction={callToAction}
+        />
+      </div>
+    </>
   );
 };
 
@@ -238,26 +250,31 @@ export const ActiveDemandTable: FC<{
   const isAdmin = user?.isAdmin;
   const canAdd = isAdmin || hasCompany;
 
+  const createHref = isAdmin
+    ? '/admin/demand/new'
+    : user?.companyId
+      ? `/companies/${user.companyId}/demand/new`
+      : '#';
+
   const callToAction = canAdd ? (
-    <Button asChild>
-      <Link
-        href={
-          isAdmin
-            ? '/admin/demand/new'
-            : `/companies/${user.companyId}/demand/new`
-        }
-      >
-        <Plus />
-        New demand
-      </Link>
-    </Button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button asChild size="icon" aria-label="Create new demand">
+          <Link href={createHref}>
+            <Plus />
+          </Link>
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Create new demand</p>
+      </TooltipContent>
+    </Tooltip>
   ) : (
     <Tooltip>
       <TooltipTrigger asChild>
         <span tabIndex={0}>
-          <Button disabled>
+          <Button size="icon" disabled aria-label="Create new demand">
             <Plus />
-            New demand
           </Button>
         </span>
       </TooltipTrigger>
@@ -268,11 +285,18 @@ export const ActiveDemandTable: FC<{
   );
 
   return (
-    <DemandTable
-      demand={demand}
-      columns={allColumns}
-      callToAction={callToAction}
-    />
+    <>
+      <div className="md:hidden">
+        <DemandTableMobile demand={demand} callToAction={callToAction} />
+      </div>
+      <div className="hidden md:block">
+        <DemandTable
+          demand={demand}
+          columns={allColumns}
+          callToAction={callToAction}
+        />
+      </div>
+    </>
   );
 };
 

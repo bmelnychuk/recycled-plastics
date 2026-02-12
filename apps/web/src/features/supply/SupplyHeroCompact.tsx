@@ -19,7 +19,9 @@ export const SupplyHeroCompact: FC<SupplyHeroCompactProps> = ({
     <div className="rounded-lg border bg-linear-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 p-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Supply</h1>
+          <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
+            Supply
+          </h1>
           <p className="text-muted-foreground mt-1">
             Browse available recycled plastics from verified suppliers worldwide
           </p>

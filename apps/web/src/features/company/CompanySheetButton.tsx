@@ -19,9 +19,9 @@ import {
   SheetTitle,
 } from '@/design-system/components/ui/sheet';
 import { CompanyLogo } from '@/composite/company/CompanyLogo';
-import { defaultColor } from '@/composite/form/CompanyColorSelect';
 import { CircleFlag } from 'react-circle-flags';
 import { CountryName } from '../common/CountryName';
+import { getColorValue } from '@/composite/form/CompanyColors';
 
 export const CompanySheetButton: FC<{ company: Company }> = ({ company }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,7 +47,7 @@ export const CompanySheetButton: FC<{ company: Company }> = ({ company }) => {
             <div
               className="flex flex-col items-start gap-4 px-4 py-5"
               style={{
-                backgroundColor: company.branding?.primaryColor || defaultColor,
+                backgroundColor: getColorValue(company.branding?.primaryColor),
               }}
             >
               <SheetHeader className="p-0">
@@ -82,7 +82,7 @@ export const CompanySheetButton: FC<{ company: Company }> = ({ company }) => {
 
                 {/* Website */}
                 <div className="flex items-center gap-3 text-sm">
-                  <Globe className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                  <Globe className="w-4 h-4 text-muted-foreground shrink-0" />
                   <div className="flex-1 min-w-0">
                     <div className="text-xs text-muted-foreground mb-0.5">
                       Website

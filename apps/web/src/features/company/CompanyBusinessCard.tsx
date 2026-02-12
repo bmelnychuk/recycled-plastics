@@ -18,7 +18,7 @@ export const CompanyBusinessCard = ({ company }: { company: Company }) => {
   const countryName = country ? countries[country]?.name : country;
 
   return (
-    <Card className="bg-white/95 backdrop-blur-sm min-w-100 h-full">
+    <Card className="backdrop-blur-sm min-w-100 h-full">
       <CardHeader className="flex flex-row items-center gap-3 pb-4">
         <CompanyLogo
           logo={company.branding?.logo}

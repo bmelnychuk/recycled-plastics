@@ -36,6 +36,7 @@ import {
 import { generateBlurredName } from '@/lib/random';
 import { CompanySheetButton } from '@/features/company/CompanySheetButton';
 import { SupplySheetButton } from '@/features/supply/SupplySheetButton';
+import { SupplyTableMobile } from '@/features/supply/SupplyTableMobile';
 import { PriceValue } from '@/features/common/PriceValue';
 
 const allColumns: ColumnDef<SupplyViewModel>[] = [
@@ -267,26 +268,31 @@ export const ActiveSupplyTable: FC<{
   const isAdmin = user?.isAdmin;
   const canAdd = isAdmin || hasCompany;
 
+  const createHref = isAdmin
+    ? '/admin/supply/new'
+    : user?.companyId
+      ? `/companies/${user.companyId}/supply/new`
+      : '#';
+
   const callToAction = canAdd ? (
-    <Button asChild>
-      <Link
-        href={
-          isAdmin
-            ? '/admin/supply/new'
-            : `/companies/${user.companyId}/supply/new`
-        }
-      >
-        <Plus />
-        New supply
-      </Link>
-    </Button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button asChild size="icon" aria-label="Create new supply">
+          <Link href={createHref}>
+            <Plus />
+          </Link>
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Create new supply</p>
+      </TooltipContent>
+    </Tooltip>
   ) : (
     <Tooltip>
       <TooltipTrigger asChild>
         <span tabIndex={0}>
-          <Button disabled>
+          <Button size="icon" disabled aria-label="Create new supply">
             <Plus />
-            New supply
           </Button>
         </span>
       </TooltipTrigger>
@@ -297,11 +303,18 @@ export const ActiveSupplyTable: FC<{
   );
 
   return (
-    <SupplyTable
-      supply={supply}
-      callToAction={callToAction}
-      columns={allColumns}
-    />
+    <>
+      <div className="md:hidden">
+        <SupplyTableMobile supply={supply} callToAction={callToAction} />
+      </div>
+      <div className="hidden md:block">
+        <SupplyTable
+          supply={supply}
+          callToAction={callToAction}
+          columns={allColumns}
+        />
+      </div>
+    </>
   );
 };
 

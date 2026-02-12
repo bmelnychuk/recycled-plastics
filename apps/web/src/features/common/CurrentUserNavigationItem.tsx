@@ -35,7 +35,7 @@ export const CurrentUserNavigationItem: FC<Props> = ({
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   if (!user) return null;
-  const initial = user.firstName?.charAt(0).toUpperCase() || '~';
+  const initial = user.firstName?.charAt(0).toUpperCase() || '';
 
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>

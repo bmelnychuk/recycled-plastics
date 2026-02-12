@@ -21,11 +21,9 @@ import { MaterialDataTable } from '@/features/material/MaterialDataTable';
 import { CountryName } from '@/features/common/CountryName';
 
 const Stat = ({ label, value }: { label: string; value: string }) => (
-  <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
-    <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-      {label}
-    </p>
-    <p className="mt-1 text-base font-semibold text-slate-900">{value}</p>
+  <div className="rounded-lg border px-4 py-3">
+    <p className="text-xs font-medium uppercase tracking-wide">{label}</p>
+    <p className="mt-1 text-base font-semibold">{value}</p>
   </div>
 );
 
@@ -38,9 +36,7 @@ export const MaterialSupplyDetailsCard: FC<{
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl font-semibold text-slate-900">
-          {material.name}
-        </CardTitle>
+        <CardTitle className="text-xl font-semibold">{material.name}</CardTitle>
         <CardDescription>
           <div>
             Listed {formatDate(material.createdDate)} • Last updated{' '}
@@ -73,7 +69,7 @@ export const MaterialSupplyDetailsCard: FC<{
         )}
       </CardHeader>
       <CardContent className="flex flex-col gap-12 pb-12">
-        <p className="leading-relaxed text-slate-900">{material.description}</p>
+        <p className="leading-relaxed">{material.description}</p>
         <section>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Stat label="Price / kg" value={formatPrice(material.price)} />
@@ -81,11 +77,11 @@ export const MaterialSupplyDetailsCard: FC<{
               label="Available"
               value={`${material.amount.toLocaleString()} t`}
             />
-            <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
-              <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+            <div className="rounded-lg border px-4 py-3">
+              <p className="text-xs font-medium uppercase tracking-wide">
                 Location
               </p>
-              <div className="mt-1 text-base font-semibold text-slate-900 flex items-center gap-3">
+              <div className="mt-1 text-base font-semibold flex items-center gap-3">
                 <CircleFlag
                   countryCode={material.location.country.toLowerCase()}
                   height="20"
@@ -100,7 +96,7 @@ export const MaterialSupplyDetailsCard: FC<{
         </section>
         <section>
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">
+            <h3 className="text-sm font-semibold uppercase tracking-wide">
               Material Properties
             </h3>
           </div>
@@ -109,7 +105,7 @@ export const MaterialSupplyDetailsCard: FC<{
         {Boolean(material.documents?.length) && (
           <section>
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">
+              <h3 className="text-sm font-semibold uppercase tracking-wide">
                 Documents
               </h3>
             </div>
@@ -117,19 +113,17 @@ export const MaterialSupplyDetailsCard: FC<{
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {material.documents?.map((document, index) => (
                 <a
-                  key={`${document}-${index}`}
+                  key={document.id}
                   href={document.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                  className="flex items-center gap-3 rounded-lg border px-4 py-3 text-sm transition hover:border-primary/60 hover:bg-muted/50"
                 >
-                  <span className="flex min-w-0 items-center gap-2">
-                    <span className="inline-flex size-8 items-center justify-center rounded-full bg-slate-100 text-slate-500">
-                      <FileText className="size-4" aria-hidden />
-                    </span>
-                    <span className="flex-1 min-w-0 line-clamp-2 break-words text-left">
-                      {document.name}
-                    </span>
+                  <div className="shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                    <FileText className="w-4 h-4 text-muted-foreground" />
+                  </div>
+                  <span className="flex-1 min-w-0 truncate font-medium">
+                    {document.name}
                   </span>
                 </a>
               ))}
@@ -139,7 +133,7 @@ export const MaterialSupplyDetailsCard: FC<{
         {Boolean(material.pictures?.length) && (
           <section>
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">
+              <h3 className="text-sm font-semibold uppercase tracking-wide">
                 Pictures
               </h3>
             </div>
@@ -153,7 +147,7 @@ export const MaterialSupplyDetailsCard: FC<{
                     '[&_[data-rmiz-modal-overlay="visible"]]:bg-black/80',
                   )}
                 >
-                  <figure className="group relative aspect-video overflow-hidden rounded-xl border border-slate-200 bg-white transition-shadow hover:shadow-md">
+                  <figure className="group relative aspect-video overflow-hidden rounded-xl border transition-shadow hover:shadow-md">
                     <Image
                       src={picture.url}
                       unoptimized

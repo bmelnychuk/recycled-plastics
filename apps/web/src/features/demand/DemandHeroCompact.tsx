@@ -19,7 +19,9 @@ export const DemandHeroCompact: FC<DemandHeroCompactProps> = ({
     <div className="rounded-lg border bg-linear-to-r from-red-50 to-rose-50 dark:from-red-950/20 dark:to-rose-950/20 p-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Demand</h1>
+          <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
+            Demand
+          </h1>
           <p className="text-muted-foreground mt-1">
             Explore buying requests for recycled plastics from verified buyers
             worldwide

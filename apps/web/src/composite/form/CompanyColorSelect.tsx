@@ -15,46 +15,14 @@ import {
 } from '@/design-system/components/ui/popover';
 import { Palette, Check, ChevronDown } from 'lucide-react';
 import { cn } from '@/design-system/lib/utils';
-
-const allColors = {
-  amber: '#f3d673',
-  blue: '#acd8fc',
-  bronze: '#dfcdc5',
-  brown: '#e4cdb7',
-  crimson: '#f3bed1',
-  cyan: '#9ddde7',
-  gold: '#d8d0bf',
-  grass: '#b2ddb5',
-  gray: '#d9d9d9',
-  green: '#adddc0',
-  indigo: '#c1d0ff',
-  iris: '#cbcdff',
-  jade: '#acdec8',
-  lime: '#c2da91',
-  mint: '#9ce0d0',
-  olive: '#d7dad7',
-  orange: '#ffc182',
-  pink: '#efbfdd',
-  plum: '#e9c2ec',
-  purple: '#e0c4f4',
-  red: '#fdbdbe',
-  ruby: '#f8bfc8',
-  sand: '#dad9d6',
-  sky: '#a9daed',
-  slate: '#d9d9e0',
-  teal: '#a1ded2',
-  tomato: '#fdbdaf',
-  violet: '#d4cafe',
-  yellow: '#f3d768',
-};
-
-export const defaultColor = allColors.indigo;
+import { Color } from '@rp/core';
+import { CompanyColors, getColorValue } from './CompanyColors';
 
 export const CompanyColorSelect: FC<{
   name?: string;
-  value?: string;
+  value?: Color;
   disabled?: boolean;
-  onChange?: (value: string) => void;
+  onChange?: (value: Color) => void;
 }> = ({ name, value, disabled, onChange }) => {
   const [open, setOpen] = useState(false);
   const [triggerWidth, setTriggerWidth] = useState<number | undefined>();
@@ -66,20 +34,15 @@ export const CompanyColorSelect: FC<{
     }
   }, []);
 
-  const colorEntries = Object.entries(allColors);
-
-  // Find the color name for the current value
-  const selectedColorName = colorEntries.find(
-    ([_, colorValue]) => colorValue === value,
-  )?.[0];
-
   const handleSelect = useCallback(
-    (colorValue: string) => {
+    (colorValue: Color) => {
       onChange?.(colorValue);
       setOpen(false);
     },
     [onChange],
   );
+
+  const colorValue = value ? getColorValue(value) : undefined;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -94,14 +57,14 @@ export const CompanyColorSelect: FC<{
             {value ? (
               <>
                 <div
-                  className="w-5 h-5 rounded border border-gray-300"
-                  style={{ backgroundColor: value }}
+                  className="w-5 h-5 rounded border border-border"
+                  style={{ backgroundColor: colorValue }}
                 />
-                <span className="capitalize">{selectedColorName}</span>
+                <span className="capitalize">{value}</span>
               </>
             ) : (
               <>
-                <Palette className="text-gray-500" />
+                <Palette className="text-muted-foreground" />
                 <span>Select a color</span>
               </>
             )}
@@ -118,14 +81,14 @@ export const CompanyColorSelect: FC<{
           <CommandList>
             <CommandEmpty>No color found.</CommandEmpty>
             <CommandGroup heading="Colors">
-              {colorEntries.map(([colorName, colorValue]) => (
+              {Object.entries(CompanyColors).map(([colorName, colorValue]) => (
                 <CommandItem
-                  key={colorValue}
+                  key={colorName}
                   value={colorName}
-                  onSelect={() => handleSelect(colorValue)}
+                  onSelect={() => handleSelect(colorName as Color)}
                 >
                   <div
-                    className="w-4 h-4 rounded border border-gray-300 mr-2"
+                    className="w-4 h-4 rounded border border-border mr-2"
                     style={{ backgroundColor: colorValue }}
                   />
                   <span className="capitalize">{colorName}</span>

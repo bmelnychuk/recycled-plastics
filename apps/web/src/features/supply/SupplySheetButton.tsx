@@ -159,7 +159,7 @@ export const SupplySheetButton: FC<{ supply: MaterialSupply }> = ({
                           href={document.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-3 rounded-lg border bg-white px-4 py-3 text-sm transition hover:border-primary/60 hover:bg-muted/50"
+                          className="flex items-center gap-3 rounded-lg border px-4 py-3 text-sm transition hover:border-primary/60 hover:bg-muted/50"
                         >
                           <div className="shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center">
                             <FileText className="w-4 h-4 text-muted-foreground" />

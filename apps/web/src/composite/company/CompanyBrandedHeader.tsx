@@ -7,7 +7,7 @@ import { countries } from 'country-data-list';
 import { formatWebsite } from '../common/format-utils';
 import { ContactBusinessCard } from './ContactBusinessCard';
 import { CompanyLogo } from './CompanyLogo';
-import { defaultColor } from '../form/CompanyColorSelect';
+import { getColorValue } from '../form/CompanyColors';
 
 interface CompanyBrandedHeaderProps {
   company: Company;
@@ -16,26 +16,17 @@ interface CompanyBrandedHeaderProps {
 export const CompanyBrandedHeader = ({
   company,
 }: CompanyBrandedHeaderProps) => {
-  const primaryColor = company.branding?.primaryColor ?? defaultColor;
-  const colors = generateColorShades(primaryColor);
+  const primaryColor = getColorValue(company.branding?.primaryColor);
+
   const countryCode = company.address.country;
 
   return (
     <div
       className="relative overflow-hidden"
       style={{
-        background: `linear-gradient(135deg, ${primaryColor} 0%, ${colors?.[700]} 100%)`,
+        background: primaryColor,
       }}
     >
-      <div className="absolute inset-0 opacity-10">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
-      </div>
-
       <div className="relative px-6 py-10">
         <div className="flex flex-col lg:flex-row gap-6 items-start">
           {/* Left Section: Company Info */}
@@ -68,7 +59,7 @@ export const CompanyBrandedHeader = ({
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 hover:underline"
                   >
-                    <Globe className="h-3.5 w-3.5 flex-shrink-0" />
+                    <Globe className="h-3.5 w-3.5 shrink-0" />
                     <span>{formatWebsite(company.website)}</span>
                   </a>
                   <span className="opacity-30">•</span>
@@ -79,7 +70,7 @@ export const CompanyBrandedHeader = ({
                 href={`mailto:${company.email}`}
                 className="flex items-center gap-1.5 hover:underline"
               >
-                <Mail className="h-3.5 w-3.5 flex-shrink-0" />
+                <Mail className="h-3.5 w-3.5 shrink-0" />
                 <span>{company.email}</span>
               </a>
 
@@ -91,7 +82,7 @@ export const CompanyBrandedHeader = ({
                     href={`tel:${company.phone}`}
                     className="flex items-center gap-1.5 hover:underline"
                   >
-                    <Phone className="h-3.5 w-3.5 flex-shrink-0" />
+                    <Phone className="h-3.5 w-3.5 shrink-0" />
                     <span>{company.phone}</span>
                   </a>
                 </>
@@ -100,7 +91,7 @@ export const CompanyBrandedHeader = ({
               <span className="opacity-30">•</span>
 
               <div className="flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
+                <MapPin className="h-3.5 w-3.5 shrink-0" />
                 <span>
                   {[
                     company.address.street,

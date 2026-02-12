@@ -31,7 +31,37 @@ export const AddressSchema = z.object({
   zipCode: z.string().nonempty(),
 });
 
-export const ColorCodeSchema = z.string().regex(/^#[0-9a-f]{6}$/i);
+export const ColorSchema = z.enum([
+  'amber',
+  'blue',
+  'bronze',
+  'brown',
+  'crimson',
+  'cyan',
+  'gold',
+  'grass',
+  'gray',
+  'green',
+  'indigo',
+  'iris',
+  'jade',
+  'lime',
+  'mint',
+  'olive',
+  'orange',
+  'pink',
+  'plum',
+  'purple',
+  'red',
+  'ruby',
+  'sand',
+  'sky',
+  'slate',
+  'teal',
+  'tomato',
+  'violet',
+  'yellow',
+]);
 
 export const DocumentSchema = z.object({
   id: z.uuid(),
@@ -51,3 +81,4 @@ export type Address = z.infer<typeof AddressSchema>;
 export type Price = z.infer<typeof PriceSchema>;
 export type Currency = z.infer<typeof CurrencySchema>;
 export type Document = z.infer<typeof DocumentSchema>;
+export type Color = z.infer<typeof ColorSchema>;

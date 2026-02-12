@@ -42,24 +42,20 @@ export const CompanyMaterials = ({
     <div className="px-4 py-4">
       <Tabs defaultValue="supplier" className="w-full">
         <div className="mb-2 flex items-center justify-between gap-2">
-          <TabsList className="h-auto p-1 bg-slate-100/60 backdrop-blur-sm">
+          <TabsList className="h-auto p-1 backdrop-blur-sm">
             <TabsTrigger
               value="supplier"
               className="text-sm px-6 py-2.5 data-[state=active]:bg-white rounded-md transition-all"
             >
               <span className="font-bold text-base">{supply.length}</span>
-              <span className="ml-2 font-medium text-slate-600">
-                Supply Materials
-              </span>
+              <span className="ml-2 font-medium">Supply Materials</span>
             </TabsTrigger>
             <TabsTrigger
               value="buyer"
               className="text-sm px-6 py-2.5 data-[state=active]:bg-white rounded-md transition-all"
             >
               <span className="font-bold text-base">{demand.length}</span>
-              <span className="ml-2 font-medium text-slate-600">
-                Demand Materials
-              </span>
+              <span className="ml-2 font-medium">Demand Materials</span>
             </TabsTrigger>
             {users.length > 0 && (
               <TabsTrigger
@@ -67,7 +63,7 @@ export const CompanyMaterials = ({
                 className="text-sm px-6 py-2.5 data-[state=active]:bg-white rounded-md transition-all"
               >
                 <span className="font-bold text-base">{users.length}</span>
-                <span className="ml-2 font-medium text-slate-600">Users</span>
+                <span className="ml-2 font-medium">Users</span>
               </TabsTrigger>
             )}
           </TabsList>

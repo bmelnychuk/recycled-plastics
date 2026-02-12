@@ -102,7 +102,7 @@ export const CountryDropdown: FC<CountryDropdownProps> = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between"
+          className="w-full justify-between dark:bg-input/30 dark:hover:bg-input/50"
         >
           <div className="flex items-center gap-3">
             {selectedCountry ? (
@@ -112,10 +112,12 @@ export const CountryDropdown: FC<CountryDropdownProps> = ({
                 width="16"
               />
             ) : (
-              <Globe className="text-gray-500" />
+              <Globe className="text-muted-foreground" />
             )}
             <span
-              className={selectedCountry ? 'text-gray-900' : 'text-gray-500'}
+              className={
+                selectedCountry ? 'text-foreground' : 'text-muted-foreground'
+              }
             >
               {selectedCountry ? selectedCountry.name : 'Select country...'}
             </span>

@@ -1,9 +1,5 @@
 import { z } from 'zod';
-import {
-  AddressSchema,
-  ColorCodeSchema,
-  DocumentSchema,
-} from '../common/common';
+import { AddressSchema, ColorSchema, DocumentSchema } from '../common/common';
 
 export const CompanyContactSchema = z.object({
   firstName: z.string().nonempty(),
@@ -28,7 +24,7 @@ export const CompanySchema = z.object({
   branding: z
     .object({
       logo: z.url().optional(),
-      primaryColor: ColorCodeSchema.optional(),
+      primaryColor: ColorSchema.optional(),
     })
     .optional(),
   verified: z.boolean(),
