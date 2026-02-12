@@ -187,7 +187,7 @@ const DemandForm: FC<{
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="companyId">Company</FieldLabel>
+                  <FieldLabel htmlFor="companyId">Company *</FieldLabel>
                   <CompanySelect
                     disabled={Boolean(defaultValues?.companyId)}
                     options={companies}
@@ -258,7 +258,7 @@ const DemandForm: FC<{
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="price">Price per ton</FieldLabel>
+              <FieldLabel htmlFor="price">Price per ton *</FieldLabel>
               <PriceInput
                 name="price"
                 value={field.value}
@@ -272,7 +272,7 @@ const DemandForm: FC<{
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="amount">Amount (ton / month)</FieldLabel>
+              <FieldLabel htmlFor="amount">Amount (ton / month) *</FieldLabel>
               <Input
                 {...field}
                 type="number"
