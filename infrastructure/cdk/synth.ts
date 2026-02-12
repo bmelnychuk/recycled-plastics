@@ -2,6 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import { AppStack } from './lib/app-stack';
 
 const staging = 'staging';
+const production = 'production';
 const env = staging;
 
 const app = new cdk.App();

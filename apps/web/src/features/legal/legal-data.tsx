@@ -1,7 +1,7 @@
 export const imprintData = {
   appName: 'Recycled Plastics',
   provider: {
-    name: 'Recycled Plastics',
+    name: 'CS Ventures UG',
     addressLine1: 'Altonaer Poststraße 13a',
     postalCode: '22767',
     city: 'Hamburg',
