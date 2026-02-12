@@ -245,7 +245,7 @@ export const CompanySupplyTable: FC<{
           }
         >
           <Plus />
-          New supply
+          Create material entry
         </Link>
       </Button>
     ) : null;

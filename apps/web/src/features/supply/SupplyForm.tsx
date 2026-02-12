@@ -229,7 +229,7 @@ const SupplyForm: FC<{
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="companyId">Company</FieldLabel>
+              <FieldLabel htmlFor="companyId">Company *</FieldLabel>
               <CompanySelect
                 name="companyId"
                 disabled={Boolean(defaultValues?.companyId) || !user.isAdmin}
@@ -264,7 +264,7 @@ const SupplyForm: FC<{
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="name">Name</FieldLabel>
+              <FieldLabel htmlFor="name">Name *</FieldLabel>
               <Input {...field} />
             </Field>
           )}
@@ -289,7 +289,7 @@ const SupplyForm: FC<{
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="location.country">Location</FieldLabel>
+              <FieldLabel htmlFor="location.country">Location *</FieldLabel>
               <CountryDropdown value={field.value} onChange={field.onChange} />
             </Field>
           )}
@@ -317,7 +317,7 @@ const SupplyForm: FC<{
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="price">Price per ton</FieldLabel>
+              <FieldLabel htmlFor="price">Price per ton *</FieldLabel>
               <PriceInput
                 name="price"
                 value={field.value}
@@ -331,7 +331,7 @@ const SupplyForm: FC<{
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="amount">Amount (ton / month)</FieldLabel>
+              <FieldLabel htmlFor="amount">Amount (ton / month) *</FieldLabel>
               <Input
                 {...field}
                 type="number"

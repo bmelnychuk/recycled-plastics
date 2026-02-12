@@ -216,7 +216,7 @@ export const CompanyDemandTable: FC<{
           }
         >
           <Plus />
-          New demand
+          Create request
         </Link>
       </Button>
     ) : null;

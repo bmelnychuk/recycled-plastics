@@ -77,7 +77,7 @@ export const RecentMaterials: FC<{
                         : `/companies/${user?.companyId}/supply/new`
                     }
                   >
-                    New supply
+                    Create material entry
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
@@ -88,7 +88,7 @@ export const RecentMaterials: FC<{
                         : `/companies/${user?.companyId}/demand/new`
                     }
                   >
-                    New demand
+                    Create request
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
