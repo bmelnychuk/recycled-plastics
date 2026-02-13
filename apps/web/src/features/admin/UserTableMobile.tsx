@@ -1,14 +1,7 @@
 'use client';
 
 import { FC, ReactNode, useMemo, useState } from 'react';
-import { CircleFlag } from 'react-circle-flags';
-import { DemandViewModel } from '@rp/core';
-import { DemandSheetButton } from '@/features/demand/DemandSheetButton';
-import { ColorLabel, ColorPreview } from '@/features/material/MaterialColor';
-import { CompanySheetButton } from '@/features/company/CompanySheetButton';
-import { formatDate } from '@/composite/common/date-utils';
-import { formatPrice } from '@/composite/common/price-utils';
-import { generateBlurredName } from '@/lib/random';
+import { User } from '@rp/core';
 import {
   InputGroup,
   InputGroupAddon,
@@ -16,76 +9,44 @@ import {
 } from '@/design-system/components/ui/input-group';
 import { Button } from '@/design-system/components/ui/button';
 import { Search } from 'lucide-react';
+import { Mail } from 'lucide-react';
 
 const PAGE_SIZE = 15;
 
-const DemandMobileCard: FC<{
-  demand: DemandViewModel;
-  hideCompany?: boolean;
-}> = ({ demand, hideCompany }) => {
+const UserMobileCard: FC<{ user: User }> = ({ user }) => {
+  const displayName = `${user.firstName} ${user.lastName}`.trim() || '—';
   return (
-    <div
-      onClick={(e) => e.stopPropagation()}
-      className="rounded-lg border bg-card p-3 text-card-foreground shadow-sm flex flex-col gap-2"
-    >
+    <div className="rounded-lg border bg-card p-3 text-card-foreground shadow-sm flex flex-col gap-2">
       <div className="flex flex-col gap-1 min-w-0">
-        <div className="flex items-center gap-2 flex-wrap">
-          <DemandSheetButton demand={demand} />
-          <ColorPreview color={demand.material.color} />
-          <ColorLabel color={demand.material.color} />
-        </div>
-        <p className="text-xs text-muted-foreground">
-          {formatDate(demand.updatedDate)} · {demand.amount} t
-        </p>
-      </div>
-      {demand.description ? (
-        <p className="line-clamp-2 text-sm text-muted-foreground">
-          {demand.description}
-        </p>
-      ) : null}
-      <div className="flex items-center justify-between gap-2 flex-wrap">
-        <span className="font-medium">{formatPrice(demand.price)}</span>
-        <div className="flex items-center gap-2">
-          {!hideCompany &&
-            (demand.company ? (
-              <CompanySheetButton company={demand.company} />
-            ) : (
-              <span className="blur-[5px] text-sm">
-                {generateBlurredName(demand.id)}
-              </span>
-            ))}
-          {demand.location.country ? (
-            <CircleFlag
-              countryCode={demand.location.country.toLowerCase()}
-              height="20"
-              width="20"
-            />
-          ) : null}
-        </div>
+        <p className="font-medium truncate">{displayName}</p>
+        <a
+          href={`mailto:${user.email}`}
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground hover:underline min-w-0"
+        >
+          <Mail className="size-3.5 shrink-0" />
+          <span className="truncate">{user.email}</span>
+        </a>
       </div>
     </div>
   );
 };
 
-export const DemandTableMobile: FC<{
-  demand: DemandViewModel[];
+export const UserTableMobile: FC<{
+  users: User[];
   callToAction: ReactNode | null;
-  hideCompany?: boolean;
-}> = ({ demand, callToAction, hideCompany }) => {
+}> = ({ users, callToAction }) => {
   const [search, setSearch] = useState('');
   const [pageIndex, setPageIndex] = useState(0);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return demand;
-    return demand.filter(
-      (d) =>
-        d.description?.toLowerCase().includes(q) ||
-        d.material.type.toLowerCase().includes(q) ||
-        d.material.color.toLowerCase().includes(q) ||
-        d.location.country?.toLowerCase().includes(q),
+    if (!q) return users;
+    return users.filter(
+      (u) =>
+        `${u.firstName} ${u.lastName}`.toLowerCase().includes(q) ||
+        u.email.toLowerCase().includes(q),
     );
-  }, [demand, search]);
+  }, [users, search]);
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePageIndex = Math.min(pageIndex, pageCount - 1);
@@ -118,13 +79,7 @@ export const DemandTableMobile: FC<{
 
       <div className="flex flex-col gap-3">
         {pageRows.length > 0 ? (
-          pageRows.map((item) => (
-            <DemandMobileCard
-              key={item.id}
-              demand={item}
-              hideCompany={hideCompany}
-            />
-          ))
+          pageRows.map((user) => <UserMobileCard key={user.id} user={user} />)
         ) : (
           <div className="rounded-lg border bg-muted/30 p-6 text-center text-muted-foreground">
             No results.

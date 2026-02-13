@@ -14,6 +14,7 @@ import {
   InputGroupInput,
 } from '@/design-system/components/ui/input-group';
 import { formatDate } from '../../composite/common/date-utils';
+import { UserTableMobile } from './UserTableMobile';
 
 const allColumns: ColumnDef<User>[] = [
   {
@@ -87,13 +88,37 @@ export const CompanyUserTable: FC<{
   users: User[];
   companyId: string;
 }> = ({ user, users, companyId }) => {
+  const callToAction = user.isAdmin ? (
+    <Button
+      asChild
+      size="icon"
+      className="shrink-0 md:h-9 md:w-auto md:px-4 md:py-2"
+      aria-label="New user"
+    >
+      <Link
+        href={`/admin/users/new?companyId=${companyId}`}
+        className="flex items-center justify-center md:gap-2"
+      >
+        <Plus />
+        <span className="hidden md:inline">New user</span>
+      </Link>
+    </Button>
+  ) : null;
+
   return (
-    <UserTable
-      users={users}
-      columns={allColumns}
-      companyId={companyId}
-      user={user}
-    />
+    <>
+      <div className="md:hidden">
+        <UserTableMobile users={users} callToAction={callToAction} />
+      </div>
+      <div className="hidden md:block">
+        <UserTable
+          users={users}
+          columns={allColumns}
+          companyId={companyId}
+          user={user}
+        />
+      </div>
+    </>
   );
 };
 
@@ -126,14 +151,6 @@ const UserTable: FC<{
               </InputGroup>
             </div>
           </div>
-          {user.isAdmin && (
-            <Button asChild>
-              <Link href={`/admin/users/new?companyId=${companyId}`}>
-                <Plus />
-                New user
-              </Link>
-            </Button>
-          )}
         </div>
       )}
     />

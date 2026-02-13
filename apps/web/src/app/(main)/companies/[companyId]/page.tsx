@@ -29,7 +29,7 @@ export default async function Page({
   if (!company || !user) notFound();
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen min-w-0">
       <CompanyBrandedHeader company={company} />
       <CompanyMaterials
         users={users}

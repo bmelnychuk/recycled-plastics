@@ -212,24 +212,30 @@ export const CompanyDemandTable: FC<{
     : '/admin/demand/new';
 
   const callToAction = canAdd ? (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button asChild size="icon" aria-label="Create request">
-          <Link href={createHref}>
-            <Plus />
-          </Link>
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>Create request</p>
-      </TooltipContent>
-    </Tooltip>
+    <Button
+      asChild
+      size="icon"
+      className="shrink-0 md:h-9 md:w-auto md:px-4 md:py-2"
+      aria-label="Create request"
+    >
+      <Link
+        href={createHref}
+        className="flex items-center justify-center md:gap-2"
+      >
+        <Plus />
+        <span className="hidden md:inline">Create request</span>
+      </Link>
+    </Button>
   ) : null;
 
   return (
     <>
       <div className="md:hidden">
-        <DemandTableMobile demand={demand} callToAction={callToAction} />
+        <DemandTableMobile
+          demand={demand}
+          callToAction={callToAction}
+          hideCompany
+        />
       </div>
       <div className="hidden md:block">
         <DemandTable
@@ -257,24 +263,32 @@ export const ActiveDemandTable: FC<{
       : '#';
 
   const callToAction = canAdd ? (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button asChild size="icon" aria-label="Create new demand">
-          <Link href={createHref}>
-            <Plus />
-          </Link>
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>Create new demand</p>
-      </TooltipContent>
-    </Tooltip>
+    <Button
+      asChild
+      size="icon"
+      className="shrink-0 md:h-9 md:w-auto md:px-4 md:py-2"
+      aria-label="Create request"
+    >
+      <Link
+        href={createHref}
+        className="flex items-center justify-center md:gap-2"
+      >
+        <Plus />
+        <span className="hidden md:inline">Create request</span>
+      </Link>
+    </Button>
   ) : (
     <Tooltip>
       <TooltipTrigger asChild>
         <span tabIndex={0}>
-          <Button size="icon" disabled aria-label="Create new demand">
+          <Button
+            size="icon"
+            className="shrink-0 md:h-9 md:w-auto md:px-4 md:py-2"
+            disabled
+            aria-label="Create request"
+          >
             <Plus />
+            <span className="hidden md:inline">Create request</span>
           </Button>
         </span>
       </TooltipTrigger>

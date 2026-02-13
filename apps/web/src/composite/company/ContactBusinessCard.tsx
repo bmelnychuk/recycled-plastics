@@ -16,7 +16,7 @@ export const ContactBusinessCard: FC<{ user: CompanyContact }> = ({ user }) => {
   const initials = `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
 
   return (
-    <Card className="h-full w-full flex flex-col justify-between">
+    <Card className="h-full w-full min-w-0 flex flex-col justify-between">
       <CardHeader className="flex items-start gap-4 align-center">
         <Avatar className="h-14 w-14 flex-shrink-0">
           <AvatarImage src="" alt={displayName} />

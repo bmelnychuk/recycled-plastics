@@ -12,13 +12,11 @@ export default async function AuthenticatedLayout({
   if (!user) redirect('/');
 
   return (
-    <div className="flex min-h-screen">
-      {/* Vertical Navigation Menu */}
-      <aside className="w-64 border-r">
+    <div className="flex min-h-screen flex-col md:flex-row">
+      <aside className="border-b md:w-64 md:border-b-0 md:border-r">
         <SettingsNavigation />
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1">{children}</main>
     </div>
   );

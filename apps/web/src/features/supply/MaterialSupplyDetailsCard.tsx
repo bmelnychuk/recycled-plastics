@@ -34,8 +34,8 @@ export const MaterialSupplyDetailsCard: FC<{
   const canEdit = user?.companyId === material.companyId || user?.isAdmin;
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="border-0 bg-transparent shadow-none py-0 lg:border lg:bg-card lg:shadow-sm lg:py-6">
+      <CardHeader className="px-0 lg:px-6">
         <CardTitle className="text-xl font-semibold">{material.name}</CardTitle>
         <CardDescription>
           <div>
@@ -68,7 +68,7 @@ export const MaterialSupplyDetailsCard: FC<{
           </CardAction>
         )}
       </CardHeader>
-      <CardContent className="flex flex-col gap-12 pb-12">
+      <CardContent className="flex flex-col gap-12 pb-12 px-0 lg:px-6">
         <p className="leading-relaxed">{material.description}</p>
         <section>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

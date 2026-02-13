@@ -63,8 +63,13 @@ export const RecentMaterials: FC<{
   const headerAction = canAdd ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size="icon" aria-label="New material">
+        <Button
+          size="icon"
+          className="shrink-0 md:h-9 md:w-auto md:px-4 md:py-2"
+          aria-label="New material"
+        >
           <Plus />
+          <span className="hidden md:inline">New material</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48" side="bottom" align="end">
@@ -96,8 +101,14 @@ export const RecentMaterials: FC<{
     <Tooltip>
       <TooltipTrigger asChild>
         <span tabIndex={0}>
-          <Button size="icon" disabled aria-label="New material">
+          <Button
+            size="icon"
+            className="shrink-0 md:h-9 md:w-auto md:px-4 md:py-2"
+            disabled
+            aria-label="New material"
+          >
             <Plus />
+            <span className="hidden md:inline">New material</span>
           </Button>
         </span>
       </TooltipTrigger>

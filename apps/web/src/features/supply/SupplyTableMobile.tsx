@@ -22,7 +22,10 @@ import { Search } from 'lucide-react';
 
 const PAGE_SIZE = 15;
 
-const SupplyMobileCard: FC<{ supply: SupplyViewModel }> = ({ supply }) => {
+const SupplyMobileCard: FC<{
+  supply: SupplyViewModel;
+  hideCompany?: boolean;
+}> = ({ supply, hideCompany }) => {
   const image = supply.pictures?.[0]?.url;
   return (
     <div
@@ -69,13 +72,14 @@ const SupplyMobileCard: FC<{ supply: SupplyViewModel }> = ({ supply }) => {
       <div className="flex items-center justify-between gap-2 flex-wrap">
         <PriceValue price={supply.price} />
         <div className="flex items-center gap-2">
-          {supply.company ? (
-            <CompanySheetButton company={supply.company} />
-          ) : (
-            <span className="blur-[5px] text-sm">
-              {generateBlurredName(supply.id)}
-            </span>
-          )}
+          {!hideCompany &&
+            (supply.company ? (
+              <CompanySheetButton company={supply.company} />
+            ) : (
+              <span className="blur-[5px] text-sm">
+                {generateBlurredName(supply.id)}
+              </span>
+            ))}
           {supply.location.country ? (
             <CircleFlag
               countryCode={supply.location.country.toLowerCase()}
@@ -92,7 +96,8 @@ const SupplyMobileCard: FC<{ supply: SupplyViewModel }> = ({ supply }) => {
 export const SupplyTableMobile: FC<{
   supply: SupplyViewModel[];
   callToAction: ReactNode;
-}> = ({ supply, callToAction }) => {
+  hideCompany?: boolean;
+}> = ({ supply, callToAction, hideCompany }) => {
   const [search, setSearch] = useState('');
   const [pageIndex, setPageIndex] = useState(0);
 
@@ -140,7 +145,11 @@ export const SupplyTableMobile: FC<{
       <div className="flex flex-col gap-3">
         {pageRows.length > 0 ? (
           pageRows.map((item) => (
-            <SupplyMobileCard key={item.id} supply={item} />
+            <SupplyMobileCard
+              key={item.id}
+              supply={item}
+              hideCompany={hideCompany}
+            />
           ))
         ) : (
           <div className="rounded-lg border bg-muted/30 p-6 text-center text-muted-foreground">

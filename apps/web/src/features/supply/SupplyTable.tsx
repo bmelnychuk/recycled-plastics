@@ -237,26 +237,43 @@ export const CompanySupplyTable: FC<{
   const callToAction =
     user?.isAdmin ||
     (user?.isCompanyVerified && companyId === user?.companyId) ? (
-      <Button asChild>
+      <Button
+        asChild
+        size="icon"
+        className="shrink-0 md:h-9 md:w-auto md:px-4 md:py-2"
+        aria-label="Create material entry"
+      >
         <Link
           href={
             companyId
               ? `/companies/${companyId}/supply/new`
               : '/admin/supply/new'
           }
+          className="flex items-center justify-center md:gap-2"
         >
           <Plus />
-          Create material entry
+          <span className="hidden md:inline">Create material entry</span>
         </Link>
       </Button>
     ) : null;
 
   return (
-    <SupplyTable
-      supply={supply}
-      callToAction={callToAction}
-      columns={companyColumns}
-    />
+    <>
+      <div className="md:hidden">
+        <SupplyTableMobile
+          supply={supply}
+          callToAction={callToAction}
+          hideCompany
+        />
+      </div>
+      <div className="hidden md:block">
+        <SupplyTable
+          supply={supply}
+          callToAction={callToAction}
+          columns={companyColumns}
+        />
+      </div>
+    </>
   );
 };
 
@@ -275,24 +292,32 @@ export const ActiveSupplyTable: FC<{
       : '#';
 
   const callToAction = canAdd ? (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button asChild size="icon" aria-label="Create new supply">
-          <Link href={createHref}>
-            <Plus />
-          </Link>
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>Create new supply</p>
-      </TooltipContent>
-    </Tooltip>
+    <Button
+      asChild
+      size="icon"
+      className="shrink-0 md:h-9 md:w-auto md:px-4 md:py-2"
+      aria-label="Create material entry"
+    >
+      <Link
+        href={createHref}
+        className="flex items-center justify-center md:gap-2"
+      >
+        <Plus />
+        <span className="hidden md:inline">Create material entry</span>
+      </Link>
+    </Button>
   ) : (
     <Tooltip>
       <TooltipTrigger asChild>
         <span tabIndex={0}>
-          <Button size="icon" disabled aria-label="Create new supply">
+          <Button
+            size="icon"
+            className="shrink-0 md:h-9 md:w-auto md:px-4 md:py-2"
+            disabled
+            aria-label="Create material entry"
+          >
             <Plus />
+            <span className="hidden md:inline">Create material entry</span>
           </Button>
         </span>
       </TooltipTrigger>

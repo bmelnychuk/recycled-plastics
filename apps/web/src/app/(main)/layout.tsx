@@ -15,7 +15,7 @@ export default async function RootLayout({
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
-      <nav className="w-screen min-w-0 max-w-full shrink-0 border-b">
+      <nav className="w-full min-w-0 shrink-0 border-b">
         <div className="md:hidden">
           <NavigationBarMobile user={signedInUser} />
         </div>
@@ -24,7 +24,7 @@ export default async function RootLayout({
         </div>
       </nav>
       <ScrollArea className="min-h-0 flex-1">
-        <main className="min-w-0">
+        <main className="min-w-0 overflow-x-hidden">
           {children}
           <Footer />
         </main>

@@ -34,19 +34,19 @@ export const CompanyTeaserCard: FC = () => {
             </div>
           </div>
 
-          <h3 className="mb-4 text-lg font-semibold text-slate-900">
+          <h3 className="mb-4 text-lg font-semibold">
             Sign in to view company details
           </h3>
           <ul className="mb-6 space-y-2 text-sm">
-            <li className="flex items-center gap-2 text-slate-700">
+            <li className="flex items-center gap-2">
               <div className="h-1.5 w-1.5 rounded-full bg-primary" />
               Get in touch with the company
             </li>
-            <li className="flex items-center gap-2 text-slate-700">
+            <li className="flex items-center gap-2">
               <div className="h-1.5 w-1.5 rounded-full bg-primary" />
               Access uploaded material datasheets
             </li>
-            <li className="flex items-center gap-2 text-slate-700">
+            <li className="flex items-center gap-2">
               <div className="h-1.5 w-1.5 rounded-full bg-primary" />
               Free and simple setup
             </li>
