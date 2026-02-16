@@ -5,8 +5,13 @@ import { Application, SignedInUser, SignedInUserSchema } from '@rp/core';
 
 import { awsCredentialsProvider } from '@vercel/oidc-aws-credentials-provider';
 
-const { MAIN_TABLE, PUBLIC_BUCKET, IS_LOCAL, CLERK_SECRET_KEY } =
-  process.env as Record<string, string>;
+const {
+  MAIN_TABLE,
+  PUBLIC_BUCKET,
+  IS_LOCAL,
+  CLERK_SECRET_KEY,
+  COMMUNICATION_TABLE,
+} = process.env as Record<string, string>;
 
 const awsConfig =
   IS_LOCAL === 'true'
@@ -34,6 +39,7 @@ export const getCurrentUser = async (): Promise<SignedInUser | undefined> => {
 
 const application = new Application(
   MAIN_TABLE,
+  COMMUNICATION_TABLE,
   PUBLIC_BUCKET,
   CLERK_SECRET_KEY,
   awsConfig,
@@ -70,3 +76,9 @@ export const getCurrentCompany =
 export const getAllCompanies = application.getAllCompanies.bind(application);
 export const getFileUploadUrl = application.getFileUploadUrl.bind(application);
 export const getCompanyUsers = application.getCompanyUsers.bind(application);
+export const getMessages = application.getMessages.bind(application);
+export const getCompanyMessageThreads =
+  application.getCompanyMessageThreads.bind(application);
+export const getMessageThread = application.getMessageThread.bind(application);
+export const createMessageThread =
+  application.createMessageThread.bind(application);

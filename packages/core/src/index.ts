@@ -14,7 +14,12 @@ import { MaterialSupply } from './domain/supply/Supply';
 import { MaterialSupplyRepository } from './domain/supply/MaterialSupplyRepository';
 import { CompanyRepository } from './domain/company/CompanyRepository';
 import { MaterialDemandRepository } from './domain/demand/MaterialDemandRepository';
-import { DemandViewModel, SupplyViewModel } from './application/view-models';
+import {
+  DemandViewModel,
+  MessageThreadViewModel,
+  MessageViewModel,
+  SupplyViewModel,
+} from './application/view-models';
 import { GetDemandById } from './application/use-case/demand/GetDemandById';
 import { GetCompanyById } from './application/use-case/company/GetCompanyDetails';
 import { Company } from './domain/company/Company';
@@ -72,6 +77,15 @@ import { newUuid } from './lib/identity';
 import { ClerkAuthService } from './infrastructure/clerk/ClerkAuthService';
 import { GetCompanyUsers } from './application/use-case/user/GetCompanyUsers';
 import { User } from './domain/user/User';
+import { MessageRepository } from './domain/communication/MessageRepository';
+import { DynamoDbMessageRepository } from './infrastructure/dynamo-db/DynamoDbMessageRepository';
+import { GetMessages } from './application/use-case/communication/GetMessages';
+import { GetCompanyMessageThreads } from './application/use-case/communication/GetCompanyMessageThreads';
+import { GetMessageThread } from './application/use-case/communication/GetMessageThread';
+import {
+  NewMessage,
+  WriteMessage,
+} from './application/use-case/communication/WriteMessage';
 
 export type GetCurrentUser = () => Promise<SignedInUser | undefined>;
 
@@ -79,6 +93,7 @@ export class Application {
   private readonly demand: MaterialDemandRepository;
   private readonly supply: MaterialSupplyRepository;
   private readonly companies: CompanyRepository;
+  private readonly messages: MessageRepository;
   private readonly authService: ClerkAuthService;
   private readonly s3Storage: S3Storage;
 
@@ -105,8 +120,14 @@ export class Application {
 
   private readonly getCompanyUsersUseCase: GetCompanyUsers;
 
+  private readonly getMessagesUseCase: GetMessages;
+  private readonly getCompanyMessageThreadsUseCase: GetCompanyMessageThreads;
+  private readonly getMessageThreadUseCase: GetMessageThread;
+  private readonly createMessageThreadUseCase: WriteMessage;
+
   constructor(
     mainTable: string,
+    communicationTable: string,
     private readonly bucket: string,
     clerkSecretKey: string,
     dynamoDbConfig: DynamoDBClientConfig,
@@ -125,6 +146,10 @@ export class Application {
     );
     this.companies = new DynamoDbCompanyRepository(mainTable, dynamoDbConfig);
     this.s3Storage = new S3Storage(s3Config);
+    this.messages = new DynamoDbMessageRepository(
+      communicationTable,
+      dynamoDbConfig,
+    );
 
     this.getActiveDemandUseCase = new GetActiveDemand(
       this.demand,
@@ -177,6 +202,17 @@ export class Application {
       this.authService,
       this.companies,
     );
+
+    this.getMessagesUseCase = new GetMessages(this.messages, this.authService);
+    this.getCompanyMessageThreadsUseCase = new GetCompanyMessageThreads(
+      this.messages,
+      this.companies,
+    );
+    this.getMessageThreadUseCase = new GetMessageThread(
+      this.messages,
+      this.companies,
+    );
+    this.createMessageThreadUseCase = new WriteMessage(this.messages);
   }
 
   public async getActiveDemand(): Promise<MaterialDemand[]> {
@@ -324,6 +360,38 @@ export class Application {
     const user = await this.getCurrentUser();
     if (!user) throw new Error('User not authenticated');
     return this.getCompanyUsersUseCase.invoke(user, companyId);
+  }
+
+  public async getMessages(input: {
+    companyId?: string;
+    threadId: string;
+  }): Promise<MessageViewModel[]> {
+    const user = await this.getCurrentUser();
+    if (!user) throw new Error('User not authenticated');
+    return this.getMessagesUseCase.invoke(user, input);
+  }
+
+  public async getCompanyMessageThreads(
+    companyId?: string,
+  ): Promise<MessageThreadViewModel[]> {
+    const user = await this.getCurrentUser();
+    if (!user) throw new Error('User not authenticated');
+    return this.getCompanyMessageThreadsUseCase.invoke(user, companyId);
+  }
+
+  public async getMessageThread(
+    companyId: string,
+    threadId: string,
+  ): Promise<MessageThreadViewModel> {
+    const user = await this.getCurrentUser();
+    if (!user) throw new Error('User not authenticated');
+    return this.getMessageThreadUseCase.invoke(user, { companyId, threadId });
+  }
+
+  public async createMessageThread(message: NewMessage): Promise<void> {
+    const user = await this.getCurrentUser();
+    if (!user) throw new Error('User not authenticated');
+    return this.createMessageThreadUseCase.invoke(user, message);
   }
 
   public async getFileUploadUrl(

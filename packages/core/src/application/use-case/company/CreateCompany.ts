@@ -58,6 +58,7 @@ export class CreateCompany {
     });
 
     await this.authService.updateUser(user.authId, {
+      externalId: newUuid(),
       companyId: company.id,
       isCompanyVerified: false,
     });

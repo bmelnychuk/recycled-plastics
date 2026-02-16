@@ -13,7 +13,7 @@ export class ClerkAuthService implements AuthService, UserRepository {
     this.clerk = createClerkClient({ secretKey: this.clerkSecretKey });
   }
 
-  public async findByIds(ids: string[]): Promise<Map<string, User>> {
+  public async findByAuthIds(ids: string[]): Promise<Map<string, User>> {
     const uniqueIds = [...new Set(ids)];
 
     const users = await this.clerk.users.getUserList({
@@ -33,6 +33,28 @@ export class ClerkAuthService implements AuthService, UserRepository {
         ];
       }),
     );
+  }
+
+  public async getByIds(ids: string[]): Promise<Map<string, User>> {
+    const uniqueIds = [...new Set(ids)];
+
+    const users = await this.clerk.users.getUserList({
+      externalId: uniqueIds.map((id) => `+${id}`),
+    });
+
+    const validUsers: User[] = users.data
+      .map((user) => {
+        if (!user.externalId) return undefined;
+        return {
+          id: user.externalId,
+          email: user.primaryEmailAddress?.emailAddress ?? '',
+          firstName: user.firstName ?? '',
+          lastName: user.lastName ?? '',
+        };
+      })
+      .filter((user) => user !== undefined);
+
+    return new Map(validUsers.map((user) => [user.id, user]));
   }
 
   public async updateUser(

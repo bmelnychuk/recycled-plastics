@@ -52,6 +52,21 @@ export class AppStack extends cdk.Stack {
       ],
     });
 
+    const communicationTable = new dynamodb.Table(this, 'CommunicationTable', {
+      partitionKey: {
+        name: 'PK',
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: 'SK',
+        type: dynamodb.AttributeType.STRING,
+      },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      timeToLiveAttribute: 'ttl',
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+      deletionProtection: true,
+    });
+
     const role = new iam.Role(this, 'VercelOidcRole', {
       assumedBy: new iam.WebIdentityPrincipal(
         `arn:aws:iam::${this.account}:oidc-provider/oidc.vercel.com/bmelnychuk-private`,
@@ -71,6 +86,7 @@ export class AppStack extends cdk.Stack {
 
     mainTable.grantReadWriteData(role);
     publicBucket.grantReadWrite(role);
+    communicationTable.grantReadWriteData(role);
 
     new cdk.CfnOutput(this, 'VercelRoleArn', {
       value: role.roleArn,
@@ -80,6 +96,11 @@ export class AppStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'MainTableName', {
       value: mainTable.tableName,
       description: 'MainTable name',
+    });
+
+    new cdk.CfnOutput(this, 'CommunicationTableName', {
+      value: communicationTable.tableName,
+      description: 'CommunicationTable name',
     });
 
     new cdk.CfnOutput(this, 'PublicBucketName', {

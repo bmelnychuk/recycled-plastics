@@ -1,5 +1,6 @@
 import { User } from './User';
 
 export interface UserRepository {
-  findByIds(ids: string[]): Promise<Map<string, User>>;
+  findByAuthIds(ids: string[]): Promise<Map<string, User>>;
+  getByIds(ids: string[]): Promise<Map<string, User>>;
 }

@@ -10,6 +10,7 @@ export const SignedInUserSchema = z.object({
 
 export const SignedInCompanyUserSchema = SignedInUserSchema.extend({
   companyId: z.uuid(),
+  id: z.uuid(),
 });
 
 export type SignedInUser = z.infer<typeof SignedInUserSchema>;
@@ -21,6 +22,7 @@ export const assertCreateMaterialPermission = (user: SignedInUser): void => {
 
 export const assertUserAndCompanyVerified = (user?: SignedInUser): void => {
   if (user?.isAdmin) return;
+  if (!user?.id) throw new Error('User not verified');
   if (!user?.companyId) throw new Error('User not associated to a company');
   if (!user?.isCompanyVerified) throw new Error('Company not verified');
 };
@@ -34,8 +36,10 @@ export const assertCanAccessCompany = (
     throw new Error('User not authorized to access this company');
 };
 
-export const assertCompanyUser = (user: SignedInUser): void => {
-  if (!user.companyId) throw new Error('User not associated to a company');
+export const assertCompanyUser = (user: SignedInUser): CompanyUser => {
+  const parsed = SignedInCompanyUserSchema.safeParse(user);
+  if (!parsed.success) throw new Error('User not associated to a company');
+  return parsed.data;
 };
 
 export const assertUser = (_: SignedInUser): void => {

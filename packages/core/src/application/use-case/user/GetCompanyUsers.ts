@@ -13,7 +13,7 @@ export class GetCompanyUsers {
     assertCanAccessCompany(user, companyId);
     const company = await this.companyRepository.getById(companyId);
     const userIds = company.userIds ?? [];
-    const users = await this.userRepository.findByIds(userIds);
+    const users = await this.userRepository.findByAuthIds(userIds);
     return Array.from(users.values());
   }
 }
