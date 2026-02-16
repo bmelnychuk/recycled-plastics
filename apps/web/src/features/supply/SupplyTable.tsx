@@ -20,7 +20,6 @@ import { Button } from '@/design-system/components/ui/button';
 import { Plus, Search, X } from 'lucide-react';
 import { Table as TanStackTable } from '@tanstack/react-table';
 import { ColorSelect } from '@/features/material/ColorSelect';
-import Image from 'next/image';
 import {
   InputGroup,
   InputGroupAddon,
@@ -56,14 +55,13 @@ const allColumns: ColumnDef<SupplyViewModel>[] = [
               '[&_[data-rmiz-modal-overlay="visible"]]:bg-black/80',
             )}
           >
-            <Image
-              className="p-1 rounded-lg"
-              src={image}
-              unoptimized
-              alt={row.original.material.type}
-              width={72}
-              height={72}
-            />
+            <div className="aspect-square w-16 overflow-hidden rounded p-1">
+              <img
+                src={image}
+                alt={row.original.material.type}
+                className="h-full w-full rounded object-cover object-center"
+              />
+            </div>
           </ImageZoom>
         </div>
       );

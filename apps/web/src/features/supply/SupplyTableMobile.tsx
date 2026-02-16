@@ -1,7 +1,6 @@
 'use client';
 
 import { FC, ReactNode, useMemo, useState } from 'react';
-import Image from 'next/image';
 import { CircleFlag } from 'react-circle-flags';
 import { ImageZoom } from '@/design-system/components/ui/shadcn-io/image-zoom';
 import { cn } from '@/design-system/lib/utils';
@@ -40,18 +39,17 @@ const SupplyMobileCard: FC<{
                 '[&_[data-rmiz-modal-overlay="visible"]]:bg-black/80',
               )}
             >
-              <Image
-                className="rounded-lg shrink-0 cursor-zoom-in"
-                src={image}
-                unoptimized
-                alt={supply.material.type}
-                width={64}
-                height={64}
-              />
+              <div className="aspect-square w-16 shrink-0 overflow-hidden rounded p-1">
+                <img
+                  src={image}
+                  alt={supply.material.type}
+                  className="h-full w-full cursor-zoom-in rounded object-cover object-center"
+                />
+              </div>
             </ImageZoom>
           </div>
         ) : (
-          <div className="w-16 h-16 rounded-lg bg-muted shrink-0" />
+          <div className="aspect-square w-16 shrink-0 rounded bg-muted" />
         )}
         <div className="min-w-0 flex-1 flex flex-col gap-1">
           <div className="flex items-center gap-2 flex-wrap">

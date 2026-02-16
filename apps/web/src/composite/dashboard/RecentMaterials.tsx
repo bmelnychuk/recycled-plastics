@@ -44,6 +44,7 @@ import {
 } from '@/design-system/components/ui/tooltip';
 import { SupplySheetButton } from '@/features/supply/SupplySheetButton';
 import { CompanySheetButton } from '@/features/company/CompanySheetButton';
+import { generateBlurredName } from '@/lib/random';
 import { DemandViewModel, SignedInUser, SupplyViewModel } from '@rp/core';
 
 export const RecentMaterials: FC<{
@@ -182,12 +183,16 @@ const MaterialCard: FC<{ material: Material }> = ({ material }) => (
         {material.company ? (
           <CompanySheetButton company={material.company} />
         ) : (
-          <Link
-            href={`/companies/${material.companyId}`}
-            className="underline truncate min-w-0"
-          >
-            Company
-          </Link>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="blur-[5px]">
+                {generateBlurredName(material.id)}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Sign up to view company details</p>
+            </TooltipContent>
+          </Tooltip>
         )}
       </div>
       {/* Last row: price left, date right */}
@@ -254,12 +259,16 @@ const MaterialsTable: FC<{ materials: Material[] }> = ({ materials }) => {
                       {material.company ? (
                         <CompanySheetButton company={material.company} />
                       ) : (
-                        <Link
-                          href={`/companies/${material.companyId}`}
-                          className="underline"
-                        >
-                          Company
-                        </Link>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span className="blur-[5px]">
+                              {generateBlurredName(material.id)}
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Sign up to view company details</p>
+                          </TooltipContent>
+                        </Tooltip>
                       )}
                     </span>
                   </div>
