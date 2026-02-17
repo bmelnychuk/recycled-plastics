@@ -3,23 +3,27 @@ import {
   Card,
   CardAction,
   CardContent,
+  CardFooter,
   CardHeader,
 } from '@/design-system/components/ui/card';
-import { ExternalLink, Globe, Mail, MapPin } from 'lucide-react';
+import { Separator } from '@/design-system/components/ui/separator';
+import { ExternalLink, Globe, Mail, MapPin, Phone } from 'lucide-react';
 import Link from 'next/link';
-import { countries } from 'country-data-list';
 import { CompanyLogo } from '../../composite/company/CompanyLogo';
 import { Button } from '@/design-system/components/ui/button';
+import { CountryName } from '../common/CountryName';
+import { FC, ReactNode } from 'react';
 
-export const CompanyBusinessCard = ({ company }: { company: Company }) => {
-  const country = company.address.country;
 
-  // @ts-ignore
-  const countryName = country ? countries[country]?.name : country;
+interface CompanyBusinessCardProps {
+  company: Company;
+  action?: ReactNode;
+}
 
+export const CompanyBusinessCard: FC<CompanyBusinessCardProps> = ({ company, action }) => {
   return (
     <Card className="backdrop-blur-sm min-w-0 h-full">
-      <CardHeader className="flex flex-row items-center gap-3 pb-4">
+      <CardHeader className="flex flex-row items-center gap-3">
         <CompanyLogo
           logo={company.branding?.logo}
           name={company.name}
@@ -44,32 +48,70 @@ export const CompanyBusinessCard = ({ company }: { company: Company }) => {
         </CardAction>
       </CardHeader>
 
-      <CardContent className="space-y-2.5">
-        <a
-          href={`mailto:${company.email}`}
-          className="flex items-center gap-2 text-sm hover:underline"
-        >
-          <Mail className="h-4 w-4 text-muted-foreground" />
-          <span className="break-all pr-2">{company.email}</span>
-        </a>
-
-        {company.website && (
+      <CardContent>
+        <div className="flex flex-col gap-3">
           <a
-            href={company.website}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={`mailto:${company.email}`}
             className="flex items-center gap-2 text-sm hover:underline"
           >
-            <Globe className="h-4 w-4 text-muted-foreground" />
-            <span className="break-all pr-2">{company.website}</span>
+            <Mail className="h-4 w-4 shrink-0 text-muted-foreground" />
+            <span className="break-all">{company.email}</span>
           </a>
-        )}
 
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <MapPin className="h-4 w-4" />
-          <span>{countryName}</span>
+          {company.website && (
+            <a
+              href={company.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-sm hover:underline"
+            >
+              <Globe className="h-4 w-4 shrink-0 text-muted-foreground" />
+              <span className="break-all">{company.website}</span>
+            </a>
+          )}
+
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <MapPin className="h-4 w-4 shrink-0" />
+            <CountryName countryCode={company.address.country} />
+          </div>
+
+          <Separator className="my-2" />
+
+          <div className="min-w-0">
+            <p className="text-base font-semibold">
+              {company.mainContact.firstName} {company.mainContact.lastName}
+            </p>
+            {company.mainContact.title && (
+              <p className="text-xs text-muted-foreground">
+                {company.mainContact.title}
+              </p>
+            )}
+          </div>
+
+          <a
+            href={`mailto:${company.mainContact.email}`}
+            className="flex items-center gap-2 text-sm hover:underline"
+          >
+            <Mail className="h-4 w-4 shrink-0 text-muted-foreground" />
+            <span className="break-all">{company.mainContact.email}</span>
+          </a>
+
+          {company.mainContact.phone && (
+            <a
+              href={`tel:${company.mainContact.phone}`}
+              className="flex items-center gap-2 text-sm hover:underline"
+            >
+              <Phone className="h-4 w-4 shrink-0 text-muted-foreground" />
+              <span>{company.mainContact.phone}</span>
+            </a>
+          )}
         </div>
       </CardContent>
+      {action && (
+        <CardFooter className="flex justify-end">
+          {action}
+        </CardFooter>
+      )}
     </Card>
   );
 };

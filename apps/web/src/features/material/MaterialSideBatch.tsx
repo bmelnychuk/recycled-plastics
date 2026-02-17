@@ -16,3 +16,7 @@ export const DemandBadge: FC = () => {
     </Badge>
   );
 };
+
+export const SideBatch: FC<{ side: 'supply' | 'demand' }> = ({ side }) => {
+  return side === 'supply' ? <SupplyBadge /> : <DemandBadge />;
+};

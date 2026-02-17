@@ -39,6 +39,7 @@ export class GetCompanyMessageThreads {
         const toCompany = companies.get(thread.to.companyId);
 
         if (!fromCompany || !toCompany) return undefined;
+        if (!fromCompany.verified || !toCompany.verified) return undefined;
 
         return {
           ...thread,

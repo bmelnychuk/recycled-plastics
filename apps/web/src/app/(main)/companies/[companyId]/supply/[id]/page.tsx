@@ -1,8 +1,13 @@
-import { getSupplyById, getCompanyById, getCurrentUser } from '@/server';
+import {
+  getSupplyById,
+  getCompanyById,
+  getCurrentUser,
+  getMessagesByTopic,
+} from '@/server';
 import { CompanyBusinessCard } from '@/features/company/CompanyBusinessCard';
 import { CompanyTeaserCard } from '@/features/company/CompanyTeaserCard';
-import { ContactBusinessCard } from '@/composite/company/ContactBusinessCard';
 import { MaterialSupplyDetailsCard } from '@/features/supply/MaterialSupplyDetailsCard';
+import { SendNewMessageButton } from '@/features/communication/SendNewMessageButton';
 
 export default async function Page({
   params,
@@ -10,10 +15,11 @@ export default async function Page({
   params: Promise<{ companyId: string; id: string }>;
 }) {
   const { companyId, id } = await params;
-  const [supply, company, user] = await Promise.all([
+  const [supply, company, user, messages] = await Promise.all([
     getSupplyById(companyId, id),
     getCompanyById(companyId),
     getCurrentUser(),
+    getMessagesByTopic({ topic: { type: 'supply', companyId, id } }),
   ]);
 
   return (
@@ -24,12 +30,14 @@ export default async function Page({
       <div className="col-span-12 flex flex-col gap-4 lg:col-span-4">
         {company && (
           <div className="flex flex-col gap-4">
-            <CompanyBusinessCard company={company} />
-          </div>
-        )}
-        {company?.mainContact && (
-          <div className="flex flex-col gap-4">
-            <ContactBusinessCard user={company.mainContact} />
+            <CompanyBusinessCard company={company} action={
+              <SendNewMessageButton
+                company={company}
+                supply={supply}
+                messages={messages}
+                user={user}
+              />
+            } />
           </div>
         )}
         {!company && <CompanyTeaserCard />}

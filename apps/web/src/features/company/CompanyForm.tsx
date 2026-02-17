@@ -279,7 +279,8 @@ export const CompanyForm: FC<{
                     {...field}
                     value={field.value ?? ''}
                     onChange={(e) => {
-                      field.onChange(improveUrlInput(e.target.value));
+                      // field.onChange(improveUrlInput(e.target.value));
+                      field.onChange(e.target.value);
                     }}
                     type="url"
                     placeholder="https://www.example.com"

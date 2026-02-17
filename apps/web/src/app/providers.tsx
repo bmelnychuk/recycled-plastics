@@ -16,7 +16,7 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
       disableTransitionOnChange
     >
       <ClerkProvider appearance={{ theme: shadcn }}>
-        <Toaster position="top-center" />
+        <Toaster position="top-right" />
         {children}
       </ClerkProvider>
     </ThemeProvider>

@@ -41,3 +41,4 @@ export const MessageThreadSchema = z.object({
 
 export type Message = z.infer<typeof MessageSchema>;
 export type MessageThread = z.infer<typeof MessageThreadSchema>;
+export type MessageThreadTopic = z.infer<typeof MessageThreadTopicSchema>;

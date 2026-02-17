@@ -110,7 +110,7 @@ export class WriteMessage {
       ...thread,
       lastMessage: newMessage,
       updatedDate: now,
-      hasUnreadMessages: true,
+      hasUnreadMessages: false,
     });
 
     await this.messageRepository.saveMessage(newMessage);

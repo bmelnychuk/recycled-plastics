@@ -47,6 +47,7 @@ import {
 
 import { updateDemand, createDemand } from '@/client';
 import { PriceInput } from '../common/form/input/PriceInput';
+import { CountryDropdown } from '../common/CountryDropdown';
 
 const FormStateSchema = MaterialDemandSchema.omit({
   createdDate: true,
@@ -142,6 +143,8 @@ const DemandForm: FC<{
 }> = ({ user, defaultValues, companies, onSubmit: onSubmitCallback }) => {
   const [files, setFiles] = useState<File[]>([]);
 
+
+  console.log(defaultValues);
   const form = useForm<FormState>({
     resolver: zodResolver(FormStateSchema),
     defaultValues: defaultValues ?? initialValues,
@@ -170,9 +173,10 @@ const DemandForm: FC<{
 
   const hasErrors = Object.keys(form.formState.errors).length > 0;
 
+  console.log(form.formState.errors);
+
   return (
     <form
-      id="form-rhf-demo"
       onSubmit={form.handleSubmit(onSubmit)}
       className="flex flex-col gap-8"
     >
@@ -180,62 +184,65 @@ const DemandForm: FC<{
         title="Company"
         description="Assign the material supply to a company"
       >
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-6">
-          <div className="col-span-full">
-            <Controller
-              name="companyId"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="companyId">Company *</FieldLabel>
-                  <CompanySelect
-                    disabled={Boolean(defaultValues?.companyId)}
-                    options={companies}
-                    value={field.value}
-                    onChange={field.onChange}
-                    placeholder="Type at least 3 characters to search..."
-                  />
-                </Field>
-              )}
-            />
-          </div>
-        </div>
+        <Controller
+          name="companyId"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="companyId">Company *</FieldLabel>
+              <CompanySelect
+                disabled={Boolean(defaultValues?.companyId)}
+                options={companies}
+                value={field.value}
+                onChange={field.onChange}
+                placeholder="Type at least 3 characters to search..."
+              />
+            </Field>
+          )}
+        />
+
       </FormSection>
       <Separator />
       <FormSection
         title="General Information"
         description=" Provide general information about the material"
       >
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-6">
-          <div className="col-span-full">
-            <Controller
-              name="material.type"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="material.type">Material type</FieldLabel>
-                  <MaterialTypeSelect {...field} />
-                </Field>
-              )}
-            />
-          </div>
-          <div className="col-span-full">
-            <Controller
-              name="description"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="description">Description</FieldLabel>
-                  <Textarea
-                    className="min-h-0 field-sizing-fixed"
-                    rows={4}
-                    {...field}
-                  />
-                </Field>
-              )}
-            />
-          </div>
-        </div>
+
+        <Controller
+          name="material.type"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="material.type">Material type</FieldLabel>
+              <MaterialTypeSelect {...field} />
+            </Field>
+          )}
+        />
+
+        <Controller
+          name="description"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="description">Description</FieldLabel>
+              <Textarea
+                className="min-h-0 field-sizing-fixed"
+                rows={4}
+                {...field}
+              />
+            </Field>
+          )}
+        />
+        <Controller
+          name="location.country"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="location.country">Location *</FieldLabel>
+              <CountryDropdown value={field.value} onChange={field.onChange} />
+            </Field>
+          )}
+        />
       </FormSection>
 
       <Separator />
@@ -297,60 +304,57 @@ const DemandForm: FC<{
         title="Documents"
         description=" Provide documents about the material"
       >
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-6">
-          <div className="col-span-full">
-            <Dropzone
-              accept={{ 'application/pdf': ['.pdf'] }}
-              maxSize={1024 * 1024 * 10}
-              minSize={1024}
-              maxFiles={10}
-              onDrop={(e) => handleDrop(e)}
-              onError={console.error}
-            >
-              <DropzoneEmptyState />
-            </Dropzone>
 
-            <div className="mt-4 flex flex-col gap-2">
-              {documents.map((document, i) => (
-                <Item key={`${document.id}-${i}`} variant="outline">
-                  <ItemMedia>
-                    <CloudCheck size={16} />
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>{document.name}</ItemTitle>
-                  </ItemContent>
-                  <ItemActions>
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleRemoveDocument(i)}
-                    >
-                      <Trash />
-                    </Button>
-                  </ItemActions>
-                </Item>
-              ))}
-              {files.map((file, i) => (
-                <Item key={`${file.name}-${i}`} variant="outline">
-                  <ItemMedia>
-                    <Upload size={16} />
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>{file.name}</ItemTitle>
-                  </ItemContent>
-                  <ItemActions>
-                    <Button
-                      variant="ghost"
-                      onClick={() =>
-                        setFiles(files.slice(0, i).concat(files.slice(i + 1)))
-                      }
-                    >
-                      <Trash />
-                    </Button>
-                  </ItemActions>
-                </Item>
-              ))}
-            </div>
-          </div>
+        <Dropzone
+          accept={{ 'application/pdf': ['.pdf'] }}
+          maxSize={1024 * 1024 * 10}
+          minSize={1024}
+          maxFiles={10}
+          onDrop={(e) => handleDrop(e)}
+          onError={console.error}
+        >
+          <DropzoneEmptyState />
+        </Dropzone>
+
+        <div className="mt-4 flex flex-col gap-2">
+          {documents.map((document, i) => (
+            <Item key={`${document.id}-${i}`} variant="outline">
+              <ItemMedia>
+                <CloudCheck size={16} />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>{document.name}</ItemTitle>
+              </ItemContent>
+              <ItemActions>
+                <Button
+                  variant="ghost"
+                  onClick={() => handleRemoveDocument(i)}
+                >
+                  <Trash />
+                </Button>
+              </ItemActions>
+            </Item>
+          ))}
+          {files.map((file, i) => (
+            <Item key={`${file.name}-${i}`} variant="outline">
+              <ItemMedia>
+                <Upload size={16} />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>{file.name}</ItemTitle>
+              </ItemContent>
+              <ItemActions>
+                <Button
+                  variant="ghost"
+                  onClick={() =>
+                    setFiles(files.slice(0, i).concat(files.slice(i + 1)))
+                  }
+                >
+                  <Trash />
+                </Button>
+              </ItemActions>
+            </Item>
+          ))}
         </div>
       </FormSection>
 

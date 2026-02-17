@@ -19,6 +19,7 @@ import { formatDate } from '../../composite/common/date-utils';
 import { formatPrice } from '../../composite/common/price-utils';
 import { MaterialDataTable } from '@/features/material/MaterialDataTable';
 import { CountryName } from '@/features/common/CountryName';
+import { SupplyBadge } from '@/features/material/MaterialSideBatch';
 
 const Stat = ({ label, value }: { label: string; value: string }) => (
   <div className="rounded-lg border px-4 py-3">
@@ -36,7 +37,10 @@ export const MaterialSupplyDetailsCard: FC<{
   return (
     <Card className="border-0 bg-transparent shadow-none py-0 lg:border lg:bg-card lg:shadow-sm lg:py-6">
       <CardHeader className="px-0 lg:px-6">
-        <CardTitle className="text-xl font-semibold">{material.name}</CardTitle>
+        <CardTitle className="text-xl font-semibold flex items-center gap-2">
+          {material.name}
+          <SupplyBadge />
+        </CardTitle>
         <CardDescription>
           <div>
             Listed {formatDate(material.createdDate)} • Last updated{' '}

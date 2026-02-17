@@ -79,13 +79,15 @@ import { GetCompanyUsers } from './application/use-case/user/GetCompanyUsers';
 import { User } from './domain/user/User';
 import { MessageRepository } from './domain/communication/MessageRepository';
 import { DynamoDbMessageRepository } from './infrastructure/dynamo-db/DynamoDbMessageRepository';
-import { GetMessages } from './application/use-case/communication/GetMessages';
+import { GetMessagesByTopic } from './application/use-case/communication/GetMessagesByTopic';
+import { GetMessagesByThreadId } from './application/use-case/communication/GetMessagesByThreadId';
 import { GetCompanyMessageThreads } from './application/use-case/communication/GetCompanyMessageThreads';
 import { GetMessageThread } from './application/use-case/communication/GetMessageThread';
 import {
   NewMessage,
   WriteMessage,
 } from './application/use-case/communication/WriteMessage';
+import { MessageThreadTopic } from './domain/communication/Message';
 
 export type GetCurrentUser = () => Promise<SignedInUser | undefined>;
 
@@ -120,10 +122,11 @@ export class Application {
 
   private readonly getCompanyUsersUseCase: GetCompanyUsers;
 
-  private readonly getMessagesUseCase: GetMessages;
+  private readonly getMessagesByTopicUseCase: GetMessagesByTopic;
+  private readonly getMessagesByThreadIdUseCase: GetMessagesByThreadId;
   private readonly getCompanyMessageThreadsUseCase: GetCompanyMessageThreads;
   private readonly getMessageThreadUseCase: GetMessageThread;
-  private readonly createMessageThreadUseCase: WriteMessage;
+  private readonly writeMessageUseCase: WriteMessage;
 
   constructor(
     mainTable: string,
@@ -203,7 +206,14 @@ export class Application {
       this.companies,
     );
 
-    this.getMessagesUseCase = new GetMessages(this.messages, this.authService);
+    this.getMessagesByTopicUseCase = new GetMessagesByTopic(
+      this.messages,
+      this.authService,
+    );
+    this.getMessagesByThreadIdUseCase = new GetMessagesByThreadId(
+      this.messages,
+      this.authService,
+    );
     this.getCompanyMessageThreadsUseCase = new GetCompanyMessageThreads(
       this.messages,
       this.companies,
@@ -212,7 +222,7 @@ export class Application {
       this.messages,
       this.companies,
     );
-    this.createMessageThreadUseCase = new WriteMessage(this.messages);
+    this.writeMessageUseCase = new WriteMessage(this.messages);
   }
 
   public async getActiveDemand(): Promise<MaterialDemand[]> {
@@ -362,13 +372,22 @@ export class Application {
     return this.getCompanyUsersUseCase.invoke(user, companyId);
   }
 
-  public async getMessages(input: {
+  public async getMessagesByTopic(input: {
+    companyId?: string;
+    topic: MessageThreadTopic;
+  }): Promise<MessageViewModel[]> {
+    const user = await this.getCurrentUser();
+    if (!user) throw new Error('User not authenticated');
+    return this.getMessagesByTopicUseCase.invoke(user, input);
+  }
+
+  public async getMessagesByThreadId(input: {
     companyId?: string;
     threadId: string;
   }): Promise<MessageViewModel[]> {
     const user = await this.getCurrentUser();
     if (!user) throw new Error('User not authenticated');
-    return this.getMessagesUseCase.invoke(user, input);
+    return this.getMessagesByThreadIdUseCase.invoke(user, input);
   }
 
   public async getCompanyMessageThreads(
@@ -391,7 +410,7 @@ export class Application {
   public async createMessageThread(message: NewMessage): Promise<void> {
     const user = await this.getCurrentUser();
     if (!user) throw new Error('User not authenticated');
-    return this.createMessageThreadUseCase.invoke(user, message);
+    return this.writeMessageUseCase.invoke(user, message);
   }
 
   public async getFileUploadUrl(

@@ -6,8 +6,9 @@ import {
 } from '../../auth/AuthService';
 import { MessageViewModel } from '../../view-models';
 import { UserRepository } from '../../../domain/user/UserRepository';
+import { MessageThreadTopic } from '../../../domain/communication/Message';
 
-export class GetMessages {
+export class GetMessagesByTopic {
   constructor(
     private readonly messageRepository: MessageRepository,
     private readonly userRepository: UserRepository,
@@ -15,16 +16,23 @@ export class GetMessages {
 
   public async invoke(
     user: SignedInUser,
-    ids: { companyId?: string; threadId: string },
+    ids: { companyId?: string; topic: MessageThreadTopic },
   ): Promise<MessageViewModel[]> {
     const companyUser = assertCompanyUser(user);
     const companyId = ids.companyId ?? companyUser.companyId;
     assertCanAccessCompany(companyUser, companyId);
 
-    const thread = await this.messageRepository.getThreadById(
-      companyId,
-      ids.threadId,
+    const companyThreads =
+      await this.messageRepository.getThreadsByCompanyId(companyId);
+    const thread = companyThreads.find(
+      ({ topic }) =>
+        topic.type === ids.topic.type &&
+        topic.companyId === ids.topic.companyId &&
+        topic.id === ids.topic.id,
     );
+
+    if (!thread) return [];
+
     const messages = await this.messageRepository.getMessagesByThreadId(
       thread.id,
     );

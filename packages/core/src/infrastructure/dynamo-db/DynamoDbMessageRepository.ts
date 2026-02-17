@@ -6,8 +6,7 @@ import { MessageThread, Message } from '../../domain/communication/Message';
 
 export class DynamoDbMessageRepository
   extends DynamoDbRepository
-  implements MessageRepository
-{
+  implements MessageRepository {
   constructor(
     private readonly communicationTable: string,
     config: DynamoDBClientConfig,
@@ -65,7 +64,9 @@ export class DynamoDbMessageRepository
       },
     });
 
-    return response.map((item) => item.payload);
+    return response
+      .map((item) => item.payload)
+      .sort((a, b) => a.createdDate.localeCompare(b.createdDate));
   }
 
   public async getThreadById(
@@ -98,6 +99,6 @@ export class DynamoDbMessageRepository
       ExpressionAttributeValues: { ':pk': PK, ':sk': 'MESSAGE_THREAD#' },
     });
 
-    return records.map((record) => record.payload);
+    return records.map((record) => record.payload).sort((a, b) => b.updatedDate.localeCompare(a.updatedDate));
   }
 }

@@ -224,7 +224,7 @@ const MaterialsTable: FC<{ materials: Material[] }> = ({ materials }) => {
               <TableHead className="font-bold">Type</TableHead>
               <TableHead className="font-bold">Description</TableHead>
               <TableHead className="font-bold">Price</TableHead>
-              <TableHead className="font-bold">Country</TableHead>
+              <TableHead className="font-bold">Company</TableHead>
               <TableHead className="font-bold">Side</TableHead>
             </TableRow>
           </TableHeader>

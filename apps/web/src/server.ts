@@ -76,7 +76,10 @@ export const getCurrentCompany =
 export const getAllCompanies = application.getAllCompanies.bind(application);
 export const getFileUploadUrl = application.getFileUploadUrl.bind(application);
 export const getCompanyUsers = application.getCompanyUsers.bind(application);
-export const getMessages = application.getMessages.bind(application);
+export const getMessagesByTopic =
+  application.getMessagesByTopic.bind(application);
+export const getMessagesByThreadId =
+  application.getMessagesByThreadId.bind(application);
 export const getCompanyMessageThreads =
   application.getCompanyMessageThreads.bind(application);
 export const getMessageThread = application.getMessageThread.bind(application);

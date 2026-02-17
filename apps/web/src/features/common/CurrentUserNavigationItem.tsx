@@ -1,7 +1,14 @@
 'use client';
 
 import { Avatar, AvatarFallback } from '@/design-system/components/ui/avatar';
-import { Building2, LogOut, Settings, User } from 'lucide-react';
+import {
+  Building2,
+  LogOut,
+  MessageSquareIcon,
+  MessagesSquareIcon,
+  Settings,
+  User,
+} from 'lucide-react';
 import { useClerk } from '@clerk/nextjs';
 
 import Link from 'next/link';
@@ -76,6 +83,16 @@ export const CurrentUserNavigationItem: FC<Props> = ({
                   <Building2 /> My Company
                 </Link>
               )}
+            </Button>
+            <Button
+              variant="ghost"
+              className="justify-start gap-2"
+              asChild
+              onClick={() => setIsPopoverOpen(false)}
+            >
+              <Link href="/communication">
+                <MessagesSquareIcon /> Messages
+              </Link>
             </Button>
             <Button
               variant="ghost"
